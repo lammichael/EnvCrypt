@@ -1,1 +1,1 @@
-# EnvCrypt
+# EnvCrypt Core Library
