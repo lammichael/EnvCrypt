@@ -12,3 +12,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("6965c33b-a775-4be9-b746-be305ebbd0d4")]
+[assembly: InternalsVisibleTo("EnvCrypt.Core.UnitTest")]
