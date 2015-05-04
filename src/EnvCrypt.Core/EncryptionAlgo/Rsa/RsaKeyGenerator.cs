@@ -4,51 +4,41 @@ using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {
-    public class RsaKeyGenerator : IKeyGenerator<RsaKey>
+    public class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaGenerationOptions>
     {
-        public RsaKey GetNewKey()
+        /// <summary>
+        /// Gets a new key, given the options requested, including the private key.
+        /// The public key can be derived from the public key using helper methods.
+        /// </summary>
+        /// <param name="options">generation options</param>
+        /// <returns>a new RSA key</returns>
+        public RsaKey GetNewKey(RsaGenerationOptions options)
         {
-            Contract.Ensures(Contract.Result<RsaKey>() != null,
-                "no key returned");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.Exponent != null,
-                "public key does not contain exponent");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.Modulus != null,
-                "public key does not contain exponent");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.D == null,
-                "public key exposes D");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.DP == null,
-                "public key exposes DP");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.DQ == null,
-                "public key exposes DQ");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.InverseQ == null,
-                "public key exposes InverseQ");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.P == null,
-                "public key exposes P");
-            Contract.Ensures(Contract.Result<RsaKey>().PublicKey.Q == null,
-                "public key exposes Q");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.Exponent != null,
-                "public key does not contain exponent");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.Modulus != null,
-                "public key does not contain exponent");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.D != null,
-                "public key exposes D");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.DP != null,
-                "public key exposes DP");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.DQ != null,
-                "public key exposes DQ");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.InverseQ != null,
-                "public key exposes InverseQ");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.P != null,
-                "public key exposes P");
-            Contract.Ensures(Contract.Result<RsaKey>().PrivateKey.Q != null,
-                "public key exposes Q");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.Exponent != null,
+                "private key does not contain exponent");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.Modulus != null,
+                "private key does not contain exponent");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.D != null,
+                "private key does not contain D");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.DP != null,
+                "private key does not contain DP");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.DQ != null,
+                "private key does not contain DQ");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.InverseQ != null,
+                "private key does not contain InverseQ");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.P != null,
+                "private key does not contain P");
+            Contract.Ensures(Contract.Result<RsaKey>().Key.Q != null,
+                "private key does not contain Q");
+            Contract.Ensures(Contract.Result<RsaKey>().UseOaepPadding == options.UseOaepPadding,
+                "OAEP Padding option not replicated correctly");
             //
-            var generated = new RsaKey();
-            using (var myRsa = new RSACryptoServiceProvider())
+            RSAParameters privateKey;
+            using (var myRsa = new RSACryptoServiceProvider(options.KeySize))
             {
-                generated.PublicKey = myRsa.ExportParameters(false);
-                generated.PrivateKey = myRsa.ExportParameters(true);
+                privateKey = myRsa.ExportParameters(true);
             }
+            var generated = new RsaKey(privateKey, options.UseOaepPadding);
             return generated;
         }
     }

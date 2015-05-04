@@ -9,18 +9,13 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
     {
         public byte[] Encrypt(byte[] binaryData, RsaKey usingKey)
         {
-            Contract.Requires<ArgumentNullException>(binaryData != null, "binaryData");
-            Contract.Requires<ArgumentNullException>(usingKey != null, "usingKey");
-            Contract.Ensures(Contract.Result<byte[]>() != null,
-                "decrypted value is null");
-            //
-            return RsaEncrypt(binaryData, usingKey.PublicKey, false);
+            return RsaEncrypt(binaryData, usingKey.Key, true);
         }
 
 
         public byte[] Decrypt(byte[] binaryData, RsaKey usingKey)
         {
-            return RsaDecrypt(binaryData, usingKey.PrivateKey, false);
+            return RsaDecrypt(binaryData, usingKey.Key, true);
         }
 
 
@@ -30,6 +25,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
                 "Exponent not in private key");
             Contract.Requires<EnvCryptAlgoException>(rsaPublicKey.Modulus != null,
                 "Modulus not in private key");
+
             //
 
             //TODO: Catch and display a CryptographicException

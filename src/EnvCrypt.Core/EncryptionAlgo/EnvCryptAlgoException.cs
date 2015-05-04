@@ -2,7 +2,7 @@
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {
-    internal class EnvCryptAlgoException : Exception
+    public class EnvCryptAlgoException : Exception
     {
         public EnvCryptAlgoException()
         {}

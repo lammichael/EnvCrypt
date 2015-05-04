@@ -137,16 +137,22 @@
     </Compile>
     <Compile Include="EncrypedData\DecryptionInfo.cs" />
     <Compile Include="EncrypedData\Entry.cs" />
+    <Compile Include="EncryptionAlgo\Aes\AesAlgo.cs" />
     <Compile Include="EncryptionAlgo\Aes\AesKeyGenerator.cs" />
+    <Compile Include="EncryptionAlgo\Aes\AesGenerationOptions.cs" />
     <Compile Include="EncryptionAlgo\EnvCryptAlgoException.cs" />
     <Compile Include="EncryptionAlgo\IKeyGenerator.cs" />
     <Compile Include="EncryptionAlgo\IEncryptionAlgo.cs" />
+    <Compile Include="EncryptionAlgo\IKeyGenerationOptions.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaAlgo.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\RsaGenerationOptions.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaKeyGenerator.cs" />
-    <Compile Include="Key\KeyBase.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\RsaMaxEncryptSizeUtils.cs" />
+    <Compile Include="EncryptionAlgo\SymmetricEncyptionUtils.cs" />
+    <Compile Include="EncryptionAlgo\KeyBase.cs" />
     <Compile Include="Key\IKeyHasher.cs" />
-    <Compile Include="Key\RsaKey.cs" />
-    <Compile Include="Key\AesKey.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\RsaKey.cs" />
+    <Compile Include="EncryptionAlgo\Aes\AesKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

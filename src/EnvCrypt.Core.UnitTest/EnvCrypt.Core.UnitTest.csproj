@@ -52,8 +52,10 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="EncryptionAlgo\Aes\AesAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaKeyGeneratorTest.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\RsaMaxEncryptSizeUtilsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +64,7 @@
       <Name>EnvCrypt.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EncryptionAlgo\Aes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
