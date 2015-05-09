@@ -1,4 +1,5 @@
-﻿using EnvCrypt.Core.EncryptionAlgo.Rsa;
+﻿using System;
+using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -8,10 +9,10 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
     public class RsaMaxEncryptSizeUtilsTest
     {
         [Test]
-        public void Given_ValidKey_When_GetKeySize_Then_CorrectKeySizeReturned()
+        public void Given_ValidKey_When_GetKeySize_Then_CorrectKeySizeReturned(
+            [Values(384, 2048, 2056)] int keySize)
         {
             // Arrange
-            const int keySize = 384;
             var generator = new RsaKeyGenerator();
             var aNewKey = generator.GetNewKey(new RsaGenerationOptions(keySize, true));
 
@@ -24,10 +25,10 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
 
 
         [Test]
-        public void Given_ValidKeyWithOAEP_When_GetMaxBytes_CorrectMaxBytesReturned()
+        public void Given_ValidKeyWithOAEP_When_GetMaxBytes_CorrectMaxBytesReturned(
+            [Values(384, 2048, 2056)] int keySize)
         {
             // Arrange
-            const int keySize = 384;
             var generator = new RsaKeyGenerator();
             var aNewKey = generator.GetNewKey(new RsaGenerationOptions(keySize, true));
 
@@ -40,10 +41,10 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
 
 
         [Test]
-        public void Given_ValidKeyWithoutOAEP_When_GetMaxBytes_CorrectMaxBytesReturned()
+        public void Given_ValidKeyWithoutOAEP_When_GetMaxBytes_CorrectMaxBytesReturned(
+            [Values(384, 2048, 2056)] int keySize)
         {
             // Arrange
-            const int keySize = 384;
             var generator = new RsaKeyGenerator();
             var aNewKey = generator.GetNewKey(new RsaGenerationOptions(keySize, false));
 

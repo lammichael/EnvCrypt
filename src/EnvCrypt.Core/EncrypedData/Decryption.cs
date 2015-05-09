@@ -1,7 +1,8 @@
 ﻿namespace EnvCrypt.Core.EncrypedData
 {
-    public class DecryptionInfo
+    public class Decryption
     {
         public string KeyName { get; set; }
+
     }
 }

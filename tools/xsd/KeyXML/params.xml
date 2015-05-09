@@ -1,0 +1,5 @@
+<xsd xmlns='http://microsoft.com/dotnet/tools/xsd/'>
+	<generateClasses language='CS' namespace='Envcrypt.Core'>
+		<schema>bin\example.xsd</schema>
+	</generateClasses>
+</xsd>

@@ -8,13 +8,14 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
     class RsaKeyGeneratorTest
     {
         [Test]
-        public void Given_ValidKeyGenerationOptions_When_GetNewKey_Then_PrivateKeyReturned()
+        public void Given_ValidKeyGenerationOptions_When_GetNewKey_Then_PrivateKeyReturned(
+            [Range(384, 1024, 8)] int actualKeySize)
         {
             // Arrange
             var generator = new RsaKeyGenerator();
 
             // Act
-            var newKey = generator.GetNewKey(new RsaGenerationOptions(384, true));
+            var newKey = generator.GetNewKey(new RsaGenerationOptions(actualKeySize, true));
 
             // Assert
             newKey.Key.Should().NotBeNull();
@@ -23,17 +24,17 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
 
 
         [Test]
-        public void Given_KeySize_When_GetNewKey_Then_KeySizeMatches()
+        public void Given_KeySize_When_GetNewKey_Then_KeySizeMatches(
+            [Range(384, 1024, 8)] int actualKeySize)
         {
             // Arrange
             var generator = new RsaKeyGenerator();
-            const int desiredKeySize = 384;
 
             // Act
-            var newKey = generator.GetNewKey(new RsaGenerationOptions(desiredKeySize, true));
+            var newKey = generator.GetNewKey(new RsaGenerationOptions(actualKeySize, true));
 
             // Assert
-            newKey.GetKeySize().Should().Be(desiredKeySize);
+            newKey.GetKeySize().Should().Be(actualKeySize);
         }
     }
 }

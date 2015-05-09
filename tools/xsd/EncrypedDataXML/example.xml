@@ -1,0 +1,29 @@
+<EnvCryptEncryptedData>
+	<Category Name="Prod ReadOnly">
+		<!-- EnvCrypt always stores Strings -->
+		
+		<Entry Name="ComLib">
+			<!-- Hash of only part of the key because KeyName is not unique -->
+			<Decryption KeyName="Prod RO Key" Hash="..." Algo="RSA" />
+			
+			<EncryptedValue>...</EncryptedValue>
+			<!-- Value to be encrypted may spill over max that can be encrypted in one go (RSA) -->
+			<EncryptedValue>...</EncryptedValue>
+		</Entry>
+		<Entry Name="ComLibConnectionString">
+			<!-- No encryption -->
+			<EncryptedValue>...</EncryptedValue>
+		</Entry>
+	</Category>
+	<Category Name="Prod ReadWrite">
+		<Entry Name="ComLib">
+			<!-- Hash of only part of the key because KeyName is not unique -->
+			<Decryption KeyName="Prod RW Key" Hash="..." Algo="AES"/>
+			<EncryptedValue>...</EncryptedValue>
+		</Entry>
+		<Entry Name="ComLibConnectionString">
+			<!-- No encryption -->
+			<EncryptedValue>...</EncryptedValue>
+		</Entry>
+	</Category>
+</EnvCryptEncryptedData>

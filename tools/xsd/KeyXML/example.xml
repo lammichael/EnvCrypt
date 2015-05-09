@@ -1,0 +1,21 @@
+<EnvCryptKey Name="Prod RW Key"  Encryption="RSA" Type="Private"><!-- Symmetric implied -->
+	<Aes>
+		<Key>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Key>
+		<Iv>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Iv>
+	</Aes>
+	
+	<!-- XOR -->
+	
+	<Rsa OaepPadding="true">
+		<!-- Base64 encode of byte array -->
+		<!-- If only exponent and Modulus then it is public key. -->
+		<Exponent>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Exponent>
+		<Modulus>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Modulus>
+		<P>YW55IGNhcm5hbCBwbGVhc3VyZQ==</P>
+		<Q>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Q>
+		<Dp>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Dp>
+		<Dq>YW55IGNhcm5hbCBwbGVhc3VyZQ==</Dq>
+		<InverseQ>YW55IGNhcm5hbCBwbGVhc3VyZQ==</InverseQ>
+		<D>YW55IGNhcm5hbCBwbGVhc3VyZQ==</D>
+	</Rsa>
+</EnvCryptKey>

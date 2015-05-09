@@ -10,7 +10,8 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
     public class AesAlgoTest
     {
         [Test]
-        public void Given_ValidKeyAndBinaryData_When_EncryptAndDecrypt_Then_DecryptionIsSameResult()
+        public void Given_ValidKeyAndBinaryData_When_EncryptAndDecrypt_Then_DecryptionIsSameResult(
+            [Values(192,256)] int keySize)
         {
             // Arrange
             const string strToTestWith = "string should be encrypted and come out the same after descryption";
@@ -22,7 +23,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
             // Act
             var key = new AesKeyGenerator().GetNewKey(new AesGenerationOptions()
             {
-                KeySize = 256
+                KeySize = keySize
             });
             var result = algo.Decrypt(algo.Encrypt(strAsBytes, key), key);
 

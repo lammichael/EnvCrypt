@@ -53,6 +53,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EncryptionAlgo\Aes\AesAlgoTest.cs" />
+    <Compile Include="EncryptionAlgo\Aes\AesKeySizeUtilsTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaKeyGeneratorTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaMaxEncryptSizeUtilsTest.cs" />

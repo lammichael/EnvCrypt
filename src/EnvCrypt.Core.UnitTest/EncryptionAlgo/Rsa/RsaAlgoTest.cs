@@ -9,7 +9,8 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
     class RsaAlgoTest
     {
         [Test]
-        public void Given_ValidKeyAndBinaryData_When_EncryptAndDecrypt_Then_DecryptionIsSameResult()
+        public void Given_ValidKeyAndBinaryData_When_EncryptAndDecrypt_Then_DecryptionIsSameResult(
+            [Values(2040, 2048,2056)] int keySize)
         {
             // Arrange
             const string strToTestWith = "encrypt this string and get the same after decryption";
@@ -19,7 +20,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             var algo = new RsaAlgo();
 
             // Act
-            var key = new RsaKeyGenerator().GetNewKey(new RsaGenerationOptions(2048, true));
+            var key = new RsaKeyGenerator().GetNewKey(new RsaGenerationOptions(keySize, true));
             var result = algo.Decrypt(algo.Encrypt(strAsBytes, key), key);
 
             // Assert
