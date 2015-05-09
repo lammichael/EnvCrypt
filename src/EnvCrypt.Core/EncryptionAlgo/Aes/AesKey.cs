@@ -1,4 +1,7 @@
-﻿namespace EnvCrypt.Core.EncryptionAlgo.Aes
+﻿using System;
+using System.Diagnostics.Contracts;
+
+namespace EnvCrypt.Core.EncryptionAlgo.Aes
 {
     public class AesKey : KeyBase
     {
@@ -8,6 +11,8 @@
 
         protected bool Equals(AesKey other)
         {
+            Contract.Requires<ArgumentNullException>(other != null, "other");
+            //
             return Equals(Key, other.Key) && Equals(Iv, other.Iv);
         }
 

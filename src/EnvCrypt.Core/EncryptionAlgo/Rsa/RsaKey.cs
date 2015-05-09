@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Security.Cryptography;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {
@@ -24,6 +26,8 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 
         protected bool Equals(RsaKey other)
         {
+            Contract.Requires<ArgumentNullException>(other != null, "other");
+            //
             return Key.Equals(other.Key) && UseOaepPadding.Equals(other.UseOaepPadding);
         }
 
@@ -36,15 +40,17 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
         }
 
         /// <summary>
-        /// Hash code uses <code>GetHashCode()</code> for the RSAParameters class.
-        /// This returns the same hash code even when the arrays are different values.
+        /// Hash code only uses Modulus & Exponent because then the hash will be identical
+        /// for the private and public key.
         /// </summary>
-        /// <returns></returns>
         public override int GetHashCode()
         {
             unchecked
             {
-                return (Key.GetHashCode()*397) ^ UseOaepPadding.GetHashCode();
+                return
+                    ((Key.Modulus != null ? Key.Modulus.GetHashCode() : 0) * 397) ^ 
+                    ((Key.Exponent != null ? Key.Exponent.GetHashCode() : 0) * 397) ^ 
+                    UseOaepPadding.GetHashCode();
             }
         }
     }

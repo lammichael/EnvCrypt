@@ -14,6 +14,6 @@ namespace EnvCrypt.Core.EncrypedData
         /// There must only be one non-null key for an entry.
         /// If null, then no encryption is used.
         /// </summary>
-        public Key.Key Key { get; set; }
+        public Key.EnvCryptKey Key { get; set; }
     }
 }

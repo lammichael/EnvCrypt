@@ -4,13 +4,15 @@ using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Core.Key
 {
+    [ContractClass(typeof(KeyHasherContracts<>))]
     public interface IKeyHasher<in T> where T : KeyBase
     {
         byte[] GetHash(T forKey);
     }
 
 
-    internal class KeyHasherContracts<T> : IKeyHasher<T> where T : KeyBase
+    [ContractClassFor(typeof(IKeyHasher<>))]
+    internal abstract class KeyHasherContracts<T> : IKeyHasher<T> where T : KeyBase
     {
         public byte[] GetHash(T forKey)
         {
