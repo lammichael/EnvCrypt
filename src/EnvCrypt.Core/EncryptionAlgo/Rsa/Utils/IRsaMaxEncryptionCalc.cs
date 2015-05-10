@@ -17,7 +17,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
         public int GetMaxBytesThatCanBeEncrypted(RsaKey key)
         {
             Contract.Requires<ArgumentNullException>(key != null, "key");
-            Contract.Ensures(Contract.Result<int>() >= 0);
+            Contract.Ensures(Contract.Result<int>() > 0);
 
             return default(int);
         }

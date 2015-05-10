@@ -7,9 +7,9 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {
     class RsaSegmentEncrypt : SegmentEncrypt<RsaKey>
     {
-        private readonly RsaMaxEncryptionCalc _maxEncryptionCalc;
+        private readonly IRsaMaxEncryptionCalc _maxEncryptionCalc;
 
-        public RsaSegmentEncrypt(IEncryptionAlgo<RsaKey> encryptionAlgo, RsaMaxEncryptionCalc maxEncryptionCalc)
+        public RsaSegmentEncrypt(IEncryptionAlgo<RsaKey> encryptionAlgo, IRsaMaxEncryptionCalc maxEncryptionCalc)
             : base(encryptionAlgo)
         {
             _maxEncryptionCalc = maxEncryptionCalc;
