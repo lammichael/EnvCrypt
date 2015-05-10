@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-using EnvCrypt.Core.Key;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa
+namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
 {
-    public class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaGenerationOptions>
+    public class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaKeyGenerationOptions>
     {
         /// <summary>
         /// Gets a new key, given the options requested, including the private key.
@@ -12,7 +11,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
         /// </summary>
         /// <param name="options">generation options</param>
         /// <returns>a new RSA key</returns>
-        public RsaKey GetNewKey(RsaGenerationOptions options)
+        public RsaKey GetNewKey(RsaKeyGenerationOptions options)
         {
             Contract.Ensures(Contract.Result<RsaKey>().Key.Exponent != null,
                 "private key does not contain exponent");

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa
+namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
 {
-    public class RsaGenerationOptions : IKeyGenerationOptions
+    public class RsaKeyGenerationOptions : IKeyGenerationOptions
     {
         public int KeySize { get; private set; }
         public bool UseOaepPadding { get; private set; }
 
 
-        public RsaGenerationOptions(int keySize, bool useOaepPadding)
+        public RsaKeyGenerationOptions(int keySize, bool useOaepPadding)
         {
             Contract.Requires<ArgumentException>(keySize >= 384);
             //

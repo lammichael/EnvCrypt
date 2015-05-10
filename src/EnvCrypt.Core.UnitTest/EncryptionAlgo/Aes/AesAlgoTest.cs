@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using EnvCrypt.Core.EncryptionAlgo.Aes;
+using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using FluentAssertions;
 using NUnit.Framework;
@@ -21,7 +22,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
             var algo = new AesAlgo();
 
             // Act
-            var key = new AesKeyGenerator().GetNewKey(new AesGenerationOptions()
+            var key = new AesKeyGenerator().GetNewKey(new AesKeyGenerationOptions()
             {
                 KeySize = keySize
             });

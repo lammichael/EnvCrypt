@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Aes
+namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
 {
     public class AesKey : KeyBase
     {

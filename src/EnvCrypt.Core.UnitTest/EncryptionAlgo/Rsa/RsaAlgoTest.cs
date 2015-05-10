@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
+using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -20,7 +21,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             var algo = new RsaAlgo();
 
             // Act
-            var key = new RsaKeyGenerator().GetNewKey(new RsaGenerationOptions(keySize, true));
+            var key = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions(keySize, true));
             var result = algo.Decrypt(algo.Encrypt(strAsBytes, key), key);
 
             // Assert

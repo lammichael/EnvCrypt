@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Aes
+namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
 {
-    public class AesKeyGenerator : IKeyGenerator<AesKey, AesGenerationOptions>
+    public class AesKeyGenerator : IKeyGenerator<AesKey, AesKeyGenerationOptions>
     {
-        public AesKey GetNewKey(AesGenerationOptions options)
+        public AesKey GetNewKey(AesKeyGenerationOptions options)
         {
             Contract.Ensures(Contract.Result<AesKey>().Iv != null);
             Contract.Ensures(Contract.Result<AesKey>().Iv.Length > 0);

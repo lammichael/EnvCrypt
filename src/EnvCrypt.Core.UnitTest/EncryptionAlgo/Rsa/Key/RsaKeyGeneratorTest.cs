@@ -1,8 +1,9 @@
-﻿using EnvCrypt.Core.EncryptionAlgo.Rsa;
+﻿using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
+using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
+namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Key
 {
     [TestFixture]
     class RsaKeyGeneratorTest
@@ -15,7 +16,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             var generator = new RsaKeyGenerator();
 
             // Act
-            var newKey = generator.GetNewKey(new RsaGenerationOptions(actualKeySize, true));
+            var newKey = generator.GetNewKey(new RsaKeyGenerationOptions(actualKeySize, true));
 
             // Assert
             newKey.Key.Should().NotBeNull();
@@ -31,7 +32,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             var generator = new RsaKeyGenerator();
 
             // Act
-            var newKey = generator.GetNewKey(new RsaGenerationOptions(actualKeySize, true));
+            var newKey = generator.GetNewKey(new RsaKeyGenerationOptions(actualKeySize, true));
 
             // Assert
             newKey.GetKeySize().Should().Be(actualKeySize);

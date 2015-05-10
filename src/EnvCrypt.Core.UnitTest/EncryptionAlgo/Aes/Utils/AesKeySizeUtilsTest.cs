@@ -1,8 +1,9 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo.Aes;
+using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
+namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes.Utils
 {
     [TestFixture]
     public class AesKeySizeUtilsTest
@@ -12,7 +13,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
             [Range(128,256,64)] int actualKeySize)
         {
             // Arrange
-            var newKey = new AesKeyGenerator().GetNewKey(new AesGenerationOptions()
+            var newKey = new AesKeyGenerator().GetNewKey(new AesKeyGenerationOptions()
             {
                 KeySize = actualKeySize
             });

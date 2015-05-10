@@ -22,6 +22,12 @@ namespace EnvCrypt.Core.EncrypedData
         {
 
             var encryptedData = _algo.Encrypt(containingBinary, usingKey);
+            var ret = new Entry()
+            {
+
+            };
+
+            return ret;
         }
     }
 }

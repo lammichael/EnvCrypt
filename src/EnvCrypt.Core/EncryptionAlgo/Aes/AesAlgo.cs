@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Aes
 {

@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa
+namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
 {
     /// <summary>
     /// RSA key data and metadata.
