@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
@@ -15,26 +16,85 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
     {
         [Test]
         public void Given_BinaryData_When_Encrypt_Then_BinaryDataMustBeSplitUpAppropriately(
-            [Values(10,20,30)] int lengthOfByteArray, [Values(9,10,11,19,20,21,29,30,31)] int maxSegmentSize)
+            [Values(10,20,30)] int lengthOfByteArray, 
+            [Values(9,10,11,19,20,21,29,30,31)] int maxSegmentSize)
         {
             // Arrange
-            //      # of segments created
-            var expectedArraysInList = (int) Math.Ceiling((double)lengthOfByteArray/maxSegmentSize);
-            var toEncrypt = CreateRandomByteArray(lengthOfByteArray);
-
-            var rsaKey = new RsaKey(new RSAParameters(), true);
-
-            var algoMock = new Mock<IEncryptionAlgo<RsaKey>>();
-            var maxEncryptionSizeCalcMock = new Mock<IRsaMaxEncryptionCalc>();
-            maxEncryptionSizeCalcMock.Setup(calc => calc.GetMaxBytesThatCanBeEncrypted(rsaKey))
-                .Returns(maxSegmentSize);
-            var encrypter = new RsaSegmentEncrypt(algoMock.Object, maxEncryptionSizeCalcMock.Object);
+            byte[] toEncrypt;
+            RsaKey rsaKey;
+            Mock<IEncryptionAlgo<RsaKey>> algoMock;
+            RsaSegmentEncrypt encrypter;
+            var expectedArraysInList = SetupMethod(lengthOfByteArray, maxSegmentSize, out toEncrypt, out rsaKey, out algoMock, out encrypter);
 
             // Act
             var encryptedList = encrypter.Encrypt(toEncrypt, rsaKey);
 
             // Assert
             encryptedList.Should().HaveCount(expectedArraysInList);
+            //      Each segment should be empty because the mocked algo returns nothing
+            foreach (var encryptedSegment in encryptedList)
+            {
+                encryptedSegment.Should().BeEquivalentTo(new byte[0]);
+            }
+        }
+
+
+        [Test]
+        public void Given_BinaryData_When_Encrypt_Then_AlgoMustBeUsedToEncryptBinaryDataInSegments(
+            [Values(10, 20, 30)] int lengthOfByteArray, 
+            [Values(9, 10, 11, 19, 20, 21, 29, 30, 31)] int maxSegmentSize)
+        {
+            // Arrange
+            byte[] toEncrypt;
+            RsaKey rsaKey;
+            Mock<IEncryptionAlgo<RsaKey>> algoMock;
+            RsaSegmentEncrypt encrypter;
+            var expectedArraysInList = SetupMethod(lengthOfByteArray, maxSegmentSize, out toEncrypt, out rsaKey, out algoMock, out encrypter);
+
+            // Act
+            encrypter.Encrypt(toEncrypt, rsaKey);
+
+            // Assert
+            algoMock.Verify(a => a.Encrypt(It.IsAny<byte[]>(), rsaKey), 
+                Times.Exactly(expectedArraysInList));
+            //      Check that the mock was called with the correct byte arrays
+            for (int arrayI = 0; arrayI < expectedArraysInList; arrayI++)
+            {
+                //      Get start and end index for the current block
+                var startI = maxSegmentSize*arrayI;
+                var endI = Math.Min(startI + maxSegmentSize, lengthOfByteArray);
+                var lengthOfCurrentArray = endI - startI;
+                if (lengthOfCurrentArray <= 0)
+                {
+                    Assert.Fail("length of array that was encrypted cannot be <= 0");
+                }
+                var segmentEncrypted = new byte[lengthOfCurrentArray];
+                Buffer.BlockCopy(toEncrypt, startI, 
+                    segmentEncrypted, 0, 
+                    lengthOfCurrentArray);
+
+                algoMock.Verify(a => a.Encrypt(It.Is<byte[]>(b => b.SequenceEqual(segmentEncrypted)), rsaKey),
+                Times.Once);
+            }
+        }
+
+
+        private int SetupMethod(int lengthOfByteArray, int maxSegmentSize, out byte[] toEncrypt, out RsaKey rsaKey,
+            out Mock<IEncryptionAlgo<RsaKey>> algoMock, out RsaSegmentEncrypt encrypter)
+        {
+            //      # of segments created
+            var expectedArraysInList = (int) Math.Ceiling((double) lengthOfByteArray/maxSegmentSize);
+            toEncrypt = CreateRandomByteArray(lengthOfByteArray);
+
+            rsaKey = new RsaKey(new RSAParameters(), true);
+            var rsaKeyCopy = rsaKey;
+
+            algoMock = new Mock<IEncryptionAlgo<RsaKey>>();
+            var maxEncryptionSizeCalcMock = new Mock<IRsaMaxEncryptionCalc>();
+            maxEncryptionSizeCalcMock.Setup(calc => calc.GetMaxBytesThatCanBeEncrypted(rsaKeyCopy))
+                .Returns(maxSegmentSize);
+            encrypter = new RsaSegmentEncrypt(algoMock.Object, maxEncryptionSizeCalcMock.Object);
+            return expectedArraysInList;
         }
 
 
