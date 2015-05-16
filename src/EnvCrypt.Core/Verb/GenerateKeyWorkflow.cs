@@ -19,7 +19,7 @@ namespace EnvCrypt.Core.Verb
              * Generate Key
              * Insert into Data structure
              * Map data structure to XML/JSON/?
-             * Output key to file
+             * Output publlic & private key to file
              */
 
         }

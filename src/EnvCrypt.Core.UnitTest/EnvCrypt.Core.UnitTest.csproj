@@ -66,6 +66,7 @@
     <Compile Include="EncryptionAlgo\SegmentEncryptTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomByteArrayUtils.cs" />
+    <Compile Include="StringUtils\Base64PersistConverterTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnvCrypt.Core\EnvCrypt.Core.csproj">
