@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EnvCrypt.Core.EncrypedData
+namespace EnvCrypt.Core.EncrypedData.Poco
 {
     public class Entry
     {

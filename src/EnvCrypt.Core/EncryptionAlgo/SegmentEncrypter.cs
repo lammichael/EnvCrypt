@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using EnvCrypt.Core.EncryptionAlgo.Poco;
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {
-    abstract class SegmentEncrypt<T> where T : KeyBase
+    abstract class SegmentEncrypter<T> where T : KeyBase
     {
         protected IEncryptionAlgo<T> EncryptionAlgo;
 
-        protected SegmentEncrypt(IEncryptionAlgo<T> encryptionAlgo)
+        protected SegmentEncrypter(IEncryptionAlgo<T> encryptionAlgo)
         {
             EncryptionAlgo = encryptionAlgo;
         }

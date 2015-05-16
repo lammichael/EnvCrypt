@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
 {
     [TestFixture]
-    public class RsaKeySizeUtils
+    public class RsaKeySizeUtilsTest
     {
         [Test]
         public void Given_ValidKey_When_GetKeySize_Then_CorrectKeySizeReturned(

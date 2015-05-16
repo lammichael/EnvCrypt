@@ -40,7 +40,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo
                 .Returns(decryptedBytes[2]);
 
             // Act
-            var segEncrypt = new SegmentEncryptStub(encryptionAlgoMock.Object);
+            var segEncrypt = new SegmentEncrypterStub(encryptionAlgoMock.Object);
             var result = segEncrypt.Decrypt(listOfByteArraysToDecrypt, someKey);
 
             // Assert
@@ -52,9 +52,9 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo
         /// <summary>
         /// Only used to test the functionality in the abstract class.
         /// </summary>
-        private class SegmentEncryptStub : SegmentEncrypt<RsaKey>
+        private class SegmentEncrypterStub : SegmentEncrypter<RsaKey>
         {
-            public SegmentEncryptStub(IEncryptionAlgo<RsaKey> encryptionAlgo) : base(encryptionAlgo)
+            public SegmentEncrypterStub(IEncryptionAlgo<RsaKey> encryptionAlgo) : base(encryptionAlgo)
             {
             }
 

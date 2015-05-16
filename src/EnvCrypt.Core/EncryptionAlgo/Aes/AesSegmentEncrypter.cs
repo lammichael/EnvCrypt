@@ -3,9 +3,9 @@ using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Aes
 {
-    class AesSegmentEncrypt : SegmentEncrypt<AesKey>
+    class AesSegmentEncrypter : SegmentEncrypter<AesKey>
     {
-        public AesSegmentEncrypt(IEncryptionAlgo<AesKey> encryptionAlgo) : base(encryptionAlgo)
+        public AesSegmentEncrypter(IEncryptionAlgo<AesKey> encryptionAlgo) : base(encryptionAlgo)
         {}
 
         public override IList<byte[]> Encrypt(byte[] binaryData, AesKey usingKey)

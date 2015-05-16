@@ -5,11 +5,11 @@ using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {
-    class RsaSegmentEncrypt : SegmentEncrypt<RsaKey>
+    class RsaSegmentEncrypter : SegmentEncrypter<RsaKey>
     {
         private readonly IRsaMaxEncryptionCalc _maxEncryptionCalc;
 
-        public RsaSegmentEncrypt(IEncryptionAlgo<RsaKey> encryptionAlgo, IRsaMaxEncryptionCalc maxEncryptionCalc)
+        public RsaSegmentEncrypter(IEncryptionAlgo<RsaKey> encryptionAlgo, IRsaMaxEncryptionCalc maxEncryptionCalc)
             : base(encryptionAlgo)
         {
             _maxEncryptionCalc = maxEncryptionCalc;
@@ -19,6 +19,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
         public override IList<byte[]> Encrypt(byte[] binaryData, RsaKey usingKey)
         {
             // Get maximum bytes allowed and encrypt segments of binaryData based on this
+            // Refactor if you have the restriction with other encryption algorithms
             var maxBytestoEncrypt = _maxEncryptionCalc.GetMaxBytesThatCanBeEncrypted(usingKey);
             var ret = new List<byte[]>((int)Math.Max(1, Math.Ceiling((double)binaryData.Length / maxBytestoEncrypt)));
 

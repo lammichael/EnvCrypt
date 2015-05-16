@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
 {
     [TestFixture]
-    public class RsaSegmentEncryptTest
+    public class RsaSegmentEncrypterTest
     {
         [Test]
         public void Given_BinaryData_When_Encrypt_Then_BinaryDataMustBeSplitUpAppropriately(
@@ -23,7 +23,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             byte[] toEncrypt;
             RsaKey rsaKey;
             Mock<IEncryptionAlgo<RsaKey>> algoMock;
-            RsaSegmentEncrypt encrypter;
+            RsaSegmentEncrypter encrypter;
             var expectedArraysInList = SetupMethod(lengthOfByteArray, maxSegmentSize, out toEncrypt, out rsaKey, out algoMock, out encrypter);
 
             // Act
@@ -48,7 +48,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             byte[] toEncrypt;
             RsaKey rsaKey;
             Mock<IEncryptionAlgo<RsaKey>> algoMock;
-            RsaSegmentEncrypt encrypter;
+            RsaSegmentEncrypter encrypter;
             var expectedArraysInList = SetupMethod(lengthOfByteArray, maxSegmentSize, out toEncrypt, out rsaKey, out algoMock, out encrypter);
 
             // Act
@@ -80,11 +80,11 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
 
 
         private int SetupMethod(int lengthOfByteArray, int maxSegmentSize, out byte[] toEncrypt, out RsaKey rsaKey,
-            out Mock<IEncryptionAlgo<RsaKey>> algoMock, out RsaSegmentEncrypt encrypter)
+            out Mock<IEncryptionAlgo<RsaKey>> algoMock, out RsaSegmentEncrypter encrypter)
         {
             //      # of segments created
             var expectedArraysInList = (int) Math.Ceiling((double) lengthOfByteArray/maxSegmentSize);
-            toEncrypt = CreateRandomByteArray(lengthOfByteArray);
+            toEncrypt = RandomByteArrayUtils.CreateRandomByteArray(lengthOfByteArray);
 
             rsaKey = new RsaKey(new RSAParameters(), true);
             var rsaKeyCopy = rsaKey;
@@ -93,17 +93,8 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             var maxEncryptionSizeCalcMock = new Mock<IRsaMaxEncryptionCalc>();
             maxEncryptionSizeCalcMock.Setup(calc => calc.GetMaxBytesThatCanBeEncrypted(rsaKeyCopy))
                 .Returns(maxSegmentSize);
-            encrypter = new RsaSegmentEncrypt(algoMock.Object, maxEncryptionSizeCalcMock.Object);
+            encrypter = new RsaSegmentEncrypter(algoMock.Object, maxEncryptionSizeCalcMock.Object);
             return expectedArraysInList;
-        }
-
-
-        private byte[] CreateRandomByteArray(int ofSize)
-        {
-            var ret = new byte[ofSize];
-            var ran = new Random();
-            ran.NextBytes(ret);
-            return ret;
         }
     }
 }

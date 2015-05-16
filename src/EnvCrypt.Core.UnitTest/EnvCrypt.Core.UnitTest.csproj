@@ -56,14 +56,16 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EncryptionAlgo\Aes\AesAlgoTest.cs" />
+    <Compile Include="EncryptionAlgo\Aes\AesSegmentEncrypterTest.cs" />
     <Compile Include="EncryptionAlgo\Aes\Utils\AesKeySizeUtilsTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Key\RsaKeyGeneratorTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncryptTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\Utils\RsaKeySizeUtils.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncrypterTest.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\Utils\RsaKeySizeUtilsTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaMaxEncryptionCalcTest.cs" />
     <Compile Include="EncryptionAlgo\SegmentEncryptTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomByteArrayUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnvCrypt.Core\EnvCrypt.Core.csproj">

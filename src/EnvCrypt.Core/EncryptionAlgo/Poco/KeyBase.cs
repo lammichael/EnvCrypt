@@ -1,4 +1,4 @@
-﻿namespace EnvCrypt.Core.EncryptionAlgo
+﻿namespace EnvCrypt.Core.EncryptionAlgo.Poco
 {
     public abstract class KeyBase
     {

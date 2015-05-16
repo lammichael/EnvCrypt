@@ -1,7 +1,7 @@
-﻿namespace EnvCrypt.Core.EncrypedData.Converter
+﻿namespace EnvCrypt.Core
 {
     /// <summary>
-    /// EnvCrypt persists data as String.
+    /// Defines how EnvCrypt persists binary to a String for storage to file.
     /// </summary>
     interface IPersistConverter
     {

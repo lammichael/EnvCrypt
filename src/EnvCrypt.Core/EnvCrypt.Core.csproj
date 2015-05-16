@@ -135,40 +135,44 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="EncrypedData\Category.cs" />
-    <Compile Include="EncrypedData\Entry.cs" />
+    <Compile Include="EncrypedData\Poco\Category.cs" />
+    <Compile Include="EncrypedData\Poco\Entry.cs" />
     <Compile Include="EncrypedData\EntryMaker.cs" />
-    <Compile Include="EncrypedData\Converter\IPersistConverter.cs" />
+    <Compile Include="IPersistConverter.cs" />
     <Compile Include="EncrypedData\Converter\IUserStringConverter.cs" />
     <Compile Include="EncrypedData\Xml\EnvCryptEncryptedData.cs" />
     <Compile Include="EncryptionAlgo\Aes\Utils\AesKeySizeUtils.cs" />
     <Compile Include="EncryptionAlgo\Aes\AesAlgo.cs" />
     <Compile Include="EncryptionAlgo\Aes\Key\AesKeyGenerator.cs" />
     <Compile Include="EncryptionAlgo\Aes\Key\AesKeyGenerationOptions.cs" />
-    <Compile Include="EncryptionAlgo\Aes\AesSegmentEncrypt.cs" />
+    <Compile Include="EncryptionAlgo\Aes\AesSegmentEncrypter.cs" />
     <Compile Include="EncryptionAlgo\EnvCryptAlgoException.cs" />
     <Compile Include="EncryptionAlgo\IKeyGenerator.cs" />
     <Compile Include="EncryptionAlgo\IEncryptionAlgo.cs" />
     <Compile Include="EncryptionAlgo\IKeyGenerationOptions.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncrypt.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncrypter.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\IRsaMaxEncryptionCalc.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaMaxEncryptionCalc.cs" />
-    <Compile Include="EncryptionAlgo\SegmentEncrypt.cs" />
+    <Compile Include="EncryptionAlgo\SegmentEncrypter.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaAlgo.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Key\RsaKeyGenerationOptions.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Key\RsaKeyGenerator.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaKeySizeUtils.cs" />
     <Compile Include="EncryptionAlgo\SymmetricEncyptionUtils.cs" />
-    <Compile Include="EncryptionAlgo\KeyBase.cs" />
+    <Compile Include="EncryptionAlgo\Poco\KeyBase.cs" />
     <Compile Include="EnvCryptException.cs" />
-    <Compile Include="Key\EncryptionAlgo.cs" />
+    <Compile Include="EncryptionAlgorithmEnum.cs" />
     <Compile Include="Key\EnvCryptKey.cs" />
+    <Compile Include="Key\IKeyExternalRepresentation.cs" />
     <Compile Include="Key\IKeyHasher.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Key\RsaKey.cs" />
     <Compile Include="EncryptionAlgo\Aes\Key\AesKey.cs" />
-    <Compile Include="Key\Xml\EnvCryptKey.cs" />
+    <Compile Include="Key\Xml\AesKeyToXmlMapper.cs" />
+    <Compile Include="Key\Xml\EnvCryptKeyAsXml.cs" />
+    <Compile Include="Key\IKeyToExternalRepresentationMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringUtils.cs" />
+    <Compile Include="Verb\GenerateKeyWorkflow.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
