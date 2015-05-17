@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{50AD822E-1B6E-4795-AC1C-A769D0EB8D05}</ProjectGuid>
+    <ProjectGuid>{ECABFF8E-D0DC-4EF2-8CF7-2A5E8B7918D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EnvCrypt.Core.UnitTest</RootNamespace>
-    <AssemblyName>EnvCrypt.Core.UnitTest</AssemblyName>
+    <RootNamespace>EnvCrypt.Console.UnitTest</RootNamespace>
+    <AssemblyName>EnvCrypt.Console.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,16 +31,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions.Core">
-      <HintPath>..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.Runners.2.6.4\tools\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.Runners.2.6.4\tools\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,37 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="EncryptionAlgo\Aes\AesAlgoTest.cs" />
-    <Compile Include="EncryptionAlgo\Aes\AesSegmentEncrypterTest.cs" />
-    <Compile Include="EncryptionAlgo\Aes\Utils\AesKeySizeUtilsTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\RsaAlgoTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\Key\RsaKeyGeneratorTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncrypterTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\Utils\RsaKeySizeUtilsTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\Utils\RsaMaxEncryptionCalcTest.cs" />
-    <Compile Include="EncryptionAlgo\Rsa\Utils\RsaPublicOrPrivateKeyUtilsTest.cs" />
-    <Compile Include="EncryptionAlgo\SegmentEncryptTest.cs" />
-    <Compile Include="Key\Xml\RsaKeyToXmlMapperTest.cs" />
-    <Compile Include="Key\Xml\AesKeyToXmlMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandomByteArrayUtils.cs" />
-    <Compile Include="Utils\Base64PersistConverterTest.cs" />
-    <Compile Include="Utils\IO\StringToFileWriterTest.cs" />
-    <Compile Include="Utils\XmlToAndFromPocoTest.cs" />
-    <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersisterTest.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EnvCrypt.Core\EnvCrypt.Core.csproj">
-      <Project>{06757fd4-6162-4dda-b2a2-04bea95b39ef}</Project>
-      <Name>EnvCrypt.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

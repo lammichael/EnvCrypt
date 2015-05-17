@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
 
@@ -14,6 +10,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
         /// To find out if the RSA key is a public or private key.
         /// Throws EnvCryptException if there is insufficient data for either.
         /// </summary>
+        [Pure]
         public static AsymmetricKeyType GetKeyType(this RsaKey forKey, bool throwExceptionWhenPublicKeyHasTooMuchInfo = true)
         {
             var key = forKey.Key;

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -15,13 +11,19 @@ namespace EnvCrypt.Core.Utils
     /// </summary>
     internal class XmlSerializationUtils<T> : IXmlSerializationUtils<T> where T : class
     {
+        /// <summary>
+        /// No BOM in a .NET string.
+        /// </summary>
+        private readonly Encoding _usedEncoding = new UnicodeEncoding(false, false);
+
+
         public string Serialize(T poco)
         {
             var serializer = new XmlSerializer(typeof (T));
 
             var settings = new XmlWriterSettings
             {
-                Encoding = new UnicodeEncoding(false, false), // no BOM in a .NET string
+                Encoding = _usedEncoding,
                 Indent = true,
                 OmitXmlDeclaration = false
             };
@@ -50,6 +52,12 @@ namespace EnvCrypt.Core.Utils
                     return (T) serializer.Deserialize(xmlReader);
                 }
             }
+        }
+
+
+        public Encoding GetUsedEncoding()
+        {
+            return _usedEncoding;
         }
     }
 }

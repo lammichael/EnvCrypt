@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using EnvCrypt.Core.Utils;
 
@@ -25,16 +22,21 @@ namespace EnvCrypt.Core.Key.Xml
 
         public void Map(AesKey fromPoco, Key.Xml.EnvCryptKey toExternalRepresentationPoco)
         {
-            Contract.Requires<EnvCryptException>(fromPoco.Iv != null, 
-                "AES IV must not be null");
-            Contract.Requires<EnvCryptException>(fromPoco.Iv.Any(), 
-                "AES IV must not be empty");
             Contract.Ensures(toExternalRepresentationPoco.Aes != null);
             //      There will be only 1 key per XML POCO
             Contract.Ensures(toExternalRepresentationPoco.Aes.Length == 1);
             Contract.Ensures(!string.IsNullOrWhiteSpace(toExternalRepresentationPoco.Aes[0].Iv));
             Contract.Ensures(!string.IsNullOrWhiteSpace(toExternalRepresentationPoco.Aes[0].Key));
             //
+            if (fromPoco.Iv == null || !fromPoco.Iv.Any())
+            {
+                throw new EnvCryptException("AES IV must be in the key");
+            }
+            if (fromPoco.Key == null || !fromPoco.Key.Any())
+            {
+                throw new EnvCryptException("AES Key must be in the key");
+            }
+
             toExternalRepresentationPoco.Name = fromPoco.Name;
             toExternalRepresentationPoco.Encryption = AlgorithmType.ToString();
             var xmlAesRoot = new EnvCryptKeyAes();

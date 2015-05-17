@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace EnvCrypt.Core.Utils
 {
     [ContractClass(typeof(XmlSerializationUtilsContracts<>))]
     internal interface IXmlSerializationUtils<T> where T : class
     {
+        [Pure]
         string Serialize(T poco);
+        [Pure]
         T Deserialize(string xml);
+        [Pure]
+        Encoding GetUsedEncoding();
     }
 
 
@@ -29,6 +34,13 @@ namespace EnvCrypt.Core.Utils
             Contract.Ensures(Contract.Result<T>() != null);
 
             return default(T);
+        }
+
+        public Encoding GetUsedEncoding()
+        {
+            Contract.Ensures(Contract.Result<Encoding>() != null);
+
+            return default(Encoding);
         }
     }
 }

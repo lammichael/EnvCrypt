@@ -2,7 +2,7 @@
 {
     class AsymmetricKeyFilePersisterOptions : KeyFilePersisterOptions
     {
-        public string NewPrivateKeyFileFullPath { get; set; }
-        public string NewPublicKeyFileFullPath { get; set; }
+        public string NewPrivateKeyFullFilePath { get; set; }
+        public string NewPublicKeyFullFilePath { get; set; }
     }
 }

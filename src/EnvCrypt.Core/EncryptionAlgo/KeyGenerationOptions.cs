@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using EnvCrypt.Core.Key;
+﻿using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {

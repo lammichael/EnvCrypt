@@ -144,6 +144,9 @@
     <Compile Include="Key\ISymmetricKeyMarker.cs" />
     <Compile Include="Key\KeyBase.cs" />
     <Compile Include="Key\Xml\RsaKeyToXmlMapper.cs" />
+    <Compile Include="Utils\IO\IMyFile.cs" />
+    <Compile Include="Utils\IO\IMyDirectory.cs" />
+    <Compile Include="Utils\IO\IStringToFileWriter.cs" />
     <Compile Include="Utils\IStringPersistConverter.cs" />
     <Compile Include="EncrypedData\Converter\IUserStringConverter.cs" />
     <Compile Include="EncrypedData\Xml\EnvCryptEncryptedData.cs" />
@@ -181,8 +184,9 @@
     <Compile Include="Utils\IXmlSerializationUtils.cs" />
     <Compile Include="Utils\XmlSerializationUtils.cs" />
     <Compile Include="Verb\GenerateKey\GenerateKeyWorkflow.cs" />
+    <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersisterOptions.cs" />
-    <Compile Include="Verb\GenerateKey\Persister\IAsymetricKeyFilePersister.cs" />
+    <Compile Include="Verb\GenerateKey\Persister\IAsymmetricKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\IKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\ISymetricKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\KeyFilePersisterOptions.cs" />

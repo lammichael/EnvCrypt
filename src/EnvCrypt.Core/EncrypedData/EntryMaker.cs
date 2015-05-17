@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncrypedData.Poco;
+﻿using EnvCrypt.Core.EncrypedData.Poco;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
 
