@@ -168,7 +168,7 @@ namespace EnvCrypt.Core.Key.Xml
 
         private string dField;
 
-        private string oaepPaddingField;
+        private bool oaepPaddingField;
 
         /// <remarks/>
         [XmlElement(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -284,7 +284,7 @@ namespace EnvCrypt.Core.Key.Xml
 
         /// <remarks/>
         [XmlAttribute()]
-        public string OaepPadding
+        public bool OaepPadding
         {
             get
             {

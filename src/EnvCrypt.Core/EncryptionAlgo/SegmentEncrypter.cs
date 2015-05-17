@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EnvCrypt.Core.EncryptionAlgo.Poco;
+using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EnvCrypt.Core.StringUtils
+namespace EnvCrypt.Core.Utils
 {
     /// <summary>
     /// "You should absolutely not use an Encoding to convert arbitrary binary data to text. 

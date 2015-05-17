@@ -1,6 +1,6 @@
 ﻿namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
 {
-    public class AesKeyGenerationOptions : IKeyGenerationOptions<AesKey>
+    class AesKeyGenerationOptions : KeyGenerationOptions<AesKey>
     {
         public int KeySize { get; set; }
     }

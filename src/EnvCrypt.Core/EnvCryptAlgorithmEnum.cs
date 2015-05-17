@@ -3,7 +3,7 @@
     /// <summary>
     /// The supported encryption algorithm
     /// </summary>
-    public enum EncryptionAlgorithmEnum
+    public enum EnvCryptAlgorithmEnum
     {
         Rsa,
         Aes,

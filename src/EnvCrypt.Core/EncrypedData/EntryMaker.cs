@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.Poco;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Poco;
+using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncrypedData
 {

@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
 {
-    public class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaKeyGenerationOptions>
+    class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaKeyGenerationOptions>
     {
         /// <summary>
         /// Gets a new key, given the options requested, including the private key.

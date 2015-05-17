@@ -3,7 +3,7 @@ using System.Diagnostics.Contracts;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
 {
-    public class RsaKeyGenerationOptions : IKeyGenerationOptions<RsaKey>
+    class RsaKeyGenerationOptions : KeyGenerationOptions<RsaKey>
     {
         public int KeySize { get; private set; }
         public bool UseOaepPadding { get; private set; }

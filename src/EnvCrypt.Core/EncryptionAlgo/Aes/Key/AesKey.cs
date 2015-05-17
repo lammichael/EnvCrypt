@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncryptionAlgo.Poco;
+using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
 {
-    public class AesKey : KeyBase
+    public class AesKey : KeyBase, ISymmetricKeyMarker
     {
         public byte[] Key { get; set; }
         public byte[] Iv { get; set; }

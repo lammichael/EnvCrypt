@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-using EnvCrypt.Core.EncryptionAlgo.Poco;
+using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
 {
     /// <summary>
     /// RSA key data and metadata.
     /// </summary>
-    public class RsaKey : KeyBase
+    public class RsaKey : KeyBase, IAsymmetricKeyMarker
     {
         public RSAParameters Key { get; private set; }
 

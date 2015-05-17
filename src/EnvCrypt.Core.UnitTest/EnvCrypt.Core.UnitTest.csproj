@@ -63,10 +63,14 @@
     <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncrypterTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaKeySizeUtilsTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaMaxEncryptionCalcTest.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\Utils\RsaPublicOrPrivateKeyUtilsTest.cs" />
     <Compile Include="EncryptionAlgo\SegmentEncryptTest.cs" />
+    <Compile Include="Key\Xml\RsaKeyToXmlMapperTest.cs" />
+    <Compile Include="Key\Xml\AesKeyToXmlMapperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomByteArrayUtils.cs" />
-    <Compile Include="StringUtils\Base64PersistConverterTest.cs" />
+    <Compile Include="Utils\Base64PersistConverterTest.cs" />
+    <Compile Include="Utils\XmlToAndFromPocoTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnvCrypt.Core\EnvCrypt.Core.csproj">

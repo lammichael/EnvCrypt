@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Aes
+namespace EnvCrypt.Core.EncryptionAlgo.Aes.Utils
 {
     public static class AesKeySizeUtils
     {

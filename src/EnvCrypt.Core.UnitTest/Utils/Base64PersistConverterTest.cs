@@ -1,8 +1,8 @@
-﻿using EnvCrypt.Core.StringUtils;
+﻿using EnvCrypt.Core.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace EnvCrypt.Core.UnitTest.StringUtils
+namespace EnvCrypt.Core.UnitTest.Utils
 {
     [TestFixture]
     public class Base64PersistConverterTest

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
-namespace EnvCrypt.Core.StringUtils
+namespace EnvCrypt.Core.Utils
 {
     /// <summary>
     /// Defines how EnvCrypt persists binary to a String for storage to file.

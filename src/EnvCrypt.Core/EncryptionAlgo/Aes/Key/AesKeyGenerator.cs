@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
 {
-    public class AesKeyGenerator : IKeyGenerator<AesKey, AesKeyGenerationOptions>
+    class AesKeyGenerator : IKeyGenerator<AesKey, AesKeyGenerationOptions>
     {
         public AesKey GetNewKey(AesKeyGenerationOptions options)
         {

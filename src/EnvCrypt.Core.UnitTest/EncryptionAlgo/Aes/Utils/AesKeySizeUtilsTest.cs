@@ -1,5 +1,6 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo.Aes;
 using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
+using EnvCrypt.Core.EncryptionAlgo.Aes.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncryptionAlgo.Poco;
+using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {
@@ -10,9 +10,9 @@ namespace EnvCrypt.Core.EncryptionAlgo
     /// <typeparam name="T">Key type</typeparam>
     /// <typeparam name="TO">Key generation options</typeparam>
     [ContractClass(typeof(KeyGeneratorContracts<,>))]
-    public interface IKeyGenerator<out T, in TO>
+    interface IKeyGenerator<out T, in TO>
         where T : KeyBase
-        where TO : class, IKeyGenerationOptions<T>
+        where TO : KeyGenerationOptions<T>
     {
         T GetNewKey(TO options);
     }
@@ -21,7 +21,7 @@ namespace EnvCrypt.Core.EncryptionAlgo
     [ContractClassFor(typeof(IKeyGenerator<,>))]
     internal abstract class KeyGeneratorContracts<T, TO> : IKeyGenerator<T, TO>
         where T : KeyBase
-        where TO : class, IKeyGenerationOptions<T>
+        where TO : KeyGenerationOptions<T>
     {
         public T GetNewKey(TO options)
         {
