@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace EnvCrypt.Console.Options
+namespace EnvCrypt.Console
 {
     class VerbOptionsBase
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EnvCrypt.Console.Options;
+﻿using System.IO;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Verb.GenerateKey;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
@@ -13,6 +7,9 @@ namespace EnvCrypt.Console.GenerateKey
 {
     class GenerateKeyWorkflow
     {
+        public const string PrivateKeyPostfix = ".private.eckey";
+        public const string PublicKeyPostfix = ".public.eckey";
+
         public void Run(GenerateKeyVerbOptions options)
         {
             var encryptionType = options.GetAlgorithm();
@@ -21,12 +18,22 @@ namespace EnvCrypt.Console.GenerateKey
                 var keyPersisterOpts = new AsymmetricKeyFilePersisterOptions()
                 {
                     NewPrivateKeyFullFilePath = Path.Combine(
-                        options.OutputDirectory, options.KeyName + ".private.eckey"),
+                        options.OutputDirectory,
+                        string.Concat(options.KeyName, PrivateKeyPostfix)),
                     NewPublicKeyFullFilePath = Path.Combine(
-                        options.OutputDirectory, options.KeyName + ".public.eckey"),
+                        options.OutputDirectory,
+                        string.Concat(options.KeyName, PublicKeyPostfix) ),
                     OverwriteFileIfExists = true
                 };
-                new GenerateRsaKeyBuilder(keyPersisterOpts).Build().Run();
+                if (options.OutputKeyToConsole)
+                {
+                    new GenerateRsaKeyBuilder(keyPersisterOpts)
+                        .WithCustomTextWriter(new ToConsoleTextWriter()).Build().Run();
+                }
+                else
+                {
+                    new GenerateRsaKeyBuilder(keyPersisterOpts).Build().Run();
+                }
             }
             else
             {

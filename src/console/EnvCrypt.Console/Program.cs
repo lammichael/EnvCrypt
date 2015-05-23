@@ -3,7 +3,6 @@ using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 using EnvCrypt.Console.GenerateKey;
-using EnvCrypt.Console.Options;
 
 namespace EnvCrypt.Console
 {
@@ -32,9 +31,12 @@ namespace EnvCrypt.Console
             var generateKeyVerbOptions = parserResult.Value as GenerateKeyVerbOptions;
             if (generateKeyVerbOptions != null)
             {
-
-                // TODO: Validate...
-
+                var validator = new GenerateKeyOptionsValidator();
+                if (validator.HasErrorsAndReport(generateKeyVerbOptions))
+                {
+                    System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
+                    Environment.Exit(1);
+                }
 
                 try
                 {
@@ -43,7 +45,10 @@ namespace EnvCrypt.Console
                 catch (Exception ex)
                 {
                     System.Console.Error.WriteLine("Exception occurred:{0}{1}", Environment.NewLine, ex);
-                    Environment.Exit(1);
+#if (DEBUG)
+                    throw;
+#endif
+                    Environment.Exit(2);
                 }
             }
         }

@@ -149,6 +149,9 @@
     <Compile Include="Utils\IO\IMyFile.cs" />
     <Compile Include="Utils\IO\IMyDirectory.cs" />
     <Compile Include="Utils\IO\IStringToFileWriter.cs" />
+    <Compile Include="Utils\IO\ITextWriter.cs" />
+    <Compile Include="Utils\IO\StringToFileWriter.cs" />
+    <Compile Include="Utils\IO\TextWriter.cs" />
     <Compile Include="Utils\IStringPersistConverter.cs" />
     <Compile Include="EncrypedData\Converter\IUserStringConverter.cs" />
     <Compile Include="EncrypedData\Xml\EnvCryptEncryptedData.cs" />
