@@ -1,9 +1,9 @@
-﻿namespace EnvCrypt.Core
+﻿namespace EnvCrypt.Core.EncryptionAlgo
 {
     /// <summary>
     /// The supported encryption algorithm
     /// </summary>
-    public enum EnvCryptAlgorithmEnum
+    public enum EnvCryptAlgoEnum
     {
         Rsa,
         Aes,

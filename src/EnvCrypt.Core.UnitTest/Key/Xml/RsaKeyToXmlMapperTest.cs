@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
@@ -89,7 +90,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Xml
             // Assert
             xmlPoco.Rsa.Should().NotBeNull().And.HaveCount(1);
             xmlPoco.Name.Should().Be(keyName);
-            xmlPoco.Encryption.Should().Be(EnvCryptAlgorithmEnum.Rsa.ToString());
+            xmlPoco.Encryption.Should().Be(EnvCryptAlgoEnum.Rsa.ToString());
             xmlPoco.Type.Should().Be(AsymmetricKeyType.Public.ToString());
             xmlPoco.Rsa[0].Exponent.Should().Be("exponent");
             xmlPoco.Rsa[0].Modulus.Should().Be("modulus");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 using EnvCrypt.Core.Utils;
@@ -8,7 +9,7 @@ namespace EnvCrypt.Core.Key.Xml
 {
     class RsaKeyToXmlMapper : IKeyToExternalRepresentationMapper<RsaKey, Key.Xml.EnvCryptKey>
     {
-        public const EnvCryptAlgorithmEnum AlgorithmType = EnvCryptAlgorithmEnum.Rsa;
+        public const EnvCryptAlgoEnum AlgorithmType = EnvCryptAlgoEnum.Rsa;
 
         private readonly IStringPersistConverter _strConverter;
 

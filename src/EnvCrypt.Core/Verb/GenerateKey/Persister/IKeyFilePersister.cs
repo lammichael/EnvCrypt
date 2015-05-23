@@ -5,7 +5,7 @@ using EnvCrypt.Core.Key;
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
     [ContractClass(typeof (KeyFilePersisterContracts<,,>))]
-    internal interface IKeyFilePersister<in TKeyPoco, TKeyXmlPoco, in TOptions>
+    public interface IKeyFilePersister<in TKeyPoco, TKeyXmlPoco, in TOptions>
         where TKeyPoco : KeyBase
         where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
         where TOptions : KeyFilePersisterOptions

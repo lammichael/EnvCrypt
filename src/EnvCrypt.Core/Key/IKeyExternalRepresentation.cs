@@ -3,6 +3,6 @@
     /// <summary>
     /// Marker for a POCO used to deserialize a key.
     /// </summary>
-    interface IKeyExternalRepresentation<T> where T : KeyBase
+    public interface IKeyExternalRepresentation<T> where T : KeyBase
     {}
 }

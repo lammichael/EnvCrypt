@@ -1,15 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommandLine;
+using CommandLine.Text;
+using EnvCrypt.Console.GenerateKey;
+using EnvCrypt.Console.Options;
 
 namespace EnvCrypt.Console
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            var parser = new Parser(settings => settings.CaseSensitive = false);
+            var parserResult = parser.ParseArguments(args, typeof (GenerateKeyVerbOptions));
+            /*catch (System.ArgumentException argEx)
+            {
+                // Occurs when an exact enum value is not passed
+            }*/
+
+            if (parserResult.Errors.Any())
+            {
+                System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
+                Environment.Exit(1);
+            }
+
+            if (parserResult.Value is NullInstance)
+            {
+                System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
+                Environment.Exit(1);
+            }
+            var generateKeyVerbOptions = parserResult.Value as GenerateKeyVerbOptions;
+            if (generateKeyVerbOptions != null)
+            {
+
+                // TODO: Validate...
+
+
+                try
+                {
+                    new GenerateKeyWorkflow().Run(generateKeyVerbOptions);
+                }
+                catch (Exception ex)
+                {
+                    System.Console.Error.WriteLine("Exception occurred:{0}{1}", Environment.NewLine, ex);
+                    Environment.Exit(1);
+                }
+            }
         }
     }
 }

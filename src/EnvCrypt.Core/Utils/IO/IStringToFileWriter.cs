@@ -29,8 +29,8 @@ namespace EnvCrypt.Core.Utils.IO
 
     class StringToFileWriter : IStringToFileWriter
     {
-        private IMyDirectory _myDirectory;
-        private IMyFile _myFile;
+        private readonly IMyDirectory _myDirectory;
+        private readonly IMyFile _myFile;
 
         public StringToFileWriter(IMyDirectory myDirectory, IMyFile myFile)
         {

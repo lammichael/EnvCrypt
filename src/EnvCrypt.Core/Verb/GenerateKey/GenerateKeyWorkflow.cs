@@ -26,7 +26,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey
 
         /// <summary>
         /// <list type="number">
-        ///     <item>Generates new Key (symmsetric or asymmetric)</item>
+        ///     <item>Generates new Key (symmetric or asymmetric)</item>
         ///     <item>Inserts into the POCO</item>
         ///     <item>Maps data structure to XML/JSON/...</item>
         ///     <item>Writes the public & private key to its respective file</item>

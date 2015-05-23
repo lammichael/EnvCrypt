@@ -138,6 +138,8 @@
     <Compile Include="EncrypedData\Poco\Category.cs" />
     <Compile Include="EncrypedData\Poco\Entry.cs" />
     <Compile Include="EncrypedData\EntryMaker.cs" />
+    <Compile Include="EncryptionAlgo\AlgorithmTypeEnum.cs" />
+    <Compile Include="EncryptionAlgo\EnumUtils.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaPublicOrPrivateKeyUtils.cs" />
     <Compile Include="Key\AsymmetricKeyType.cs" />
     <Compile Include="Key\IAsymmetricKeyMarker.cs" />
@@ -169,7 +171,7 @@
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaKeySizeUtils.cs" />
     <Compile Include="EncryptionAlgo\SymmetricEncyptionUtils.cs" />
     <Compile Include="EnvCryptException.cs" />
-    <Compile Include="EnvCryptAlgorithmEnum.cs" />
+    <Compile Include="EncryptionAlgo\EnvCryptAlgoEnum.cs" />
     <Compile Include="Key\EnvCryptKey.cs" />
     <Compile Include="Key\IKeyExternalRepresentation.cs" />
     <Compile Include="Key\IKeyHasher.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="Utils\Base64PersistConverter.cs" />
     <Compile Include="Utils\IXmlSerializationUtils.cs" />
     <Compile Include="Utils\XmlSerializationUtils.cs" />
+    <Compile Include="Verb\GenerateKey\GenerateRsaKeyBuilder.cs" />
     <Compile Include="Verb\GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersisterOptions.cs" />
@@ -193,9 +196,7 @@
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EncryptionAlgo\Poco\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

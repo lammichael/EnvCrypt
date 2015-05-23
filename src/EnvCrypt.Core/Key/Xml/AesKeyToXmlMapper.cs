@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using EnvCrypt.Core.Utils;
 
@@ -8,7 +9,7 @@ namespace EnvCrypt.Core.Key.Xml
 {
     class AesKeyToXmlMapper : IKeyToExternalRepresentationMapper<AesKey, Key.Xml.EnvCryptKey>
     {
-        public const EnvCryptAlgorithmEnum AlgorithmType = EnvCryptAlgorithmEnum.Aes;
+        public const EnvCryptAlgoEnum AlgorithmType = EnvCryptAlgoEnum.Aes;
 
         private readonly IStringPersistConverter _strConverter;
 

@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Utils;
@@ -19,11 +18,9 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
         {
             // Arrange
             var privateKey = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions(384, true));
-            var publicKey = GetPublicKey(privateKey);
 
             var pocoMapper = new Mock<IKeyToExternalRepresentationMapper<RsaKey, EnvCryptKey>>();
             pocoMapper.Setup(m => m.Map(It.IsAny<RsaKey>(), It.IsAny<EnvCryptKey>())).Callback<RsaKey, EnvCryptKey>((key, keyXml) => keyXml.Type = key.Key.D == null ? AsymmetricKeyType.Public.ToString() : keyXml.Type = AsymmetricKeyType.Private.ToString());
-           /* pocoMapper.Setup(m => m.Map(publicKey, It.IsAny<EnvCryptKey>())).Callback<RsaKey, EnvCryptKey>((key, keyXml) => keyXml.Type = AsymmetricKeyType.Public.ToString());*/
 
             const string privateKeyXmlContents = @"<EnvCryptKey Type=""Private"" ... > ...";
             const string publicKeyXmlContents = @"<EnvCryptKey Type=""Public"" ... > ...";
@@ -54,17 +51,6 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
 
             serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == AsymmetricKeyType.Public.ToString())), Times.Once);
             writer.Verify(w => w.Write(publicKeyFile, publicKeyXmlContents, true, usedEncoding), Times.Once);
-        }
-
-
-        private RsaKey GetPublicKey(RsaKey fromPrivateKey)
-        {
-            var publicKey = new RSAParameters()
-            {
-                Exponent = fromPrivateKey.Key.Exponent,
-                Modulus = fromPrivateKey.Key.Modulus,
-            };
-            return new RsaKey(publicKey, fromPrivateKey.UseOaepPadding);
         }
     }
 }
