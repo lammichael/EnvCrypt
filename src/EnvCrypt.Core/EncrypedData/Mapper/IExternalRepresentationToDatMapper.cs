@@ -30,10 +30,6 @@ namespace EnvCrypt.Core.EncrypedData.Mapper
             Contract.Ensures(
                 Contract.ForAll(Contract.Result<EnvCryptDat>().Categories,
                     c => c.Entries != null));
-            //      Ensures all entries, in returned POCO, do not have an assigned key.
-            Contract.Ensures(
-                Contract.ForAll(Contract.Result<EnvCryptDat>().Categories, 
-                    c => Contract.ForAll(c.Entries, e => e.Key == null)) );
 
             return default(EnvCryptDat);
         }

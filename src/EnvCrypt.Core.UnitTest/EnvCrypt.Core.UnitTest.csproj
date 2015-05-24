@@ -60,6 +60,7 @@
     <Compile Include="EncryptionAlgo\Aes\AesAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Aes\AesSegmentEncrypterTest.cs" />
     <Compile Include="EncryptionAlgo\Aes\Utils\AesKeySizeUtilsTest.cs" />
+    <Compile Include="EncryptionAlgo\Rsa\Key\RsaKeyTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Key\RsaKeyGeneratorTest.cs" />
     <Compile Include="EncryptionAlgo\Rsa\RsaSegmentEncryptionAlgoTest.cs" />

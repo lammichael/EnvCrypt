@@ -72,6 +72,10 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToDatPoco
                                     new EnvCryptEncryptedDataCategoryEntryEncryptedValue()
                                     {
                                         Value = "Bab"
+                                    },
+                                    new EnvCryptEncryptedDataCategoryEntryEncryptedValue()
+                                    {
+                                        Value = "OrBob"
                                     }
                                 }
                             }
@@ -102,6 +106,9 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToDatPoco
                 new byte[4]);
             res.Categories[1].Entries.Should().HaveCount(1);
             res.Categories[1].Entries[0].EncryptionAlgorithm.Should().Be(EnvCryptAlgoEnum.PlainText, "there is no decryption in the XML");
+            res.Categories[1].Entries[0].EncryptedValue.Should().HaveCount(2);
+            res.Categories[1].Entries[0].EncryptedValue[0].Should().BeEquivalentTo(
+                new byte[3]);
         }
     }
 }

@@ -136,8 +136,10 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EncrypedData\IDataExternalRepresentation.cs" />
+    <Compile Include="EncrypedData\Mapper\IDatToExternalRepresentationMapper.cs" />
     <Compile Include="EncrypedData\Mapper\IExternalRepresentationToDatMapper.cs" />
     <Compile Include="EncrypedData\Mapper\Xml\ToDatPoco\XmlToDatMapper.cs" />
+    <Compile Include="EncrypedData\Mapper\Xml\ToXmlPoco\DatToXmlMapper.cs" />
     <Compile Include="EncrypedData\Poco\Category.cs" />
     <Compile Include="EncrypedData\Poco\Entry.cs" />
     <Compile Include="EncrypedData\EntryMaker.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Key\Mapper\Xml\ToKeyPoco\XmlToAesKeyMapper.cs" />
     <Compile Include="Key\Mapper\Xml\ToXmlPoco\RsaKeyToXmlMapper.cs" />
     <Compile Include="Key\Mapper\Xml\ToKeyPoco\XmlToRsaKeyMapper.cs" />
+    <Compile Include="Key\PlainTextKey.cs" />
     <Compile Include="Utils\IO\IMyFile.cs" />
     <Compile Include="Utils\IO\IMyDirectory.cs" />
     <Compile Include="Utils\IO\IStringToFileWriter.cs" />
@@ -206,9 +209,7 @@
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EncrypedData\Mapper\Xml\ToXmlPoco\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
