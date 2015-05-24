@@ -14,5 +14,9 @@ namespace EnvCrypt.Core
         public EnvCryptException(string message, Exception inner)
             : base(message, inner)
         {}
+
+        public EnvCryptException(string format, params object[] args)
+            : base(string.Format(format, args))
+        {}
     }
 }

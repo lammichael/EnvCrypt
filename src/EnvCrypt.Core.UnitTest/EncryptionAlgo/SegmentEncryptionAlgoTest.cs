@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using FluentAssertions;
 using Moq;
@@ -11,7 +10,7 @@ using NUnit.Framework;
 namespace EnvCrypt.Core.UnitTest.EncryptionAlgo
 {
     [TestFixture]
-    public class SegmentEncryptTest
+    public class SegmentEncryptionAlgoTest
     {
         [Test]
         public void Given_ArrayOfByteArrays_When_Decrypted_Then_ByteArrayConcatenated()
@@ -40,7 +39,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo
                 .Returns(decryptedBytes[2]);
 
             // Act
-            var segEncrypt = new SegmentEncrypterStub(encryptionAlgoMock.Object);
+            var segEncrypt = new SegmentEncryptionAlgoStub(encryptionAlgoMock.Object);
             var result = segEncrypt.Decrypt(listOfByteArraysToDecrypt, someKey);
 
             // Assert
@@ -52,9 +51,9 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo
         /// <summary>
         /// Only used to test the functionality in the abstract class.
         /// </summary>
-        private class SegmentEncrypterStub : SegmentEncrypter<RsaKey>
+        private class SegmentEncryptionAlgoStub : SegmentEncryptionAlgo<RsaKey>
         {
-            public SegmentEncrypterStub(IEncryptionAlgo<RsaKey> encryptionAlgo) : base(encryptionAlgo)
+            public SegmentEncryptionAlgoStub(IEncryptionAlgo<RsaKey> encryptionAlgo) : base(encryptionAlgo)
             {
             }
 

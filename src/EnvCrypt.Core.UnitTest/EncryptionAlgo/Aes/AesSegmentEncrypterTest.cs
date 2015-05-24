@@ -19,7 +19,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
             var dataToEncrypt = RandomByteArrayUtils.CreateRandomByteArray(actualKeySize);
 
             // Act
-            var segEncrypter = new AesSegmentEncrypter(algo.Object);
+            var segEncrypter = new AesSegmentEncryptionAlgo(algo.Object);
             segEncrypter.Encrypt(dataToEncrypt, key);
 
             // Assert

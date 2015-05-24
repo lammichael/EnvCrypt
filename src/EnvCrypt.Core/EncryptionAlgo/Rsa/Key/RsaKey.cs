@@ -10,6 +10,11 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
     /// </summary>
     public class RsaKey : KeyBase, IAsymmetricKeyMarker
     {
+        public override EnvCryptAlgoEnum Algorithm
+        {
+            get { return EnvCryptAlgoEnum.Rsa; }
+        }
+
         public RSAParameters Key { get; private set; }
 
         /// <summary>

@@ -6,6 +6,11 @@ namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
 {
     public class AesKey : KeyBase, ISymmetricKeyMarker
     {
+        public override EnvCryptAlgoEnum Algorithm
+        {
+            get { return EnvCryptAlgoEnum.Aes; }
+        }
+
         public byte[] Key { get; set; }
         public byte[] Iv { get; set; }
 

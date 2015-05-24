@@ -5,11 +5,11 @@ using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {
-    class RsaSegmentEncrypter : SegmentEncrypter<RsaKey>
+    class RsaSegmentEncryptionAlgo : SegmentEncryptionAlgo<RsaKey>
     {
         private readonly IRsaMaxEncryptionCalc _maxEncryptionCalc;
 
-        public RsaSegmentEncrypter(IEncryptionAlgo<RsaKey> encryptionAlgo, IRsaMaxEncryptionCalc maxEncryptionCalc)
+        public RsaSegmentEncryptionAlgo(IEncryptionAlgo<RsaKey> encryptionAlgo, IRsaMaxEncryptionCalc maxEncryptionCalc)
             : base(encryptionAlgo)
         {
             _maxEncryptionCalc = maxEncryptionCalc;

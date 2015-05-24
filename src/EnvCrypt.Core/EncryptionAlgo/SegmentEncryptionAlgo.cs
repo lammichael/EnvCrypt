@@ -4,11 +4,11 @@ using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {
-    abstract class SegmentEncrypter<T> where T : KeyBase
+    abstract class SegmentEncryptionAlgo<T> where T : KeyBase
     {
         protected IEncryptionAlgo<T> EncryptionAlgo;
 
-        protected SegmentEncrypter(IEncryptionAlgo<T> encryptionAlgo)
+        protected SegmentEncryptionAlgo(IEncryptionAlgo<T> encryptionAlgo)
         {
             EncryptionAlgo = encryptionAlgo;
         }
