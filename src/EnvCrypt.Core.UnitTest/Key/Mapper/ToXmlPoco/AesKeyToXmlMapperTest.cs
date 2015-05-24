@@ -1,12 +1,12 @@
-﻿using System;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
-using EnvCrypt.Core.Key.Xml;
+﻿using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
+using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
+using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
-namespace EnvCrypt.Core.UnitTest.Key.Xml
+namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToXmlPoco
 {
     [TestFixture]
     public class AesKeyToXmlMapperTest
@@ -28,7 +28,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Xml
 
             // Act
             var aesKeyToXmlMapper = new AesKeyToXmlMapper(converter.Object);
-            var xmlPoco = new Core.Key.Xml.EnvCryptKey();
+            var xmlPoco = new EnvCryptKey();
             aesKeyToXmlMapper.Map(key, xmlPoco);
 
             // Assert
@@ -56,7 +56,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Xml
 
             // Act
             var aesKeyToXmlMapper = new AesKeyToXmlMapper(converter.Object);
-            var xmlPoco = new Core.Key.Xml.EnvCryptKey();
+            var xmlPoco = new EnvCryptKey();
             aesKeyToXmlMapper.Map(key, xmlPoco);
 
             // Assert

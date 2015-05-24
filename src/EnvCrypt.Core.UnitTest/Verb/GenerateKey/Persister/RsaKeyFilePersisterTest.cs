@@ -1,12 +1,13 @@
 ﻿using System.Text;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Key.Mapper;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
 using Moq;
 using NUnit.Framework;
-using EnvCryptKey = EnvCrypt.Core.Key.Xml.EnvCryptKey;
+using EnvCryptKey = EnvCrypt.Core.Key.XmlPoco.EnvCryptKey;
 
 namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
 {
@@ -20,14 +21,14 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
             var privateKey = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions(384, true));
 
             var pocoMapper = new Mock<IKeyToExternalRepresentationMapper<RsaKey, EnvCryptKey>>();
-            pocoMapper.Setup(m => m.Map(It.IsAny<RsaKey>(), It.IsAny<EnvCryptKey>())).Callback<RsaKey, EnvCryptKey>((key, keyXml) => keyXml.Type = key.Key.D == null ? AsymmetricKeyType.Public.ToString() : keyXml.Type = AsymmetricKeyType.Private.ToString());
+            pocoMapper.Setup(m => m.Map(It.IsAny<RsaKey>(), It.IsAny<EnvCryptKey>())).Callback<RsaKey, EnvCryptKey>((key, keyXml) => keyXml.Type = key.Key.D == null ? KeyTypeEnum.Public.ToString() : keyXml.Type = KeyTypeEnum.Private.ToString());
 
             const string privateKeyXmlContents = @"<EnvCryptKey Type=""Private"" ... > ...";
             const string publicKeyXmlContents = @"<EnvCryptKey Type=""Public"" ... > ...";
             var usedEncoding = Encoding.UTF32;
-            var serialisationUtil = new Mock<IXmlSerializationUtils<Core.Key.Xml.EnvCryptKey>>();
-            serialisationUtil.Setup(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == AsymmetricKeyType.Private.ToString()))).Returns(privateKeyXmlContents);
-            serialisationUtil.Setup(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == AsymmetricKeyType.Public.ToString()))).Returns(publicKeyXmlContents);
+            var serialisationUtil = new Mock<IXmlSerializationUtils<EnvCryptKey>>();
+            serialisationUtil.Setup(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Private.ToString()))).Returns(privateKeyXmlContents);
+            serialisationUtil.Setup(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Public.ToString()))).Returns(publicKeyXmlContents);
             serialisationUtil.Setup(u => u.GetUsedEncoding()).Returns(usedEncoding);
             var writer = new Mock<IStringToFileWriter>();
 
@@ -46,10 +47,10 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
             persister.WriteToFile(privateKey, opts);
 
             // Assert
-            serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == AsymmetricKeyType.Private.ToString())), Times.Once);
+            serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Private.ToString())), Times.Once);
             writer.Verify(w => w.Write(privateKeyFile, privateKeyXmlContents, true, usedEncoding), Times.Once);
 
-            serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == AsymmetricKeyType.Public.ToString())), Times.Once);
+            serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Public.ToString())), Times.Once);
             writer.Verify(w => w.Write(publicKeyFile, publicKeyXmlContents, true, usedEncoding), Times.Once);
         }
     }

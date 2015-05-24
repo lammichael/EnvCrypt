@@ -2,7 +2,8 @@
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
-using EnvCrypt.Core.Key.Xml;
+using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
+using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;

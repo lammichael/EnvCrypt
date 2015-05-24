@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
-using EnvCrypt.Core.Key.Xml;
+using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using FluentAssertions;
 using NUnit.Framework;
@@ -14,7 +14,7 @@ namespace EnvCrypt.Core.UnitTest.Utils
         public void Given_ValidAESKeyPOCO_When_SerializeAndDeserialize_Then_POCOContentIsTheSame()
         {
             // Arrange
-            var aesKeyXmlPoco = new Core.Key.Xml.EnvCryptKey()
+            var aesKeyXmlPoco = new EnvCryptKey()
             {
                 Name = "My AES Key",
                 Aes = new[]
@@ -30,7 +30,7 @@ namespace EnvCrypt.Core.UnitTest.Utils
             };
 
             // Act
-            var xmlUtil = new XmlSerializationUtils<Core.Key.Xml.EnvCryptKey>();
+            var xmlUtil = new XmlSerializationUtils<EnvCryptKey>();
             var serialized = xmlUtil.Serialize(aesKeyXmlPoco);
             var deserialized = xmlUtil.Deserialize(serialized);
 

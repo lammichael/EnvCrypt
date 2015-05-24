@@ -1,16 +1,15 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
-using EnvCrypt.Core.Key.Xml;
+using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
 using EnvCrypt.Core.Utils;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+using EnvCryptKey = EnvCrypt.Core.Key.XmlPoco.EnvCryptKey;
 
-namespace EnvCrypt.Core.UnitTest.Key.Xml
+namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToXmlPoco
 {
     [TestFixture]
     public class RsaKeyToXmlMapperTest
@@ -42,7 +41,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Xml
 
             // Act
             var aesKeyToXmlMapper = new RsaKeyToXmlMapper(converter.Object);
-            var xmlPoco = new Core.Key.Xml.EnvCryptKey();
+            var xmlPoco = new EnvCryptKey();
             aesKeyToXmlMapper.Map(key, xmlPoco);
 
             // Assert
@@ -84,14 +83,14 @@ namespace EnvCrypt.Core.UnitTest.Key.Xml
 
             // Act
             var aesKeyToXmlMapper = new RsaKeyToXmlMapper(converter.Object);
-            var xmlPoco = new Core.Key.Xml.EnvCryptKey();
+            var xmlPoco = new EnvCryptKey();
             aesKeyToXmlMapper.Map(key, xmlPoco);
 
             // Assert
             xmlPoco.Rsa.Should().NotBeNull().And.HaveCount(1);
             xmlPoco.Name.Should().Be(keyName);
             xmlPoco.Encryption.Should().Be(EnvCryptAlgoEnum.Rsa.ToString());
-            xmlPoco.Type.Should().Be(AsymmetricKeyType.Public.ToString());
+            xmlPoco.Type.Should().Be(KeyTypeEnum.Public.ToString());
             xmlPoco.Rsa[0].Exponent.Should().Be("exponent");
             xmlPoco.Rsa[0].Modulus.Should().Be("modulus");
         }

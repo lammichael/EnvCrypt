@@ -3,11 +3,12 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
+using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 
-namespace EnvCrypt.Core.Key.Xml
+namespace EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco
 {
-    class AesKeyToXmlMapper : IKeyToExternalRepresentationMapper<AesKey, Key.Xml.EnvCryptKey>
+    class AesKeyToXmlMapper : IKeyToExternalRepresentationMapper<AesKey, XmlPoco.EnvCryptKey>
     {
         public const EnvCryptAlgoEnum AlgorithmType = EnvCryptAlgoEnum.Aes;
 
@@ -21,7 +22,7 @@ namespace EnvCrypt.Core.Key.Xml
         }
 
 
-        public void Map(AesKey fromPoco, Key.Xml.EnvCryptKey toExternalRepresentationPoco)
+        public void Map(AesKey fromPoco, XmlPoco.EnvCryptKey toExternalRepresentationPoco)
         {
             Contract.Ensures(toExternalRepresentationPoco.Aes != null);
             //      There will be only 1 key per XML POCO

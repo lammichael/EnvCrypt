@@ -93,6 +93,7 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AddEntry\AddEntryOptions.cs" />
     <Compile Include="GenerateKey\GenerateKeyOptionsValidator.cs" />
     <Compile Include="GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="GenerateKey\GenerateKeyVerbOptions.cs" />
@@ -110,6 +111,9 @@
       <Project>{06757fd4-6162-4dda-b2a2-04bea95b39ef}</Project>
       <Name>EnvCrypt.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Decrypt\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

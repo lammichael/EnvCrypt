@@ -58,7 +58,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
             }, true);
 
             // Act
-            var res = AsymmetricKeyType.Private;
+            var res = KeyTypeEnum.Private;
             Action act = () => res = rsaKey.GetKeyType(throwExceptionWhenPublicKeyHasTooMuchInfo);
 
             // Assert
@@ -71,7 +71,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
             else
             {
                 act.ShouldNotThrow<EnvCryptException>();
-                res.Should().Be(AsymmetricKeyType.Public);
+                res.Should().Be(KeyTypeEnum.Public);
             }
         }
 
@@ -90,7 +90,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
             var result = rsaKey.GetKeyType(true);
 
             // Assert
-            result.Should().Be(AsymmetricKeyType.Public);
+            result.Should().Be(KeyTypeEnum.Public);
         }
 
 
@@ -114,7 +114,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
             var result = rsaKey.GetKeyType();
 
             // Assert
-            result.Should().Be(AsymmetricKeyType.Private);
+            result.Should().Be(KeyTypeEnum.Private);
         }
     }
 }

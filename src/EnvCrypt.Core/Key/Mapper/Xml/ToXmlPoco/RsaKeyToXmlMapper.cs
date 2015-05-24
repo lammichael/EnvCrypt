@@ -3,11 +3,12 @@ using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
+using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 
-namespace EnvCrypt.Core.Key.Xml
+namespace EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco
 {
-    class RsaKeyToXmlMapper : IKeyToExternalRepresentationMapper<RsaKey, Key.Xml.EnvCryptKey>
+    class RsaKeyToXmlMapper : IKeyToExternalRepresentationMapper<RsaKey, XmlPoco.EnvCryptKey>
     {
         public const EnvCryptAlgoEnum AlgorithmType = EnvCryptAlgoEnum.Rsa;
 
@@ -21,7 +22,7 @@ namespace EnvCrypt.Core.Key.Xml
         }
 
 
-        public void Map(RsaKey fromPoco, Key.Xml.EnvCryptKey toExternalRepresentationPoco)
+        public void Map(RsaKey fromPoco, XmlPoco.EnvCryptKey toExternalRepresentationPoco)
         {
             Contract.Ensures(toExternalRepresentationPoco.Rsa != null);
             //      There will be only 1 key per XML POCO

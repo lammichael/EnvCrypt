@@ -23,7 +23,7 @@ namespace EnvCrypt.Console.GenerateKey
                     NewPublicKeyFullFilePath = Path.Combine(
                         options.OutputDirectory,
                         string.Concat(options.KeyName, PublicKeyPostfix) ),
-                    OverwriteFileIfExists = true
+                    OverwriteFileIfExists = false
                 };
                 if (options.OutputKeyToConsole)
                 {

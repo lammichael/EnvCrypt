@@ -1,6 +1,6 @@
 ﻿namespace EnvCrypt.Core.Key
 {
-    enum AsymmetricKeyType
+    enum KeyTypeEnum
     {
         Private,
         Public,

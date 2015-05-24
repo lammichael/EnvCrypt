@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 
-namespace EnvCrypt.Core.Key
+namespace EnvCrypt.Core.Key.Mapper
 {
     [ContractClass(typeof(KeyToExternalRepresentationMapperContract<,>))]
     interface IKeyToExternalRepresentationMapper<in TKey, in TExtRep>

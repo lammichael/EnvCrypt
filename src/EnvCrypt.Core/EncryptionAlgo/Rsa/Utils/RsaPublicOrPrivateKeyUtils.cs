@@ -11,7 +11,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
         /// Throws EnvCryptException if there is insufficient data for either.
         /// </summary>
         [Pure]
-        public static AsymmetricKeyType GetKeyType(this RsaKey forKey, bool throwExceptionWhenPublicKeyHasTooMuchInfo = true)
+        public static KeyTypeEnum GetKeyType(this RsaKey forKey, bool throwExceptionWhenPublicKeyHasTooMuchInfo = true)
         {
             var key = forKey.Key;
             if ((key.D != null && key.D.Length > 0)
@@ -23,7 +23,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
                 && (key.P != null && key.P.Length > 0)
                 && (key.Q != null && key.Q.Length > 0))
             {
-                return AsymmetricKeyType.Private;
+                return KeyTypeEnum.Private;
             }
 
             if ((key.Exponent != null && key.Exponent.Length > 0)
@@ -42,7 +42,7 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
                             "RSA public key does not have enough data to be a private key but has information from the private key");
                     }
                 }
-                return AsymmetricKeyType.Public;
+                return KeyTypeEnum.Public;
             }
             throw new EnvCryptException("RSA key does not have enough data to be a public or private key");
         }

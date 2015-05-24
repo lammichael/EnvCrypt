@@ -5,16 +5,17 @@ using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Key.Mapper;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
-using EnvCryptKey = EnvCrypt.Core.Key.Xml.EnvCryptKey;
+using EnvCryptKey = EnvCrypt.Core.Key.XmlPoco.EnvCryptKey;
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
-    class RsaKeyFilePersister : AsymmetricKeyFilePersister<RsaKey, Key.Xml.EnvCryptKey>
+    class RsaKeyFilePersister : AsymmetricKeyFilePersister<RsaKey, EnvCryptKey>
     {
-        private readonly IKeyToExternalRepresentationMapper<RsaKey, Key.Xml.EnvCryptKey> _pocoMapper;
-        private readonly IXmlSerializationUtils<Key.Xml.EnvCryptKey> _serializationUtils;
+        private readonly IKeyToExternalRepresentationMapper<RsaKey, EnvCryptKey> _pocoMapper;
+        private readonly IXmlSerializationUtils<EnvCryptKey> _serializationUtils;
         private readonly IStringToFileWriter _writer;
 
         public RsaKeyFilePersister(
@@ -34,7 +35,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 
         public override void WriteToFile(RsaKey thisKey, AsymmetricKeyFilePersisterOptions withOptions)
         {
-            if (thisKey.GetKeyType() != AsymmetricKeyType.Private)
+            if (thisKey.GetKeyType() != KeyTypeEnum.Private)
             {
                 throw new EnvCryptException("key to persist must have all data for a private key");
             }
@@ -51,7 +52,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 
             {
                 // Write private key
-                var privateKeyXmlPoco = new Key.Xml.EnvCryptKey();
+                var privateKeyXmlPoco = new EnvCryptKey();
                 _pocoMapper.Map(thisKey, privateKeyXmlPoco);
                 var toWrite = _serializationUtils.Serialize(privateKeyXmlPoco);
 
@@ -61,7 +62,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 
             {
                 // Write public key
-                var publicKeyXmlPoco = new Key.Xml.EnvCryptKey();
+                var publicKeyXmlPoco = new EnvCryptKey();
                 _pocoMapper.Map(GetPublicKey(thisKey), publicKeyXmlPoco);
                 var toWrite = _serializationUtils.Serialize(publicKeyXmlPoco);
                 _writer.Write(withOptions.NewPublicKeyFullFilePath, toWrite,
