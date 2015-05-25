@@ -56,6 +56,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="EncryptedData\Mapper\Xml\ToDatPoco\XmlToDatMapperTest.cs" />
+    <Compile Include="EncryptedData\Mapper\Xml\ToXmlPoco\DatToXmlMapperTest.cs" />
     <Compile Include="EncryptedData\XmlPoco\EcDatXmlTest.cs" />
     <Compile Include="EncryptionAlgo\Aes\AesAlgoTest.cs" />
     <Compile Include="EncryptionAlgo\Aes\AesSegmentEncrypterTest.cs" />

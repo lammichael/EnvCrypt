@@ -16,7 +16,11 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco
             _strConverter = strConverter;
         }
 
-
+        /// <summary>
+        /// If there is no Decryption element in XML, then don't
+        /// </summary>
+        /// <param name="fromExternalRepresentationPoco"></param>
+        /// <returns></returns>
         public EnvCryptDat Map(EnvCryptEncryptedData fromExternalRepresentationPoco)
         {
             // When the file is empty, return an empty list.
