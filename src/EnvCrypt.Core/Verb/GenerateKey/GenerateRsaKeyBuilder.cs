@@ -23,7 +23,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey
 
         private IKeyFilePersister<RsaKey, EnvCryptKey, AsymmetricKeyFilePersisterOptions> _persister;
         private readonly AsymmetricKeyFilePersisterOptions _fileOptions;
-        private readonly ITextWriter _textWriter;
+        private ITextWriter _textWriter;
 
 
         public GenerateRsaKeyBuilder(AsymmetricKeyFilePersisterOptions fileOptions)
@@ -39,14 +39,6 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             _textWriter = new TextWriter(new MyFile());
         }
 
-        private GenerateRsaKeyBuilder(AsymmetricKeyFilePersisterOptions fileOptions, ITextWriter textWriter) : this(fileOptions)
-        {
-            Contract.Requires<ArgumentNullException>(textWriter != null, "textWriter");
-            Contract.Ensures(_textWriter != null);
-            //
-            _textWriter = textWriter;
-        }
-
 
         /// <summary>
         /// Returns a new Builder instance with a custom text writer used
@@ -55,10 +47,12 @@ namespace EnvCrypt.Core.Verb.GenerateKey
         public GenerateRsaKeyBuilder WithCustomTextWriter(ITextWriter textWriter)
         {
             Contract.Requires<ArgumentNullException>(textWriter != null, "textWriter");
-            Contract.Ensures(textWriter != null);
             Contract.Ensures(Contract.Result<GenerateRsaKeyBuilder>() != null);
+            Contract.Ensures(!IsBuilt, "Build() must be called for Builder to be built");
             //
-            return new GenerateRsaKeyBuilder(_fileOptions, textWriter);
+            _textWriter = textWriter;
+            IsBuilt = false;
+            return this;
         }
 
 

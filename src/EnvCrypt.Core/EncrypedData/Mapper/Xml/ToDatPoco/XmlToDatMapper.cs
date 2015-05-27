@@ -38,6 +38,11 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco
             for (uint catI = 0; catI < fromExternalRepresentationPoco.Items.Length; catI++)
             {
                 var currentXmlCategory = fromExternalRepresentationPoco.Items[catI];
+                if (currentXmlCategory == null)
+                {
+                    continue;
+                }
+
                 var categoryToAdd = new Category();
 
                 if (string.IsNullOrWhiteSpace(currentXmlCategory.Name))
@@ -56,6 +61,11 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco
                 for (uint entryI = 0; entryI < currentXmlCategory.Entry.Length; entryI++)
                 {
                     var currentXmlEntry = currentXmlCategory.Entry[entryI];
+                    if (currentXmlEntry == null)
+                    {
+                        continue;
+                    }
+
                     var entryToAdd = new Entry();
                     
                     if (string.IsNullOrWhiteSpace(currentXmlEntry.Name))

@@ -159,8 +159,10 @@
     <Compile Include="Utils\IO\IMyFile.cs" />
     <Compile Include="Utils\IO\IMyDirectory.cs" />
     <Compile Include="Utils\IO\IStringToFileWriter.cs" />
+    <Compile Include="Utils\IO\ITextReader.cs" />
     <Compile Include="Utils\IO\ITextWriter.cs" />
     <Compile Include="Utils\IO\StringToFileWriter.cs" />
+    <Compile Include="Utils\IO\TextReader.cs" />
     <Compile Include="Utils\IO\TextWriter.cs" />
     <Compile Include="Utils\IStringPersistConverter.cs" />
     <Compile Include="EncrypedData\Converter\IUserStringConverter.cs" />
@@ -208,6 +210,9 @@
     <Compile Include="Verb\GenerateKey\Persister\KeyFilePersisterOptions.cs" />
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
+    <Compile Include="Verb\LoadKey\LoadKeyConfig.cs" />
+    <Compile Include="Verb\LoadKey\ILoadKeyWorkflow.cs" />
+    <Compile Include="Verb\LoadKey\LoadRsaKeyWorkflow.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

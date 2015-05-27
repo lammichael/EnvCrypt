@@ -4,29 +4,35 @@ using System.Text;
 
 namespace EnvCrypt.Core.Utils.IO
 {
-    interface IMyFile
+    public interface IMyFile
     {
-        void WriteAllText(String path, String contents);
-        void WriteAllText(String path, String contents, Encoding encoding);
-        bool Exists(String path);
+        void WriteAllText(string path, string contents);
+        void WriteAllText(string path, string contents, Encoding encoding);
+        bool Exists(string path);
+        string ReadAllText(string path);
     }
 
 
     class MyFile : IMyFile
     {
-        public void WriteAllText(String path, String contents)
+        public void WriteAllText(string path, string contents)
         {
             File.WriteAllText(path, contents);
         }
 
-        public void WriteAllText(String path, String contents, Encoding encoding)
+        public void WriteAllText(string path, string contents, Encoding encoding)
         {
             File.WriteAllText(path, contents);
         }
 
-        public bool Exists(String path)
+        public bool Exists(string path)
         {
             return File.Exists(path);
+        }
+
+        public string ReadAllText(string path)
+        {
+            return File.ReadAllText(path);
         }
     }
 }

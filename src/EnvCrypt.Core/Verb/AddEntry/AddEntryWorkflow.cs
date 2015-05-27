@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EnvCrypt.Core.EncrypedData;
+using EnvCrypt.Core.EncrypedData.Mapper;
 
 namespace EnvCrypt.Core.Verb.AddEntry
 {
-    class AddEntryWorkflow
+    class AddEntryWorkflow<TExtRep> where TExtRep : class, IDataExternalRepresentation
     {
+        private IExternalRepresentationToDatMapper<TExtRep> _xmlToPoco;
+
+        private IDatToExternalRepresentationMapper<TExtRep> _pocoToXml;
+
 
         public void Run()
         {
