@@ -1,10 +1,15 @@
 ﻿using EnvCrypt.Core.EncrypedData;
 using EnvCrypt.Core.EncrypedData.Mapper;
+using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Verb.LoadKey;
 
 namespace EnvCrypt.Core.Verb.AddEntry
 {
-    class AddEntryWorkflow<TExtRep> where TExtRep : class, IDataExternalRepresentation
+    class AddEntryWorkflow<TExtRep,TKey>
+        where TExtRep : class, IDataExternalRepresentation
+        where TKey : KeyBase
     {
+        private IKeyLoader<TKey> _keyLoader;
         private IExternalRepresentationToDatMapper<TExtRep> _xmlToPoco;
 
         private IDatToExternalRepresentationMapper<TExtRep> _pocoToXml;

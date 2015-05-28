@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key.Mapper;
 using EnvCrypt.Core.Key.XmlPoco;
@@ -6,18 +8,26 @@ using EnvCrypt.Core.Utils.IO;
 
 namespace EnvCrypt.Core.Verb.LoadKey
 {
-    class LoadRsaKeyWorkflow : ILoadKeyWorkflow<RsaKey>
+    /// <summary>
+    /// Loads the RSA key. Could be a private or public key.
+    /// </summary>
+    class RsaKeyLoader : IKeyLoader<RsaKey>
     {
         private readonly IMyFile _myFile;
         private readonly ITextReader _xmlReader;
         private readonly IXmlSerializationUtils<EnvCryptKey> _xmlSerializationUtils;
         private readonly IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> _mapper;
 
-        public LoadRsaKeyWorkflow(IMyFile myFile,
+        public RsaKeyLoader(IMyFile myFile,
             ITextReader xmlReader, 
             IXmlSerializationUtils<EnvCryptKey> xmlSerializationUtils,
             IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> mapper)
         {
+            Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
+            Contract.Requires<ArgumentNullException>(xmlReader != null, "xmlReader");
+            Contract.Requires<ArgumentNullException>(xmlSerializationUtils != null, "xmlSerializationUtils");
+            Contract.Requires<ArgumentNullException>(mapper != null, "mapper");
+            //
             _xmlReader = xmlReader;
             _mapper = mapper;
             _myFile = myFile;
@@ -38,13 +48,8 @@ namespace EnvCrypt.Core.Verb.LoadKey
                 throw new EnvCryptException("key file is empty: {0}", ecKeyFilePath);
             }
             var xmlPoco = _xmlSerializationUtils.Deserialize(xmlFromFile);
-            if (xmlPoco == null)
-            {
-                throw new EnvCryptException("deserialisation of file failed: {0}", ecKeyFilePath);
-            }
 
-            //TODO: Validation
-
+            // Mapper will throw exception if any part is not there
             var poco = _mapper.Map(xmlPoco);
             return poco;
         }

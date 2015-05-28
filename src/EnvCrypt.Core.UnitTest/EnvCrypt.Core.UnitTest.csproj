@@ -79,6 +79,7 @@
     <Compile Include="Utils\IO\StringToFileWriterTest.cs" />
     <Compile Include="Utils\XmlToAndFromPocoTest.cs" />
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersisterTest.cs" />
+    <Compile Include="Verb\LoadKey\RsaKeyLoaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnvCrypt.Core\EnvCrypt.Core.csproj">

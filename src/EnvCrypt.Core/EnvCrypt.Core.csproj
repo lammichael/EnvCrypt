@@ -200,6 +200,7 @@
     <Compile Include="Utils\IXmlSerializationUtils.cs" />
     <Compile Include="Utils\XmlSerializationUtils.cs" />
     <Compile Include="Verb\AddEntry\AddEntryWorkflow.cs" />
+    <Compile Include="Verb\AddEntry\DatManipulator.cs" />
     <Compile Include="Verb\GenerateKey\GenerateRsaKeyBuilder.cs" />
     <Compile Include="Verb\GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersister.cs" />
@@ -210,9 +211,8 @@
     <Compile Include="Verb\GenerateKey\Persister\KeyFilePersisterOptions.cs" />
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
-    <Compile Include="Verb\LoadKey\LoadKeyConfig.cs" />
-    <Compile Include="Verb\LoadKey\ILoadKeyWorkflow.cs" />
-    <Compile Include="Verb\LoadKey\LoadRsaKeyWorkflow.cs" />
+    <Compile Include="Verb\LoadKey\IKeyLoader.cs" />
+    <Compile Include="Verb\LoadKey\RsaKeyLoader.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
