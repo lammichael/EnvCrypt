@@ -6,7 +6,7 @@ namespace EnvCrypt.Core.EncrypedData.Poco
     /// Format agnostic POCO for the Envcrypt dat file containing the
     /// encrypted entries.
     /// </summary>
-    class EnvCryptDat
+    public class EnvCryptDat
     {
         public IList<Category> Categories { get; set; }
     }

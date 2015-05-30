@@ -42,7 +42,7 @@ namespace EnvCrypt.Core.UnitTest.Verb.LoadKey
 
             // Act
             var workflow = new RsaKeyLoader(myFileMock.Object, textReaderMock.Object, serialisationMock.Object, mapperMock.Object);
-            var keyPoco = workflow.Run(keyfile);
+            var keyPoco = workflow.Load(keyfile);
 
             // Assert
             keyPoco.Should().Be(rsaKey);

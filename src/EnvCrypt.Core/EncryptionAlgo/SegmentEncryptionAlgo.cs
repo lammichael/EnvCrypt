@@ -4,7 +4,8 @@ using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {
-    abstract class SegmentEncryptionAlgo<T> where T : KeyBase
+    abstract class SegmentEncryptionAlgo<T> : ISegmentEncryptionAlgo<T>
+        where T : KeyBase
     {
         protected IEncryptionAlgo<T> EncryptionAlgo;
 
@@ -17,14 +18,14 @@ namespace EnvCrypt.Core.EncryptionAlgo
         public abstract IList<byte[]> Encrypt(byte[] binaryData, T usingKey);
 
 
-        public byte[] Decrypt(IList<byte[]> binaryData, T usingKey)
+        public byte[] Decrypt(IList<byte[]> segmentEncryptedData, T usingKey)
         {
             // Decrypt each array and store in array of arrays
-            var decryptedBytes = new byte[binaryData.Count][];
+            var decryptedBytes = new byte[segmentEncryptedData.Count][];
             var retLength = 0;
-            for (var i = 0; i < binaryData.Count; i++)
+            for (var i = 0; i < segmentEncryptedData.Count; i++)
             {
-                var currDecrypted = EncryptionAlgo.Decrypt(binaryData[i], usingKey);
+                var currDecrypted = EncryptionAlgo.Decrypt(segmentEncryptedData[i], usingKey);
                 decryptedBytes[i] = currDecrypted;
                 retLength += currDecrypted.Length;
             }

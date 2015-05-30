@@ -142,10 +142,11 @@
     <Compile Include="EncrypedData\Mapper\Xml\ToXmlPoco\DatToXmlMapper.cs" />
     <Compile Include="EncrypedData\Poco\Category.cs" />
     <Compile Include="EncrypedData\Poco\Entry.cs" />
-    <Compile Include="EncrypedData\EntryMaker.cs" />
     <Compile Include="EncrypedData\Poco\EnvCryptDat.cs" />
+    <Compile Include="EncrypedData\UserStringConverter\Utf16LittleEndianUserStringConverter.cs" />
     <Compile Include="EncryptionAlgo\AlgorithmTypeEnum.cs" />
     <Compile Include="EncryptionAlgo\EnumUtils.cs" />
+    <Compile Include="EncryptionAlgo\ISegmentEncryptionAlgo.cs" />
     <Compile Include="EncryptionAlgo\Rsa\Utils\RsaPublicOrPrivateKeyUtils.cs" />
     <Compile Include="Key\KeyTypeEnum.cs" />
     <Compile Include="Key\IAsymmetricKeyMarker.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="Utils\IO\TextReader.cs" />
     <Compile Include="Utils\IO\TextWriter.cs" />
     <Compile Include="Utils\IStringPersistConverter.cs" />
-    <Compile Include="EncrypedData\Converter\IUserStringConverter.cs" />
+    <Compile Include="EncrypedData\UserStringConverter\IUserStringConverter.cs" />
     <Compile Include="EncrypedData\XmlPoco\EnvCryptEncryptedData.cs" />
     <Compile Include="EncryptionAlgo\Aes\Utils\AesKeySizeUtils.cs" />
     <Compile Include="EncryptionAlgo\Aes\AesAlgo.cs" />
@@ -200,7 +201,8 @@
     <Compile Include="Utils\IXmlSerializationUtils.cs" />
     <Compile Include="Utils\XmlSerializationUtils.cs" />
     <Compile Include="Verb\AddEntry\AddEntryWorkflow.cs" />
-    <Compile Include="Verb\AddEntry\DatManipulator.cs" />
+    <Compile Include="EncrypedData\DatExtMethods.cs" />
+    <Compile Include="Verb\AddEntry\AddEntryWorkflowOptions.cs" />
     <Compile Include="Verb\GenerateKey\GenerateRsaKeyBuilder.cs" />
     <Compile Include="Verb\GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersister.cs" />
@@ -211,8 +213,14 @@
     <Compile Include="Verb\GenerateKey\Persister\KeyFilePersisterOptions.cs" />
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
+    <Compile Include="Verb\LoadDat\DatLoader.cs" />
+    <Compile Include="Verb\LoadDat\IDatLoader.cs" />
     <Compile Include="Verb\LoadKey\IKeyLoader.cs" />
+    <Compile Include="Verb\LoadKey\KeyLoaderFromXmlFile.cs" />
+    <Compile Include="Verb\LoadKey\AesKeyLoader.cs" />
     <Compile Include="Verb\LoadKey\RsaKeyLoader.cs" />
+    <Compile Include="Verb\SaveDat\DatToXmlFileSaver.cs" />
+    <Compile Include="Verb\SaveDat\IDatSaver.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
