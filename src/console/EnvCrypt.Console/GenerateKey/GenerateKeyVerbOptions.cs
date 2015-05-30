@@ -4,7 +4,7 @@ using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Console.GenerateKey
 {
-    [Verb("generatekey", HelpText = "Generates a new key for encryption & decryption.")]
+    [Verb("GenerateKey", HelpText = "Generates a new key for encryption & decryption.")]
     class GenerateKeyVerbOptions //: VerbOptionsBase
     {
         /// <summary>

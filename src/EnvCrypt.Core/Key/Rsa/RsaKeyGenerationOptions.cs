@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
+namespace EnvCrypt.Core.Key.Rsa
 {
     class RsaKeyGenerationOptions : KeyGenerationOptions<RsaKey>
     {

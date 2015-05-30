@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
+using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Utils;
 using FluentAssertions;
 using Moq;

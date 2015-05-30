@@ -2,6 +2,7 @@
 using System.Linq;
 using CommandLine;
 using CommandLine.Text;
+using EnvCrypt.Console.AddEntry;
 using EnvCrypt.Console.GenerateKey;
 
 namespace EnvCrypt.Console
@@ -11,7 +12,9 @@ namespace EnvCrypt.Console
         private static void Main(string[] args)
         {
             var parser = new Parser(settings => settings.CaseSensitive = false);
-            var parserResult = parser.ParseArguments(args, typeof (GenerateKeyVerbOptions));
+            var parserResult = parser.ParseArguments(args,
+                typeof(GenerateKeyVerbOptions),
+                typeof(AddEntryVerbOptions));
             /*catch (System.ArgumentException argEx)
             {
                 // Occurs when an exact enum value is not passed
@@ -28,6 +31,7 @@ namespace EnvCrypt.Console
                 System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
                 Environment.Exit(1);
             }
+
             var generateKeyVerbOptions = parserResult.Value as GenerateKeyVerbOptions;
             if (generateKeyVerbOptions != null)
             {
@@ -50,6 +54,31 @@ namespace EnvCrypt.Console
 #endif
                     Environment.Exit(2);
                 }
+            }
+
+            var addEntryVerbOptions = parserResult.Value as AddEntryVerbOptions;
+            if (addEntryVerbOptions != null)
+            {
+                /*var validator = new ();
+                if (validator.HasErrorsAndReport(generateKeyVerbOptions))
+                {
+                    System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
+                    Environment.Exit(1);
+                }*/
+#if (!DEBUG)
+                try
+                {
+#endif
+                    new AddEntryWorkflow().Run(addEntryVerbOptions);
+#if (!DEBUG)
+                }
+                catch (Exception ex)
+                {
+                    System.Console.Error.WriteLine("Exception occurred:{0}{1}", Environment.NewLine, ex);
+
+                    Environment.Exit(2);
+                }
+#endif
             }
         }
     }

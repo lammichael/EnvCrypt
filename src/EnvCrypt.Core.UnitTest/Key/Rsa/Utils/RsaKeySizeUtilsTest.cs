@@ -1,10 +1,9 @@
-﻿using EnvCrypt.Core.EncryptionAlgo.Rsa;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
+﻿using EnvCrypt.Core.Key.Rsa;
+using EnvCrypt.Core.Key.Rsa.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
+namespace EnvCrypt.Core.UnitTest.Key.Rsa.Utils
 {
     [TestFixture]
     public class RsaKeySizeUtilsTest

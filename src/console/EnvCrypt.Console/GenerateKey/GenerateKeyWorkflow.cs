@@ -17,6 +17,7 @@ namespace EnvCrypt.Console.GenerateKey
             {
                 var keyPersisterOpts = new AsymmetricKeyFilePersisterOptions()
                 {
+                    NewKeyName = options.KeyName,
                     NewPrivateKeyFullFilePath = Path.Combine(
                         options.OutputDirectory,
                         string.Concat(options.KeyName, PrivateKeyPostfix)),

@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
+namespace EnvCrypt.Core.Key.Rsa
 {
     class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaKeyGenerationOptions>
     {
@@ -37,8 +38,10 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
             {
                 privateKey = myRsa.ExportParameters(true);
             }
-            var generated = new RsaKey(privateKey, options.UseOaepPadding);
-            return generated;
+            return new RsaKey(privateKey, options.UseOaepPadding)
+            {
+                Name = options.NewKeyName
+            };
         }
     }
 }

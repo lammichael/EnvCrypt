@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
+using EnvCrypt.Core.Key.Aes;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Aes
 {

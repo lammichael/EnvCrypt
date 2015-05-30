@@ -1,4 +1,5 @@
-﻿using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
+﻿using EnvCrypt.Core.Key.Rsa;
+using EnvCrypt.Core.Key.Rsa.Utils;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
 {

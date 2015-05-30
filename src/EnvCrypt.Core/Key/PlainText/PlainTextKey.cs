@@ -1,6 +1,6 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Core.Key
+namespace EnvCrypt.Core.Key.PlainText
 {
     /// <summary>
     /// Key used when value is stored in plain text.

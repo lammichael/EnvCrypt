@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key.Mapper;
+using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;

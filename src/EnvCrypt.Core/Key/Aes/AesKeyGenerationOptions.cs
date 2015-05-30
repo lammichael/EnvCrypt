@@ -1,4 +1,6 @@
-﻿namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
+﻿using EnvCrypt.Core.EncryptionAlgo;
+
+namespace EnvCrypt.Core.Key.Aes
 {
     class AesKeyGenerationOptions : KeyGenerationOptions<AesKey>
     {

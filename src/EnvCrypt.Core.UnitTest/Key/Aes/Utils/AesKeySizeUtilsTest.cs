@@ -1,10 +1,9 @@
-﻿using EnvCrypt.Core.EncryptionAlgo.Aes;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Utils;
+﻿using EnvCrypt.Core.Key.Aes;
+using EnvCrypt.Core.Key.Aes.Utils;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes.Utils
+namespace EnvCrypt.Core.UnitTest.Key.Aes.Utils
 {
     [TestFixture]
     public class AesKeySizeUtilsTest

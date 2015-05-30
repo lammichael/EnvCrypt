@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
-using EnvCrypt.Core.Key;
+using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Key
+namespace EnvCrypt.Core.Key.Rsa
 {
     /// <summary>
     /// RSA key data and metadata.

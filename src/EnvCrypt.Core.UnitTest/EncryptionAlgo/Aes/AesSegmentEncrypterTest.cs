@@ -1,6 +1,6 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Aes;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
+using EnvCrypt.Core.Key.Aes;
 using Moq;
 using NUnit.Framework;
 

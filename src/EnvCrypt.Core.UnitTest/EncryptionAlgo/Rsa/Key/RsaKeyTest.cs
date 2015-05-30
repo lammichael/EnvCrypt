@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
+using EnvCrypt.Core.Key.Rsa;
 using FluentAssertions;
 using NUnit.Framework;
 

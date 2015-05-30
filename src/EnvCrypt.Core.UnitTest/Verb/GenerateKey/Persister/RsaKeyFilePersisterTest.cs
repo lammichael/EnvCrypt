@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Key.Mapper;
+using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;

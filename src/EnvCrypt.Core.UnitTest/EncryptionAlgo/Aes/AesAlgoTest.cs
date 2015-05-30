@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using EnvCrypt.Core.EncryptionAlgo.Aes;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
+using EnvCrypt.Core.Key.Aes;
 using FluentAssertions;
 using NUnit.Framework;
 

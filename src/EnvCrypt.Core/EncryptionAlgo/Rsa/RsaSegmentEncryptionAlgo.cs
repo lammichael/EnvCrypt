@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
+using EnvCrypt.Core.Key.Rsa;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {

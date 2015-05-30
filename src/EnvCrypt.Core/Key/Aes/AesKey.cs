@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.Key;
+using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
+namespace EnvCrypt.Core.Key.Aes
 {
     public class AesKey : KeyBase, ISymmetricKeyMarker
     {

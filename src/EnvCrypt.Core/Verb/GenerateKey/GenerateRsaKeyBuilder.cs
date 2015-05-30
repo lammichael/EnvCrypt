@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
+using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
@@ -35,7 +35,10 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             _fileOptions = fileOptions;
 
             _rsaKeyGenerator = new RsaKeyGenerator();
-            _keyGenerationOptions = new RsaKeyGenerationOptions(DefaultRsaKeySize, DefaultUseOaepPadding);
+            _keyGenerationOptions = new RsaKeyGenerationOptions(DefaultRsaKeySize, DefaultUseOaepPadding)
+            {
+                NewKeyName = fileOptions.NewKeyName
+            };
             _textWriter = new TextWriter(new MyFile());
         }
 

@@ -16,7 +16,7 @@ namespace EnvCrypt.Core.Verb.LoadDat
     {
         public EnvCryptDat Load(string ecDatFilePath)
         {
-            Contract.Requires<ArgumentException>(string.IsNullOrWhiteSpace(ecDatFilePath), "ecDatFilePath");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(ecDatFilePath), "ecDatFilePath");
             Contract.Ensures(Contract.Result<EnvCryptDat>() != null);
             Contract.Ensures(Contract.Result<EnvCryptDat>().Categories != null);
 

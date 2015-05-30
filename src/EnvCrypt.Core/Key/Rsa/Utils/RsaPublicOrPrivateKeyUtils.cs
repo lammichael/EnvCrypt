@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
-using EnvCrypt.Core.Key;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
+namespace EnvCrypt.Core.Key.Rsa.Utils
 {
     static class RsaPublicOrPrivateKeyUtils
     {

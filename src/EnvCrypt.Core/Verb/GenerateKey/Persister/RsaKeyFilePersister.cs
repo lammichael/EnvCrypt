@@ -2,10 +2,11 @@
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Security.Cryptography;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Key.Mapper;
+using EnvCrypt.Core.Key.Rsa;
+using EnvCrypt.Core.Key.Rsa.Utils;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCryptKey = EnvCrypt.Core.Key.XmlPoco.EnvCryptKey;

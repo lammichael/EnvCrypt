@@ -28,6 +28,7 @@ namespace EnvCrypt.Core.EncryptionAlgo
             Contract.Requires<ArgumentNullException>(options != null, "options");
             Contract.Ensures(Contract.Result<T>() != null,
                 "generated key should not be null");
+            Contract.Ensures(Contract.Result<T>().Name != null);
 
             return default(T);
         }

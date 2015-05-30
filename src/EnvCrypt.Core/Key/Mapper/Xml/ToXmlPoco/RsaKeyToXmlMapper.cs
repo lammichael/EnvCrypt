@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
+using EnvCrypt.Core.Key.Rsa;
+using EnvCrypt.Core.Key.Rsa.Utils;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 

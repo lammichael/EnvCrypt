@@ -3,8 +3,8 @@
 // 
 
 using System.Xml.Serialization;
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
+using EnvCrypt.Core.Key.Aes;
+using EnvCrypt.Core.Key.Rsa;
 
 namespace EnvCrypt.Core.Key.XmlPoco
 {

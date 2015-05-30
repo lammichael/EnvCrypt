@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
+using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Core.EncryptionAlgo.Aes.Key
+namespace EnvCrypt.Core.Key.Aes
 {
     class AesKeyGenerator : IKeyGenerator<AesKey, AesKeyGenerationOptions>
     {

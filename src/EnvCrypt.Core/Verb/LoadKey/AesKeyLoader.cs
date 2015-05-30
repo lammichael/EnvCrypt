@@ -1,4 +1,4 @@
-using EnvCrypt.Core.EncryptionAlgo.Aes.Key;
+using EnvCrypt.Core.Key.Aes;
 using EnvCrypt.Core.Key.Mapper;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;

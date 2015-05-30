@@ -5,6 +5,7 @@ using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Key.PlainText;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 using EnvCrypt.Core.Verb.SaveDat;
@@ -14,29 +15,19 @@ namespace EnvCrypt.Core.Verb.AddEntry
     public class AddEntryWorkflow<TKey>
         where TKey : KeyBase
     {
-        private readonly IKeyLoader<TKey> _keyLoader;
-        private readonly IUserStringConverter _userStringConverter;
-        private readonly ISegmentEncryptionAlgo<TKey> _segmentEncrypter;
-
+        private readonly EncryptWorkflow<TKey> _encryptWorkflow;
         private readonly IDatLoader _datLoader;
         private readonly IDatSaver<EnvCryptEncryptedData> _datSaver;
 
-        public AddEntryWorkflow(IKeyLoader<TKey> keyLoader,
-            IUserStringConverter userStringConverter,
-            ISegmentEncryptionAlgo<TKey> segmentEncrypter,
-            IDatLoader datLoader, IDatSaver<EnvCryptEncryptedData> datSaver)
+        public AddEntryWorkflow(EncryptWorkflow<TKey> encryptWorkflow, IDatLoader datLoader, IDatSaver<EnvCryptEncryptedData> datSaver)
         {
-            Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
-            Contract.Requires<ArgumentNullException>(userStringConverter != null, "userStringConverter");
-            Contract.Requires<ArgumentNullException>(segmentEncrypter != null, "segmentEncrypter");
+            Contract.Requires<ArgumentNullException>(encryptWorkflow != null, "encryptWorkflow");
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
             //
-            _keyLoader = keyLoader;
-            _userStringConverter = userStringConverter;
-            _segmentEncrypter = segmentEncrypter;
             _datLoader = datLoader;
             _datSaver = datSaver;
+            _encryptWorkflow = encryptWorkflow;
         }
 
 
@@ -60,10 +51,8 @@ namespace EnvCrypt.Core.Verb.AddEntry
              * Write POCO to file
              */
 
-            var key = _keyLoader.Load(options.KeyFilePath);
-
-            var binaryToEncrypt = _userStringConverter.Encode(options.StringToEncrypt);
-            var encryptedSegments = _segmentEncrypter.Encrypt(binaryToEncrypt, key);
+            TKey key;
+            var encryptedSegments = _encryptWorkflow.GetEncryptedSegments(options.KeyFilePath, options.StringToEncrypt, out key);
 
             var datPoco = _datLoader.Load(options.DatFilePath);
             datPoco.AddEntry(options.CategoryName, options.EntryName, key, encryptedSegments, false);

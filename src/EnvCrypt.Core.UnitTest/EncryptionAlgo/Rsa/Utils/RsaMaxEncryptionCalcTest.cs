@@ -1,6 +1,6 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo.Rsa;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
+using EnvCrypt.Core.Key.Rsa;
 using FluentAssertions;
 using NUnit.Framework;
 

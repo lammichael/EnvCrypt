@@ -2,7 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
+using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 

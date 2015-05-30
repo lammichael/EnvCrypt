@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncryptionAlgo.Rsa.Key;
+using EnvCrypt.Core.Key.Rsa;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa.Utils
 {
