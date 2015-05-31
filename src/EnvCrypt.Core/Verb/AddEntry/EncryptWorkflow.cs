@@ -12,19 +12,19 @@ namespace EnvCrypt.Core.Verb.AddEntry
         where TKey : KeyBase
     {
         private readonly IKeyLoader<TKey> _keyLoader;
-        private readonly ICanEncryptUsingKeyChecker<TKey> _keyChecker;
+        private readonly IKeySuitabilityChecker<TKey> _keySuitabilityChecker;
         private readonly IUserStringConverter _userStringConverter;
         private readonly ISegmentEncryptionAlgo<TKey> _segmentEncrypter;
 
-        public EncryptWorkflow(IKeyLoader<TKey> keyLoader, ICanEncryptUsingKeyChecker<TKey> keyChecker, IUserStringConverter userStringConverter, ISegmentEncryptionAlgo<TKey> segmentEncrypter)
+        public EncryptWorkflow(IKeyLoader<TKey> keyLoader, IKeySuitabilityChecker<TKey> keySuitabilityChecker, IUserStringConverter userStringConverter, ISegmentEncryptionAlgo<TKey> segmentEncrypter)
         {
             Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
-            Contract.Requires<ArgumentNullException>(keyChecker != null, "keyChecker");
+            Contract.Requires<ArgumentNullException>(keySuitabilityChecker != null, "keyChecker");
             Contract.Requires<ArgumentNullException>(userStringConverter != null, "userStringConverter");
             Contract.Requires<ArgumentNullException>(segmentEncrypter != null, "segmentEncrypter");
             //
             _keyLoader = keyLoader;
-            _keyChecker = keyChecker;
+            _keySuitabilityChecker = keySuitabilityChecker;
             _userStringConverter = userStringConverter;
             _segmentEncrypter = segmentEncrypter;
         }
@@ -38,7 +38,7 @@ namespace EnvCrypt.Core.Verb.AddEntry
             //
             var key = _keyLoader.Load(usingKeyFilePath);
             
-            if(!_keyChecker.IsEncryptingKey(key))
+            if(!_keySuitabilityChecker.IsEncryptingKey(key))
             {
                 throw new EnvCryptException("impossible to encrypt using this {0} key. Name: {1}", key.Algorithm, key.Name);
             }

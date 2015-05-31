@@ -35,8 +35,10 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             _fileOptions = fileOptions;
 
             _rsaKeyGenerator = new RsaKeyGenerator();
-            _keyGenerationOptions = new RsaKeyGenerationOptions(DefaultRsaKeySize, DefaultUseOaepPadding)
+            _keyGenerationOptions = new RsaKeyGenerationOptions()
             {
+                KeySize = DefaultRsaKeySize,
+                UseOaepPadding = DefaultUseOaepPadding,
                 NewKeyName = fileOptions.NewKeyName
             };
             _textWriter = new TextWriter(new MyFile());

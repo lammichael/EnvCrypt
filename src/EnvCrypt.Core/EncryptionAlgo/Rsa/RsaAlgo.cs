@@ -4,6 +4,9 @@ using EnvCrypt.Core.Key.Rsa;
 
 namespace EnvCrypt.Core.EncryptionAlgo.Rsa
 {
+    /// <summary>
+    /// Note that there is some randomness when using OAEP: http://stackoverflow.com/questions/16325057/why-does-rsa-encrypted-text-give-me-different-results-for-the-same-text
+    /// </summary>
     public class RsaAlgo : IEncryptionAlgo<RsaKey>
     {
         public byte[] Encrypt(byte[] binaryData, RsaKey usingKey)
@@ -24,23 +27,17 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
                 "Exponent not in private key");
             Contract.Requires<EnvCryptAlgoException>(rsaPublicKey.Modulus != null,
                 "Modulus not in private key");
-
             //
-
-            //TODO: Catch and display a CryptographicException
-
             byte[] encryptedData;
-            //Create a new instance of RSACryptoServiceProvider. 
             using (var myRsa = new RSACryptoServiceProvider())
             {
-
                 //Import the RSA Key information. This only needs 
-                //toinclude the public key information.
+                //to include the public key information.
                 myRsa.ImportParameters(rsaPublicKey);
 
                 //Encrypt the passed byte array and specify OAEP padding.   
                 //OAEP padding is only available on Microsoft Windows XP or 
-                //later.  
+                //later.
                 encryptedData = myRsa.Encrypt(dataToEncrypt, doOaepPadding);
             }
             return encryptedData;
@@ -67,16 +64,9 @@ namespace EnvCrypt.Core.EncryptionAlgo.Rsa
                 "Q not in private key");
             //
             byte[] decryptedData;
-            //Create a new instance of RSACryptoServiceProvider. 
             using (var myRsa = new RSACryptoServiceProvider())
             {
-                //Import the RSA Key information. This needs 
-                //to include the private key information.
                 myRsa.ImportParameters(rsaPrivateKey);
-
-                //Decrypt the passed byte array and specify OAEP padding.   
-                //OAEP padding is only available on Microsoft Windows XP or 
-                //later.  
                 decryptedData = myRsa.Decrypt(dataToDecrypt, doOaepPadding);
             }
             return decryptedData;

@@ -15,7 +15,12 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
         {
             // Arrange
             var generator = new RsaKeyGenerator();
-            var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions(keySize, true));
+            var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions()
+            {
+                KeySize = keySize,
+                UseOaepPadding = true,
+                NewKeyName = "test"
+            });
 
             // Act
             var actualMaxBytes = new RsaMaxEncryptionCalc().GetMaxBytesThatCanBeEncrypted(aNewKey);
@@ -31,7 +36,12 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
         {
             // Arrange
             var generator = new RsaKeyGenerator();
-            var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions(keySize, false));
+            var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions()
+            {
+                KeySize = keySize,
+                UseOaepPadding = true,
+                NewKeyName = "test"
+            });
 
             // Act
             var actualMaxBytes = new RsaMaxEncryptionCalc().GetMaxBytesThatCanBeEncrypted(aNewKey);

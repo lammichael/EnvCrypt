@@ -18,7 +18,12 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
         public void Given_ValidKey_When_WriteToFile_Then_PublicAndPrivateKeyEncodedAndWrittenToFile()
         {
             // Arrange
-            var privateKey = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions(384, true));
+            var privateKey = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions()
+            {
+                KeySize = 384,
+                UseOaepPadding = true,
+                NewKeyName = "test"
+            });
 
             var pocoMapper = new Mock<IKeyToExternalRepresentationMapper<RsaKey, EnvCryptKey>>();
             pocoMapper.Setup(m => m.Map(It.IsAny<RsaKey>(), It.IsAny<EnvCryptKey>())).Callback<RsaKey, EnvCryptKey>((key, keyXml) => keyXml.Type = key.Key.D == null ? KeyTypeEnum.Public.ToString() : keyXml.Type = KeyTypeEnum.Private.ToString());

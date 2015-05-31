@@ -48,7 +48,7 @@ namespace EnvCrypt.Core.Verb.AddEntry
 
             var encryptWorkflow = new EncryptWorkflow<PlainTextKey>(
                 new PlainTextKeyLoader(),
-                new CanEncryptUsingPlainTextKeyChecker(),
+                new PlainTextKeySuitabilityChecker(),
                 userStringConverter,
                 new PlainTextSegmentEncryptionAlgo());
             var datLoader = new DatLoader(

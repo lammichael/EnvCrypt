@@ -1,8 +1,13 @@
 namespace EnvCrypt.Core.Key.PlainText
 {
-    class CanEncryptUsingPlainTextKeyChecker : ICanEncryptUsingKeyChecker<PlainTextKey>
+    class PlainTextKeySuitabilityChecker : IKeySuitabilityChecker<PlainTextKey>
     {
         public bool IsEncryptingKey(PlainTextKey key)
+        {
+            return true;
+        }
+
+        public bool IsDecryptingKey(PlainTextKey key)
         {
             return true;
         }

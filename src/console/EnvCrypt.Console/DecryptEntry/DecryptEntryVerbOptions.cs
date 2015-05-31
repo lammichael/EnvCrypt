@@ -2,10 +2,10 @@
 using CommandLine;
 using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Console.Decrypt
+namespace EnvCrypt.Console.DecryptEntry
 {
     [Verb("AddEntry", HelpText = "Generates a new key for encryption & decryption.")]
-    class DecryptVerbOptions //: VerbOptionsBase
+    class DecryptEntryVerbOptions //: VerbOptionsBase
     {
         [Option('k', "Key", HelpText = "Full path to ECKey file to use for encryption. If excluded then key will be added in plaintext.", Required = false)]
         public string KeyFile { get; set; }

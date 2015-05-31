@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.Poco;
+using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncrypedData
@@ -46,6 +47,57 @@ namespace EnvCrypt.Core.EncrypedData
             foundEntry = default(Entry);
             return false;
         }
+
+
+        public static bool SearchForEntry(this EnvCryptDat inDatPoco,
+            string withCategoryName, string withEntryName, out Entry foundEntry)
+        {
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withCategoryName), "withCategoryName");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withEntryName), "withEntryName");
+            //
+            Category foundCategory;
+            if (inDatPoco.SearchForCategory(withCategoryName, out foundCategory))
+            {
+                Entry entry;
+                if (foundCategory.SearchForEntry(withEntryName, out entry))
+                {
+                    foundEntry = entry;
+                    return true;
+                }
+            }
+            foundEntry = null;
+            return false;
+        }
+
+
+        /*public static bool GetSegments(this EnvCryptDat inDatPoco,
+            string inCategory, string inEntry, KeyBase encryptedUsingKey,
+            out IList<byte[]> foundSegments)
+        {
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(inCategory), "categoryName");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(inEntry), "entryName");
+            Contract.Requires<ArgumentNullException>(encryptedUsingKey != null, "encryptedUsingKey");
+            //
+            Entry foundEntry;
+            if (!inDatPoco.SearchForEntry(inCategory, inEntry, out foundEntry))
+            {
+                foundSegments = null;
+                return false;
+            }
+
+            // Was the entry encrypted using the key passed in?
+            if (foundEntry.EncryptionAlgorithm == EnvCryptAlgoEnum.PlainText ||
+                (foundEntry.EncryptionAlgorithm == encryptedUsingKey.Algorithm &&
+                foundEntry.KeyName == encryptedUsingKey.Name &&
+                foundEntry.KeyHash == encryptedUsingKey.GetHashCode()))
+            {
+                foundSegments = foundEntry.EncryptedValue;
+                return true;
+            }
+
+            foundSegments = null;
+            return false;
+        }*/
 
 
         public static void AddEntry(this EnvCryptDat toDatPoco,

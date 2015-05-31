@@ -39,7 +39,7 @@ namespace EnvCrypt.Console.GenerateKey
             }
             else
             {
-                System.Console.Error.WriteLine("Cannot generate key for encryption type: {0}", encryptionType);
+                System.Console.Error.WriteLine("Unsupported encryption type: {0}", encryptionType);
             }
         }
     }

@@ -14,7 +14,12 @@ namespace EnvCrypt.Core.UnitTest.Key.Rsa.Utils
         {
             // Arrange
             var generator = new RsaKeyGenerator();
-            var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions(keySize, true));
+            var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions()
+            {
+                KeySize = keySize,
+                UseOaepPadding = true,
+                NewKeyName = "test"
+            });
 
             // Act
             var actualKeySize = aNewKey.GetKeySize();

@@ -52,7 +52,7 @@ namespace EnvCrypt.Core.Verb.AddEntry
                     new TextReader(myFile),
                     new XmlSerializationUtils<EnvCryptKey>(),
                     new XmlToRsaKeyMapper(new Base64PersistConverter())),
-                new CanEncryptUsingRsaKeyChecker(),
+                new RsaKeySuitabilityChecker(),
                 new Utf16LittleEndianUserStringConverter(),
                 new RsaSegmentEncryptionAlgo(new RsaAlgo(), new RsaMaxEncryptionCalc()));
             var datLoader = new DatLoader(

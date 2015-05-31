@@ -149,8 +149,8 @@
     <Compile Include="EncryptionAlgo\PlainText\PlainTextSegmentEncryptionAlgo.cs" />
     <Compile Include="Key\Aes\CanEncryptUsingRsaKeyChecker.cs" />
     <Compile Include="Key\PlainText\CanEncryptUsingRsaKeyChecker.cs" />
-    <Compile Include="Key\Rsa\CanEncryptUsingRsaKeyChecker.cs" />
-    <Compile Include="Key\ICanEncryptUsingKeyChecker.cs" />
+    <Compile Include="Key\Rsa\RsaKeySuitabilityChecker.cs" />
+    <Compile Include="Key\IKeySuitabilityChecker.cs" />
     <Compile Include="EncryptionAlgo\ISegmentEncryptionAlgo.cs" />
     <Compile Include="Key\Rsa\Utils\RsaPublicOrPrivateKeyUtils.cs" />
     <Compile Include="Key\KeyTypeEnum.cs" />
@@ -212,6 +212,10 @@
     <Compile Include="Verb\AddEntry\AddPlainTextEntryBuilder.cs" />
     <Compile Include="Verb\AddEntry\AddRsaEntryBuilder.cs" />
     <Compile Include="Verb\AddEntry\EncryptWorkflow.cs" />
+    <Compile Include="Verb\GetEntry\DecryptEntryWorkflow.cs" />
+    <Compile Include="Verb\GetEntry\AddEntryWorkflowOptions.cs" />
+    <Compile Include="Verb\GetEntry\EntriesDecrypter.cs" />
+    <Compile Include="Verb\GetEntry\DecryptWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\GenerateRsaKeyBuilder.cs" />
     <Compile Include="Verb\GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\Persister\AsymmetricKeyFilePersister.cs" />
@@ -222,6 +226,8 @@
     <Compile Include="Verb\GenerateKey\Persister\KeyFilePersisterOptions.cs" />
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
+    <Compile Include="Verb\GetEntry\EntriesDecrypterResult.cs" />
+    <Compile Include="Verb\GetEntry\EntryDetails.cs" />
     <Compile Include="Verb\LoadDat\DatLoader.cs" />
     <Compile Include="Verb\LoadDat\IDatLoader.cs" />
     <Compile Include="Verb\LoadKey\IKeyLoader.cs" />
@@ -232,9 +238,7 @@
     <Compile Include="Verb\SaveDat\DatToXmlFileSaver.cs" />
     <Compile Include="Verb\SaveDat\IDatSaver.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Verb\Decrypt\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

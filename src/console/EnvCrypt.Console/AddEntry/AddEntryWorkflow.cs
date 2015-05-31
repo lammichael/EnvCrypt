@@ -28,7 +28,7 @@ namespace EnvCrypt.Console.AddEntry
             }
             else
             {
-                System.Console.Error.WriteLine("Cannot generate key for encryption type: {0}", encryptionType);
+                System.Console.Error.WriteLine("Cannot add entry for encryption type: {0}", encryptionType);
             }
         }
     }

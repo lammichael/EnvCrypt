@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
+using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using EnvCrypt.Core.Key.Rsa;
 using FluentAssertions;
@@ -15,17 +17,22 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
         {
             // Arrange
             const string strToTestWith = "encrypt this string and get the same after decryption";
-            var byteConverter = new UnicodeEncoding();
-            var strAsBytes = byteConverter.GetBytes(strToTestWith);
+            var converter = new Utf16LittleEndianUserStringConverter();
+            var strAsBytes = converter.Encode(strToTestWith);
 
-            var algo = new RsaAlgo();
+            var key = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions()
+            {
+                NewKeyName = "test",
+                KeySize = keySize,
+                UseOaepPadding = true
+            });
 
             // Act
-            var key = new RsaKeyGenerator().GetNewKey(new RsaKeyGenerationOptions(keySize, true));
+            var algo = new RsaAlgo();
             var result = algo.Decrypt(algo.Encrypt(strAsBytes, key), key);
 
             // Assert
-            byteConverter.GetString(result).Should().Be(strToTestWith);
+            converter.Decode(result).Should().Be(strToTestWith);
         }
     }
 }
