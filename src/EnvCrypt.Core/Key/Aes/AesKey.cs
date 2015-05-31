@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo;
+using EnvCrypt.Core.Utils;
 
 namespace EnvCrypt.Core.Key.Aes
 {
@@ -34,7 +35,8 @@ namespace EnvCrypt.Core.Key.Aes
         {
             unchecked
             {
-                return ((Key != null ? Key.GetHashCode() : 0)*397) ^ (Iv != null ? Iv.GetHashCode() : 0);
+                return ((Key != null ? ByteArrayHashUtils.GetHashCode(Key) : 0) * 397) ^ 
+                    (Iv != null ? ByteArrayHashUtils.GetHashCode(Iv) : 0);
             }
         }
     }

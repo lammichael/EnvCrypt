@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Security.Cryptography;
 using EnvCrypt.Core.EncryptionAlgo;
+using EnvCrypt.Core.Utils;
 
 namespace EnvCrypt.Core.Key.Rsa
 {
@@ -54,8 +55,8 @@ namespace EnvCrypt.Core.Key.Rsa
             unchecked
             {
                 return
-                    ((Key.Modulus != null ? Key.Modulus.GetHashCode() : 0) * 397) ^ 
-                    ((Key.Exponent != null ? Key.Exponent.GetHashCode() : 0) * 397) ^ 
+                    ((Key.Modulus != null ? ByteArrayHashUtils.GetHashCode(Key.Modulus) : 0) * 397) ^ 
+                    ((Key.Exponent != null ? ByteArrayHashUtils.GetHashCode(Key.Exponent) : 0) * 397) ^ 
                     UseOaepPadding.GetHashCode();
             }
         }

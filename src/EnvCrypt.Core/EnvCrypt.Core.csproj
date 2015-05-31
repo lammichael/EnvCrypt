@@ -162,6 +162,7 @@
     <Compile Include="Key\Mapper\Xml\ToXmlPoco\RsaKeyToXmlMapper.cs" />
     <Compile Include="Key\Mapper\Xml\ToKeyPoco\XmlToRsaKeyMapper.cs" />
     <Compile Include="Key\PlainText\PlainTextKey.cs" />
+    <Compile Include="Utils\ByteArrayHashUtils.cs" />
     <Compile Include="Utils\PlainTextPersistConverter.cs" />
     <Compile Include="Utils\IO\IMyFile.cs" />
     <Compile Include="Utils\IO\IMyDirectory.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="Key\XmlPoco\EnvCryptKeyAsXml.cs" />
     <Compile Include="Key\Mapper\IKeyToExternalRepresentationMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringUtils.cs" />
     <Compile Include="Utils\Base64PersistConverter.cs" />
     <Compile Include="Utils\IXmlSerializationUtils.cs" />
     <Compile Include="Utils\XmlSerializationUtils.cs" />
@@ -232,7 +232,9 @@
     <Compile Include="Verb\SaveDat\DatToXmlFileSaver.cs" />
     <Compile Include="Verb\SaveDat\IDatSaver.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Verb\Decrypt\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

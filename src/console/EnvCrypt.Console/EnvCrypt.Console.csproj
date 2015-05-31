@@ -139,6 +139,7 @@
     <Compile Include="AddEntry\AddEntryVerbOptions.cs" />
     <Compile Include="AddEntry\AddEntryWorkflow.cs" />
     <Compile Include="AddEntry\AddEntryCommandLineProcessor.cs" />
+    <Compile Include="Decrypt\AddEntryVerbOptions.cs" />
     <Compile Include="GenerateKey\GenerateKeyCommandLineProcessor.cs" />
     <Compile Include="GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="GenerateKey\GenerateKeyVerbOptions.cs" />
@@ -159,9 +160,7 @@
       <Name>EnvCrypt.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Decrypt\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
