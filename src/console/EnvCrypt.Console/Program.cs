@@ -25,61 +25,33 @@ namespace EnvCrypt.Console
                 System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
                 Environment.Exit(1);
             }
-
             if (parserResult.Value is NullInstance)
             {
                 System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
                 Environment.Exit(1);
             }
 
-            var generateKeyVerbOptions = parserResult.Value as GenerateKeyVerbOptions;
-            if (generateKeyVerbOptions != null)
-            {
-                var validator = new GenerateKeyOptionsValidator();
-                if (validator.HasErrorsAndReport(generateKeyVerbOptions))
-                {
-                    System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
-                    Environment.Exit(1);
-                }
 
-                try
-                {
-                    new GenerateKeyWorkflow().Run(generateKeyVerbOptions);
-                }
-                catch (Exception ex)
-                {
-                    System.Console.Error.WriteLine("Exception occurred:{0}{1}", Environment.NewLine, ex);
-#if (DEBUG)
-                    throw;
-#endif
-                    Environment.Exit(2);
-                }
-            }
-
-            var addEntryVerbOptions = parserResult.Value as AddEntryVerbOptions;
-            if (addEntryVerbOptions != null)
-            {
-                /*var validator = new ();
-                if (validator.HasErrorsAndReport(generateKeyVerbOptions))
-                {
-                    System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
-                    Environment.Exit(1);
-                }*/
 #if (!DEBUG)
-                try
-                {
+            try
+            {
 #endif
-                    new AddEntryWorkflow().Run(addEntryVerbOptions);
+                if (new GenerateKeyCommandLineProcessor().Run(parserResult))
+                {
+                    return;
+                }
+                if (new AddEntryCommandLineProcessor().Run(parserResult))
+                {
+                    return;
+                }
 #if (!DEBUG)
-                }
-                catch (Exception ex)
-                {
-                    System.Console.Error.WriteLine("Exception occurred:{0}{1}", Environment.NewLine, ex);
-
-                    Environment.Exit(2);
-                }
-#endif
             }
+            catch (Exception ex)
+            {
+                System.Console.Error.WriteLine("Exception occurred:{0}{1}", Environment.NewLine, ex);
+                Environment.Exit(2);
+            }
+#endif
         }
     }
 }

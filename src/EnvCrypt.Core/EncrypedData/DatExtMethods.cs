@@ -55,14 +55,16 @@ namespace EnvCrypt.Core.EncrypedData
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(categoryName), "categoryName");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(entryName), "entryName");
             //
+            var isNewEntry = true;
+            var entryToAdd = new Entry();
+
             var isNewCategory = true;
             var categoryToAddTo = new Category()
             {
                 Name = categoryName,
                 Entries = new List<Entry>()
             };
-            var isNewEntry = true;
-            var entryToAdd = new Entry();
+            
 
             // Search for entries with the same name in the desired category
             {
@@ -83,6 +85,7 @@ namespace EnvCrypt.Core.EncrypedData
                     {
                         isNewEntry = false;
                         entryToAdd = foundEntry;
+                        toDatPoco.RemoveEntry(categoryName, entryName);
                     }
                     else
                     {
@@ -96,14 +99,15 @@ namespace EnvCrypt.Core.EncrypedData
             {
                 toDatPoco.Categories.Add(categoryToAddTo);
                 Contract.Assert(isNewEntry);
-                categoryToAddTo.Entries.Add(entryToAdd);
             }
-
+            
             entryToAdd.Name = entryName;
             entryToAdd.KeyName = key.Name;
             entryToAdd.KeyHash = key.GetHashCode();
             entryToAdd.EncryptionAlgorithm = key.Algorithm;
             entryToAdd.EncryptedValue = segments;
+
+            categoryToAddTo.Entries.Add(entryToAdd);
         }
 
 

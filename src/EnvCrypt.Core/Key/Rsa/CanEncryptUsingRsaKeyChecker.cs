@@ -6,7 +6,8 @@ namespace EnvCrypt.Core.Key.Rsa
     {
         public bool IsEncryptingKey(RsaKey key)
         {
-            return key.GetKeyType() == KeyTypeEnum.Private;
+            var keyType = key.GetKeyType();
+            return keyType == KeyTypeEnum.Public || keyType == KeyTypeEnum.Private;
         }
     }
 }

@@ -79,7 +79,10 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister
                 Exponent = fromPrivateKey.Key.Exponent,
                 Modulus = fromPrivateKey.Key.Modulus,
             };
-            return new RsaKey(publicKey, fromPrivateKey.UseOaepPadding);
+            return new RsaKey(publicKey, fromPrivateKey.UseOaepPadding)
+            {
+                Name = fromPrivateKey.Name
+            };
         }
     }
 }

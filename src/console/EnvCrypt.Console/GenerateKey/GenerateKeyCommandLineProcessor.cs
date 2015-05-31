@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnvCrypt.Console.GenerateKey
 {
-    class GenerateKeyOptionsValidator
+    class GenerateKeyCommandLineProcessor : VerbCommandLineProcessor<GenerateKeyVerbOptions>
     {
-        /// <summary>
-        /// Writes the validation errors of the command line options to standard error,
-        /// and returns if there were errors found or not.
-        /// </summary>
-        /// <param name="options">to validate</param>
-        /// <returns>true if errors were found</returns>
-        public bool HasErrorsAndReport(GenerateKeyVerbOptions options)
+        protected override bool ReportErrors(GenerateKeyVerbOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
             //
             var hasErrors = false;
             if (options.GetAlgorithm() == null)
             {
-                System.Console.Error.WriteLine("Unrecognised algorithm: {0}.", options.AlgorithmToUse);
+                System.Console.Error.WriteLine("Unrecognised algorithm: {0}", options.AlgorithmToUse);
                 hasErrors = true;
             }
             if (string.IsNullOrWhiteSpace(options.KeyName))
@@ -37,6 +27,12 @@ namespace EnvCrypt.Console.GenerateKey
             }
 
             return hasErrors;
+        }
+
+
+        protected override void RunWorflow(GenerateKeyVerbOptions options)
+        {
+            new GenerateKeyWorkflow().Run(options);
         }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="EncryptedData\DatExtMethodsTest.cs" />
     <Compile Include="EncryptedData\Mapper\Xml\ToDatPoco\XmlToDatMapperTest.cs" />
     <Compile Include="EncryptedData\Mapper\Xml\ToXmlPoco\DatToXmlMapperTest.cs" />
     <Compile Include="EncryptedData\XmlPoco\EcDatXmlTest.cs" />

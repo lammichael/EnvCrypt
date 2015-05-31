@@ -7,7 +7,7 @@ namespace EnvCrypt.Console.AddEntry
     [Verb("AddEntry", HelpText = "Generates a new key for encryption & decryption.")]
     class AddEntryVerbOptions //: VerbOptionsBase
     {
-        [Option('k', "Key", HelpText = "Full path to ECKey file to use for encryption. If excluded then key will be added in plaintext.", Required = true)]
+        [Option('k', "Key", HelpText = "Full path to ECKey file to use for encryption. If excluded then key will be added in plaintext.", Required = false)]
         public string KeyFile { get; set; }
 
         [Option('a', "Algorithm", HelpText = "Algorithm to use - RSA or AES.", Required = true)]
