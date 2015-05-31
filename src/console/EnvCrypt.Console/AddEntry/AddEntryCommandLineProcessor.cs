@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Console.AddEntry
 {
@@ -10,15 +11,23 @@ namespace EnvCrypt.Console.AddEntry
             Contract.Requires<ArgumentNullException>(options != null, "options");
             //
             var hasErrors = false;
-            if (options.GetAlgorithm() == null)
+            var algorithm = options.GetAlgorithm();
+            if (algorithm == null)
             {
                 System.Console.Error.WriteLine("Unrecognised algorithm: {0}", options.AlgorithmToUse);
                 hasErrors = true;
             }
-            if (string.IsNullOrWhiteSpace(options.KeyFile))
+            else
             {
-                System.Console.Error.WriteLine("Key file path (encryption key) not defined.");
-                hasErrors = true;
+                // PlainText encryption doesn't require any key
+                if (algorithm.Value != EnvCryptAlgoEnum.PlainText)
+                {
+                    if (string.IsNullOrWhiteSpace(options.KeyFile))
+                    {
+                        System.Console.Error.WriteLine("Key file path (encryption key) not defined.");
+                        hasErrors = true;
+                    }
+                }
             }
             if (string.IsNullOrWhiteSpace(options.DatFile))
             {

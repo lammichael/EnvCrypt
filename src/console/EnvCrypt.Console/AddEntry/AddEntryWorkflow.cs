@@ -7,19 +7,24 @@ namespace EnvCrypt.Console.AddEntry
     {
         public void Run(AddEntryVerbOptions options)
         {
+            var addEntryOpts = new AddEntryWorkflowOptions()
+            {
+                CategoryName = options.Category,
+                EntryName = options.EntryName,
+                DatFilePath = options.DatFile,
+                KeyFilePath = options.KeyFile,
+                StringToEncrypt = options.StringToEncrypt
+            };
+
             var encryptionType = options.GetAlgorithm();
             if (encryptionType == EnvCryptAlgoEnum.Rsa)
             {
-                var addEntryOpts = new AddEntryWorkflowOptions()
-                {
-                    CategoryName = options.Category,
-                    EntryName = options.EntryName,
-                    DatFilePath = options.DatFile,
-                    KeyFilePath = options.KeyFile,
-                    StringToEncrypt = options.StringToEncrypt
-                };
-
                 new AddRsaEntryBuilder(addEntryOpts).Build().Run();
+            }
+            else if (encryptionType == EnvCryptAlgoEnum.PlainText)
+            {
+                addEntryOpts.KeyFilePath = null;
+                new AddPlainTextEntryBuilder(addEntryOpts).Build().Run();
             }
             else
             {

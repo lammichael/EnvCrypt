@@ -32,8 +32,8 @@ namespace EnvCrypt.Core.Verb.AddEntry
 
         public IList<byte[]> GetEncryptedSegments(string usingKeyFilePath, string toEncrypt, out TKey withKey)
         {
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(usingKeyFilePath), "usingKeyFilePath");
-            Contract.Requires<ArgumentNullException>(toEncrypt != null, "toEncrypt");
+            //Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(usingKeyFilePath), "usingKeyFilePath");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(toEncrypt), "toEncrypt");
             Contract.Ensures(Contract.ValueAtReturn(out withKey) != null);
             //
             var key = _keyLoader.Load(usingKeyFilePath);

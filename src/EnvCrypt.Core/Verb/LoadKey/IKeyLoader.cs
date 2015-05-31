@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Key.PlainText;
 
 namespace EnvCrypt.Core.Verb.LoadKey
 {
@@ -21,9 +22,12 @@ namespace EnvCrypt.Core.Verb.LoadKey
     {
         public TKey Load(string ecKeyFilePath)
         {
-            Contract.Requires<ArgumentException>(!String.IsNullOrWhiteSpace(ecKeyFilePath), "ecKeyFilePath");
+            Contract.Requires<ArgumentException>(typeof(TKey) == typeof(PlainTextKey) || 
+                !string.IsNullOrWhiteSpace(ecKeyFilePath),
+                "key file path not specified");
             Contract.Ensures(Contract.Result<TKey>() != null);
-            Contract.Ensures(!String.IsNullOrEmpty(Contract.Result<TKey>().Name));
+            Contract.Ensures(typeof(TKey) == typeof(PlainTextKey) || 
+                !String.IsNullOrEmpty(Contract.Result<TKey>().Name));
             return default(TKey);
         }
     }

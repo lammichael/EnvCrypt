@@ -14,7 +14,7 @@ using EnvCrypt.Core.Verb.SaveDat;
 
 namespace EnvCrypt.Core.Verb.AddEntry
 {
-    class AddPlainTextEntryBuilder
+    public class AddPlainTextEntryBuilder
     {
         public bool IsBuilt { get; private set; }
 

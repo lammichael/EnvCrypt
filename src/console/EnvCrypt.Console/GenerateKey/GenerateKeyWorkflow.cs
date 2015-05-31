@@ -12,20 +12,21 @@ namespace EnvCrypt.Console.GenerateKey
 
         public void Run(GenerateKeyVerbOptions options)
         {
+            var keyPersisterOpts = new AsymmetricKeyFilePersisterOptions()
+            {
+                NewKeyName = options.KeyName,
+                NewPrivateKeyFullFilePath = Path.Combine(
+                    options.OutputDirectory,
+                    string.Concat(options.KeyName, PrivateKeyPostfix)),
+                NewPublicKeyFullFilePath = Path.Combine(
+                    options.OutputDirectory,
+                    string.Concat(options.KeyName, PublicKeyPostfix)),
+                OverwriteFileIfExists = false
+            };
+
             var encryptionType = options.GetAlgorithm();
             if (encryptionType == EnvCryptAlgoEnum.Rsa)
             {
-                var keyPersisterOpts = new AsymmetricKeyFilePersisterOptions()
-                {
-                    NewKeyName = options.KeyName,
-                    NewPrivateKeyFullFilePath = Path.Combine(
-                        options.OutputDirectory,
-                        string.Concat(options.KeyName, PrivateKeyPostfix)),
-                    NewPublicKeyFullFilePath = Path.Combine(
-                        options.OutputDirectory,
-                        string.Concat(options.KeyName, PublicKeyPostfix) ),
-                    OverwriteFileIfExists = false
-                };
                 if (options.OutputKeyToConsole)
                 {
                     new GenerateRsaKeyBuilder(keyPersisterOpts)
