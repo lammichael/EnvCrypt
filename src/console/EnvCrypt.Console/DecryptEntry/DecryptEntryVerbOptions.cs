@@ -1,26 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using CommandLine;
 using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Console.DecryptEntry
 {
-    [Verb("AddEntry", HelpText = "Generates a new key for encryption & decryption.")]
+    [Verb("DecryptEntry", HelpText = "Decrypts entries using the keys specified. The appropriate key (if specified) will be found to decrypt each entry.")]
     class DecryptEntryVerbOptions //: VerbOptionsBase
     {
-        [Option('k', "Key", HelpText = "Full path to ECKey file to use for encryption. If excluded then key will be added in plaintext.", Required = false)]
-        public string KeyFile { get; set; }
+        public const char Delimiter = '|';
 
         [Option('a', "Algorithm", HelpText = "Algorithm to use - RSA or AES.", Required = true)]
         public string AlgorithmToUse { get; set; }
 
-        [Option('c', "Category", HelpText = "Category to add entry under.", Required = true)]
-        public string Category { get; set; }
-
-        [Option('n', "Name", HelpText = "The new entry's name. Accepts comma separated names corresponding to the strings for each entry.", Required = true)]
-        public string EntryName { get; set; }
-
         [Option('d', "Dat", HelpText = "Full path to ECDat file containing the encrypted entries use for encryption. If ECDat does not already exist then it will be created.", Required = true)]
         public string DatFile { get; set; }
+
+        [Option('k', "Keys", HelpText = "Full path to ECKey files to use for encryption. If excluded then key will be added in plaintext. Accepts multiple key files pipe (|) separated.", Required = false)]
+        public string KeyFiles { get; set; }
+
+        [Option('c', "Categories", HelpText = "Category to add entry under. Accepts pipe (|) separated names corresponding to the specified entries.", Required = true)]
+        public string Categories { get; set; }
+
+        [Option('e', "Entries", HelpText = "The new entry's name. Accepts pipe (|) separated names corresponding to the strings for each entry.", Required = true)]
+        public string Entries { get; set; }
 
 
         public EnvCryptAlgoEnum? GetAlgorithm()
@@ -31,6 +35,27 @@ namespace EnvCrypt.Console.DecryptEntry
                 return ret;
             }
             return null;
+        }
+
+
+        [Pure]
+        public IList<string> GetKeyFiles()
+        {
+            return KeyFiles.Split(Delimiter);
+        }
+
+
+        [Pure]
+        public IList<string> GetCategories()
+        {
+            return Categories.Split(Delimiter);
+        }
+
+
+        [Pure]
+        public IList<string> GetEntries()
+        {
+            return Entries.Split(Delimiter);
         }
     }
 }

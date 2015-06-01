@@ -10,7 +10,7 @@ namespace EnvCrypt.Console.AddEntry
             var addEntryOpts = new AddEntryWorkflowOptions()
             {
                 CategoryName = options.Category,
-                EntryName = options.EntryName,
+                EntryName = options.NewEntryName,
                 DatFilePath = options.DatFile,
                 KeyFilePath = options.KeyFile,
                 StringToEncrypt = options.StringToEncrypt

@@ -6,6 +6,6 @@ namespace EnvCrypt.Core.Verb.GetEntry
     {
         public string DatFilePath { get; set; }
         public IList<string> KeyFilePaths { get; set; }
-        public IList<EntryDetails> CategoryEntryDetails { get; set; }
+        public IList<CategoryEntryPair> CategoryEntryPair { get; set; }
     }
 }

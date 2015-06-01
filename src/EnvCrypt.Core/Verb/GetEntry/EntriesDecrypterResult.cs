@@ -2,7 +2,7 @@
 {
     public class EntriesDecrypterResult
     {
-        public EntryDetails EntryDetails { get; set; }
+        public CategoryEntryPair CategoryEntryPair { get; set; }
         public string DecryptedValue { get; set; }
     }
 }

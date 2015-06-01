@@ -34,9 +34,9 @@ namespace EnvCrypt.Core.Verb.GetEntry
 
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
 
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryDetails, t => !string.IsNullOrWhiteSpace(t.Category)),
+            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Category)),
                 "none of the category names can be null or whitespace");
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryDetails, t => !string.IsNullOrWhiteSpace(t.Entry)),
+            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Entry)),
                 "none of the entry names can be null or whitespace");
 
             Contract.Requires<ArgumentException>(typeof(TKey) == typeof(PlainTextKey) || 
@@ -54,7 +54,7 @@ namespace EnvCrypt.Core.Verb.GetEntry
             }
 
 
-            return _entriesDecrypter.Decrypt(keys, datPoco, options.CategoryEntryDetails);
+            return _entriesDecrypter.Decrypt(keys, datPoco, options.CategoryEntryPair);
         }
     }
 }

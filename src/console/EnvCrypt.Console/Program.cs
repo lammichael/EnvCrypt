@@ -3,6 +3,7 @@ using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 using EnvCrypt.Console.AddEntry;
+using EnvCrypt.Console.DecryptEntry;
 using EnvCrypt.Console.GenerateKey;
 
 namespace EnvCrypt.Console
@@ -14,7 +15,8 @@ namespace EnvCrypt.Console
             var parser = new Parser(settings => settings.CaseSensitive = false);
             var parserResult = parser.ParseArguments(args,
                 typeof(GenerateKeyVerbOptions),
-                typeof(AddEntryVerbOptions));
+                typeof(AddEntryVerbOptions),
+                typeof(DecryptEntryVerbOptions));
             /*catch (System.ArgumentException argEx)
             {
                 // Occurs when an exact enum value is not passed
@@ -41,6 +43,10 @@ namespace EnvCrypt.Console
                     return;
                 }
                 if (new AddEntryCommandLineProcessor().Run(parserResult))
+                {
+                    return;
+                }
+                if (new DecryptEntryCommandLineProcessor().Run(parserResult))
                 {
                     return;
                 }

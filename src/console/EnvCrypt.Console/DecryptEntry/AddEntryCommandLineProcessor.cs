@@ -2,11 +2,11 @@
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncryptionAlgo;
 
-namespace EnvCrypt.Console.AddEntry
+namespace EnvCrypt.Console.DecryptEntry
 {
-    class AddEntryCommandLineProcessor : VerbCommandLineProcessor<AddEntryVerbOptions>
+    class DecryptEntryCommandLineProcessor : VerbCommandLineProcessor<DecryptEntryVerbOptions>
     {
-        protected override bool ReportErrors(AddEntryVerbOptions options)
+        protected override bool ReportErrors(DecryptEntryVerbOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
             //
@@ -22,9 +22,9 @@ namespace EnvCrypt.Console.AddEntry
                 // PlainText encryption doesn't require any key
                 if (algorithm.Value != EnvCryptAlgoEnum.PlainText)
                 {
-                    if (string.IsNullOrWhiteSpace(options.KeyFile))
+                    if (string.IsNullOrWhiteSpace(options.KeyFiles))
                     {
-                        System.Console.Error.WriteLine("Key file path (encryption key) not defined.");
+                        System.Console.Error.WriteLine("No key file paths (decryption keys) defined.");
                         hasErrors = true;
                     }
                 }
@@ -34,19 +34,23 @@ namespace EnvCrypt.Console.AddEntry
                 System.Console.Error.WriteLine("DAT file path not defined.");
                 hasErrors = true;
             }
-            if (string.IsNullOrWhiteSpace(options.Category))
+            if (string.IsNullOrWhiteSpace(options.Categories))
             {
                 System.Console.Error.WriteLine("Category not defined.");
                 hasErrors = true;
             }
-            if (string.IsNullOrWhiteSpace(options.NewEntryName))
+            if (string.IsNullOrWhiteSpace(options.Entries))
             {
                 System.Console.Error.WriteLine("Entry name not defined.");
                 hasErrors = true;
             }
-            if (string.IsNullOrWhiteSpace(options.StringToEncrypt))
+
+            var categories = options.GetCategories();
+            var entries = options.GetEntries();
+
+            if (categories.Count != entries.Count)
             {
-                System.Console.Error.WriteLine("String to encrypt not defined.");
+                System.Console.Error.WriteLine("Number of categories ({0}) does not match the number of entries ({1}).", categories.Count, entries.Count);
                 hasErrors = true;
             }
 
@@ -54,9 +58,9 @@ namespace EnvCrypt.Console.AddEntry
         }
 
 
-        protected override void RunWorflow(AddEntryVerbOptions options)
+        protected override void RunWorflow(DecryptEntryVerbOptions options)
         {
-            new AddEntryWorkflow().Run(options);
+            new DecryptEntryWorkflow().Run(options);
         }
     }
 }

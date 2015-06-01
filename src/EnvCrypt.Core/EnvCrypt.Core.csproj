@@ -212,6 +212,7 @@
     <Compile Include="Verb\AddEntry\AddPlainTextEntryBuilder.cs" />
     <Compile Include="Verb\AddEntry\AddRsaEntryBuilder.cs" />
     <Compile Include="Verb\AddEntry\EncryptWorkflow.cs" />
+    <Compile Include="Verb\GetEntry\AddPlainTextEntryBuilder.cs" />
     <Compile Include="Verb\GetEntry\DecryptEntryWorkflow.cs" />
     <Compile Include="Verb\GetEntry\AddEntryWorkflowOptions.cs" />
     <Compile Include="Verb\GetEntry\EntriesDecrypter.cs" />
@@ -227,7 +228,7 @@
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\SymmetricKeyFilePersisterOptions.cs" />
     <Compile Include="Verb\GetEntry\EntriesDecrypterResult.cs" />
-    <Compile Include="Verb\GetEntry\EntryDetails.cs" />
+    <Compile Include="Verb\GetEntry\CategoryEntryPair.cs" />
     <Compile Include="Verb\LoadDat\DatLoader.cs" />
     <Compile Include="Verb\LoadDat\IDatLoader.cs" />
     <Compile Include="Verb\LoadKey\IKeyLoader.cs" />

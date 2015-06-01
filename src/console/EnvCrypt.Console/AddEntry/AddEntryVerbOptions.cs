@@ -16,8 +16,8 @@ namespace EnvCrypt.Console.AddEntry
         [Option('c', "Category", HelpText = "Category to add entry under.", Required = true)]
         public string Category { get; set; }
 
-        [Option('n', "Name", HelpText = "The new entry's name. Accepts comma separated names corresponding to the strings for each entry.", Required = true)]
-        public string EntryName { get; set; }
+        [Option('e', "Entry", HelpText = "The new entry's name. Accepts comma separated names corresponding to the strings for each entry.", Required = true)]
+        public string NewEntryName { get; set; }
 
         [Option('s', "String", HelpText = "String to encrypt and include in the entry. Accepts comma separated values corresponding to entry names.", Required = true)]
         public string StringToEncrypt { get; set; }

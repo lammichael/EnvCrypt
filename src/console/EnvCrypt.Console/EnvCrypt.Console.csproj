@@ -139,8 +139,10 @@
     <Compile Include="AddEntry\AddEntryVerbOptions.cs" />
     <Compile Include="AddEntry\AddEntryWorkflow.cs" />
     <Compile Include="AddEntry\AddEntryCommandLineProcessor.cs" />
+    <Compile Include="DecryptEntry\AddEntryCommandLineProcessor.cs" />
     <Compile Include="DecryptEntry\DecryptEntryVerbOptions.cs" />
     <Compile Include="DecryptEntry\DecryptEntryWorkflow.cs" />
+    <Compile Include="EnvCryptException.cs" />
     <Compile Include="GenerateKey\GenerateKeyCommandLineProcessor.cs" />
     <Compile Include="GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="GenerateKey\GenerateKeyVerbOptions.cs" />

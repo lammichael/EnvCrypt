@@ -29,8 +29,9 @@ namespace EnvCrypt.Core.Verb.GetEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, IList<EntryDetails> entryDetails, bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
+        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, IList<CategoryEntryPair> entryDetails, bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
         {
+            Contract.Requires<ArgumentNullException>(usingKeys != null);
             Contract.Requires<ArgumentException>(usingKeys.Any());
 
             //
@@ -74,14 +75,14 @@ namespace EnvCrypt.Core.Verb.GetEntry
                     {
                         
                         var currentKey = keysToUse[(int)kI];
-                        if (currentKey.Name == foundEntry.Name &&
+                        if (currentKey.Name == foundEntry.KeyName &&
                             currentKey.GetHashCode() == foundEntry.KeyHash)
                         {
                             var encodedDecryptedData = _segmentEncrypter.Decrypt(foundEntry.EncryptedValue, currentKey);
 
                             toAdd = new EntriesDecrypterResult
                             {
-                                EntryDetails = currentRequest,
+                                CategoryEntryPair = currentRequest,
                                 DecryptedValue = _userStringConverter.Decode(encodedDecryptedData)
                             };
 
@@ -111,22 +112,22 @@ namespace EnvCrypt.Core.Verb.GetEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, EntryDetails entryDetails,
+        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, CategoryEntryPair categoryEntryPair,
             bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
         {
 
             //
-            return this.Decrypt(usingKeys, inDat, new[] {entryDetails}, throwExceptionIfEntryNotFound,
+            return this.Decrypt(usingKeys, inDat, new[] {categoryEntryPair}, throwExceptionIfEntryNotFound,
                 throwIfDecryptingKeyNotFound, throwIfKeyCannotDecrypt);
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(TKey usingKey, EnvCryptDat inDat, EntryDetails entryDetails,
+        public IList<EntriesDecrypterResult> Decrypt(TKey usingKey, EnvCryptDat inDat, CategoryEntryPair categoryEntryPair,
             bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
         {
 
             //
-            return this.Decrypt(new[] {usingKey}, inDat, new[] {entryDetails}, throwExceptionIfEntryNotFound,
+            return this.Decrypt(new[] {usingKey}, inDat, new[] {categoryEntryPair}, throwExceptionIfEntryNotFound,
                 throwIfDecryptingKeyNotFound, throwIfKeyCannotDecrypt);
         }
     }
