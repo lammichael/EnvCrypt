@@ -8,15 +8,18 @@ using EnvCrypt.Core.Verb.LoadKey;
 
 namespace EnvCrypt.Core.Verb.AddEntry
 {
-    public class EncryptWorkflow<TKey>
+    public class EncryptWorkflow<TKey, TKeyLoadDetails>
         where TKey : KeyBase
     {
-        private readonly IKeyLoader<TKey> _keyLoader;
+        private readonly IKeyLoader<TKey, TKeyLoadDetails> _keyLoader;
         private readonly IKeySuitabilityChecker<TKey> _keySuitabilityChecker;
         private readonly IUserStringConverter _userStringConverter;
         private readonly ISegmentEncryptionAlgo<TKey> _segmentEncrypter;
 
-        public EncryptWorkflow(IKeyLoader<TKey> keyLoader, IKeySuitabilityChecker<TKey> keySuitabilityChecker, IUserStringConverter userStringConverter, ISegmentEncryptionAlgo<TKey> segmentEncrypter)
+        public EncryptWorkflow(IKeyLoader<TKey, TKeyLoadDetails> keyLoader, 
+            IKeySuitabilityChecker<TKey> keySuitabilityChecker,
+            IUserStringConverter userStringConverter,
+            ISegmentEncryptionAlgo<TKey> segmentEncrypter)
         {
             Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
             Contract.Requires<ArgumentNullException>(keySuitabilityChecker != null, "keyChecker");
@@ -30,13 +33,12 @@ namespace EnvCrypt.Core.Verb.AddEntry
         }
 
 
-        public IList<byte[]> GetEncryptedSegments(string usingKeyFilePath, string toEncrypt, out TKey withKey)
+        public IList<byte[]> GetEncryptedSegments(TKeyLoadDetails usingKeyDetails, string toEncrypt, out TKey withKey)
         {
-            //Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(usingKeyFilePath), "usingKeyFilePath");
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(toEncrypt), "toEncrypt");
             Contract.Ensures(Contract.ValueAtReturn(out withKey) != null);
             //
-            var key = _keyLoader.Load(usingKeyFilePath);
+            var key = _keyLoader.Load(usingKeyDetails);
             
             if(!_keySuitabilityChecker.IsEncryptingKey(key))
             {

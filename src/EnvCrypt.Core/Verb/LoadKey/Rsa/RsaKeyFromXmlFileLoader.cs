@@ -4,13 +4,13 @@ using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 
-namespace EnvCrypt.Core.Verb.LoadKey
+namespace EnvCrypt.Core.Verb.LoadKey.Rsa
 {
-    class RsaKeyLoader : KeyLoaderFromXmlFile<RsaKey>
+    class RsaKeyFromXmlFileLoader : KeyFromXmlFileLoader<RsaKey, KeyFromFileDetails>
     {
         private readonly IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> _mapper;
 
-        public RsaKeyLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptKey> xmlSerializationUtils, IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> mapper) : base(myFile, xmlReader, xmlSerializationUtils)
+        public RsaKeyFromXmlFileLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptKey> xmlSerializationUtils, IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> mapper) : base(myFile, xmlReader, xmlSerializationUtils)
         {
             _mapper = mapper;
         }

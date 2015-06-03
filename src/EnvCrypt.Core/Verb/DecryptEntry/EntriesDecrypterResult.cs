@@ -1,4 +1,4 @@
-﻿namespace EnvCrypt.Core.Verb.GetEntry
+﻿namespace EnvCrypt.Core.Verb.DecryptEntry
 {
     public class EntriesDecrypterResult
     {

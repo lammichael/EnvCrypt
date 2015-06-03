@@ -2,24 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco;
-using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToXmlPoco;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
-using EnvCrypt.Core.EncryptionAlgo.PlainText;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 using EnvCrypt.Core.Key.Mapper.Xml.ToKeyPoco;
-using EnvCrypt.Core.Key.PlainText;
 using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
-using EnvCrypt.Core.Verb.AddEntry;
 using EnvCrypt.Core.Verb.LoadDat;
-using EnvCrypt.Core.Verb.LoadKey;
-using EnvCrypt.Core.Verb.SaveDat;
+using EnvCrypt.Core.Verb.LoadKey.Rsa;
 
-namespace EnvCrypt.Core.Verb.GetEntry
+namespace EnvCrypt.Core.Verb.DecryptEntry
 {
     public class DecryptRsaEntryWorkflowBuilder
     {
@@ -57,7 +52,7 @@ namespace EnvCrypt.Core.Verb.GetEntry
 
             var persistConverter = new Base64PersistConverter();
 
-            var keyLoader = new RsaKeyLoader(
+            var keyLoader = new RsaKeyFromXmlFileLoader(
                 myFile,
                 new TextReader(myFile),
                 new XmlSerializationUtils<EnvCryptKey>(),

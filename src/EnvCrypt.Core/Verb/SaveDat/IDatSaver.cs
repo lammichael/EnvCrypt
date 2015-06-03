@@ -6,21 +6,18 @@ using EnvCrypt.Core.EncrypedData.Poco;
 namespace EnvCrypt.Core.Verb.SaveDat
 {
     [ContractClass(typeof(DatSaverContracts<>))]
-    public interface IDatSaver<TExtRep>
-        where TExtRep : IDataExternalRepresentation
+    public interface IDatSaver<in TSaverDetails>
     {
-        void Save(EnvCryptDat data, string toFile);
+        void Save(EnvCryptDat data, TSaverDetails saverDetails);
     }
 
 
     [ContractClassFor(typeof(IDatSaver<>))]
-    internal abstract class DatSaverContracts<TExtRep> : IDatSaver<TExtRep> 
-        where TExtRep : IDataExternalRepresentation
+    internal abstract class DatSaverContracts<TSaverDetails> : IDatSaver<TSaverDetails>
     {
-        public void Save(EnvCryptDat data, string toFile)
+        public void Save(EnvCryptDat data, TSaverDetails saverDetails)
         {
             Contract.Requires<ArgumentNullException>(data != null, "data");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(toFile), "toFile");
         }
     }
 }

@@ -4,9 +4,8 @@ using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
-using EnvCrypt.Core.Verb.LoadKey;
 
-namespace EnvCrypt.Core.Verb.GetEntry
+namespace EnvCrypt.Core.Verb.DecryptEntry
 {
     public class DecryptWorkflow<TKey>
         where TKey : KeyBase

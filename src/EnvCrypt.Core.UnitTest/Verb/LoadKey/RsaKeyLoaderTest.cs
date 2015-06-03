@@ -5,6 +5,7 @@ using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.LoadKey;
+using EnvCrypt.Core.Verb.LoadKey.Rsa;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -41,8 +42,8 @@ namespace EnvCrypt.Core.UnitTest.Verb.LoadKey
             mapperMock.Setup(m => m.Map(xmlPoco)).Returns(rsaKey);
 
             // Act
-            var workflow = new RsaKeyLoader(myFileMock.Object, textReaderMock.Object, serialisationMock.Object, mapperMock.Object);
-            var keyPoco = workflow.Load(keyfile);
+            var workflow = new RsaKeyFromXmlFileLoader(myFileMock.Object, textReaderMock.Object, serialisationMock.Object, mapperMock.Object);
+            var keyPoco = workflow.Load(new KeyFromFileDetails() { FilePath = keyfile });
 
             // Assert
             keyPoco.Should().Be(rsaKey);

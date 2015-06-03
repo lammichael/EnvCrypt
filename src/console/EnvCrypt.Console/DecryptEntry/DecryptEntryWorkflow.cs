@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.Key.Rsa;
-using EnvCrypt.Core.Verb.GetEntry;
+using EnvCrypt.Core.Verb.DecryptEntry;
 
 namespace EnvCrypt.Console.DecryptEntry
 {

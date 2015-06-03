@@ -8,13 +8,15 @@ using EnvCrypt.Core.Utils.IO;
 
 namespace EnvCrypt.Core.Verb.SaveDat
 {
-    class DatToXmlFileSaver : IDatSaver<EnvCryptEncryptedData>
+    class DatToXmlFileSaver : IDatSaver<DatToFileSaverDetails>
     {
         private readonly IDatToExternalRepresentationMapper<EnvCryptEncryptedData> _pocoToXmlMapper;
         private readonly IXmlSerializationUtils<EnvCryptEncryptedData> _serializationUtils;
         private readonly IStringToFileWriter _fileWriter;
 
-        public DatToXmlFileSaver(IDatToExternalRepresentationMapper<EnvCryptEncryptedData> pocoToXmlMapper, IXmlSerializationUtils<EnvCryptEncryptedData> serializationUtils, IStringToFileWriter fileWriter)
+        public DatToXmlFileSaver(IDatToExternalRepresentationMapper<EnvCryptEncryptedData> pocoToXmlMapper,
+            IXmlSerializationUtils<EnvCryptEncryptedData> serializationUtils,
+            IStringToFileWriter fileWriter)
         {
             Contract.Requires<ArgumentNullException>(pocoToXmlMapper != null, "pocoToXmlMapper");
             Contract.Requires<ArgumentNullException>(serializationUtils != null, "serializationUtils");
@@ -26,11 +28,17 @@ namespace EnvCrypt.Core.Verb.SaveDat
         }
 
 
-        public void Save(EnvCryptDat data, string toFile)
+        public void Save(EnvCryptDat data, DatToFileSaverDetails fileSaverDetails)
         {
+            if (fileSaverDetails == null ||
+                string.IsNullOrWhiteSpace(fileSaverDetails.DestinationFilePath))
+            {
+                throw new ArgumentException("destination file path cannot be empty");
+            }
+
             var xmlPoco = _pocoToXmlMapper.Map(data);
             var xmlStr = _serializationUtils.Serialize(xmlPoco);
-            _fileWriter.Write(toFile, xmlStr, true, _serializationUtils.GetUsedEncoding());
+            _fileWriter.Write(fileSaverDetails.DestinationFilePath, xmlStr, true, _serializationUtils.GetUsedEncoding());
         }
     }
 }

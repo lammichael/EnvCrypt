@@ -1,5 +1,7 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Verb.AddEntry;
+using EnvCrypt.Core.Verb.AddEntry.PlainText;
+using EnvCrypt.Core.Verb.AddEntry.Rsa;
 
 namespace EnvCrypt.Console.AddEntry
 {
@@ -7,24 +9,23 @@ namespace EnvCrypt.Console.AddEntry
     {
         public void Run(AddEntryVerbOptions options)
         {
-            var addEntryOpts = new AddEntryWorkflowOptions()
+            var addEntryOpts = new AddEntryUsingKeyFileWorkflowOptions()
             {
                 CategoryName = options.Category,
                 EntryName = options.NewEntryName,
                 DatFilePath = options.DatFile,
-                KeyFilePath = options.KeyFile,
                 StringToEncrypt = options.StringToEncrypt
             };
 
             var encryptionType = options.GetAlgorithm();
             if (encryptionType == EnvCryptAlgoEnum.Rsa)
             {
-                new AddRsaEntryBuilder(addEntryOpts).Build().Run();
+                addEntryOpts.KeyFilePath = options.KeyFile;
+                new AddRsaEntryBuilder().Build().Run(addEntryOpts);
             }
             else if (encryptionType == EnvCryptAlgoEnum.PlainText)
             {
-                addEntryOpts.KeyFilePath = null;
-                new AddPlainTextEntryBuilder(addEntryOpts).Build().Run();
+                new AddPlainTextEntryBuilder().Build().Run(addEntryOpts);
             }
             else
             {

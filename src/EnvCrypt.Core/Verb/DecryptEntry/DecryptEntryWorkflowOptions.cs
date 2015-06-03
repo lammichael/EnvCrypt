@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EnvCrypt.Core.Verb.GetEntry
+namespace EnvCrypt.Core.Verb.DecryptEntry
 {
     public class DecryptEntryWorkflowOptions
     {

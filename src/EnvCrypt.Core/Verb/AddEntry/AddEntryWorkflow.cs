@@ -1,25 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData;
-using EnvCrypt.Core.EncrypedData.UserStringConverter;
-using EnvCrypt.Core.EncrypedData.XmlPoco;
-using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Key.PlainText;
 using EnvCrypt.Core.Verb.LoadDat;
-using EnvCrypt.Core.Verb.LoadKey;
 using EnvCrypt.Core.Verb.SaveDat;
 
 namespace EnvCrypt.Core.Verb.AddEntry
 {
-    public class AddEntryWorkflow<TKey>
+    /// <summary>
+    /// Gets key and EC DAT from file, adds the encrypted entry, and saves the DAT file
+    /// back to the same file location.
+    /// </summary>
+    public abstract class AddEntryWorkflow<TKey, TWorkflowDetails, TKeyLoaderDetails>
         where TKey : KeyBase
+        where TWorkflowDetails : AddPlainTextEntryWorkflowOptions
     {
-        private readonly EncryptWorkflow<TKey> _encryptWorkflow;
+        private readonly EncryptWorkflow<TKey, TKeyLoaderDetails> _encryptWorkflow;
         private readonly IDatLoader _datLoader;
-        private readonly IDatSaver<EnvCryptEncryptedData> _datSaver;
+        private readonly IDatSaver<DatToFileSaverDetails> _datSaver;
 
-        public AddEntryWorkflow(EncryptWorkflow<TKey> encryptWorkflow, IDatLoader datLoader, IDatSaver<EnvCryptEncryptedData> datSaver)
+        protected AddEntryWorkflow(EncryptWorkflow<TKey, TKeyLoaderDetails> encryptWorkflow, IDatLoader datLoader, IDatSaver<DatToFileSaverDetails> datSaver)
         {
             Contract.Requires<ArgumentNullException>(encryptWorkflow != null, "encryptWorkflow");
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
@@ -31,15 +33,15 @@ namespace EnvCrypt.Core.Verb.AddEntry
         }
 
 
-        public void Run(AddEntryWorkflowOptions options)
+        public void Run(TWorkflowDetails workflowDetails)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.CategoryName), "category name cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.EntryName), "entry name cannot be null or whitespace");
+            Contract.Requires<ArgumentNullException>(workflowDetails != null, "options");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(workflowDetails.CategoryName), "category name cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(workflowDetails.DatFilePath), "DAT file path cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(workflowDetails.EntryName), "entry name cannot be null or whitespace");
             //      PlainText decryption doesn't require a key
-            Contract.Requires<ArgumentException>(typeof(TKey) == typeof(PlainTextKey) || !string.IsNullOrWhiteSpace(options.KeyFilePath), "key file path cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(options.StringToEncrypt), "string to encrypt cannot be null or empty");
+            //Contract.Requires<ArgumentException>(typeof(TKey) == typeof(PlainTextKey) || !string.IsNullOrWhiteSpace(options.KeyFilePath), "key file path cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(workflowDetails.StringToEncrypt), "string to encrypt cannot be null or empty");
             //
             /* 
              * Get key from file
@@ -52,11 +54,23 @@ namespace EnvCrypt.Core.Verb.AddEntry
              */
 
             TKey key;
-            var encryptedSegments = _encryptWorkflow.GetEncryptedSegments(options.KeyFilePath, options.StringToEncrypt, out key);
+            var encryptedSegments = _encryptWorkflow.GetEncryptedSegments(GetKeyLoaderDetails(workflowDetails),
+                workflowDetails.StringToEncrypt, out key);
+                
+                //_encryptWorkflow.GetEncryptedSegments(
+                //new KeyFromFileDetails(){ FilePath = options.KeyFilePath}, 
+                
+                //options.StringToEncrypt, out key);
 
-            var datPoco = _datLoader.Load(options.DatFilePath);
-            datPoco.AddEntry(options.CategoryName, options.EntryName, key, encryptedSegments, false);
-            _datSaver.Save(datPoco, options.DatFilePath);
+
+            var datPoco = _datLoader.Load(workflowDetails.DatFilePath);
+            datPoco.AddEntry(workflowDetails.CategoryName, workflowDetails.EntryName, key, encryptedSegments, false);
+            _datSaver.Save(datPoco,
+                new DatToFileSaverDetails() { DestinationFilePath = workflowDetails.DatFilePath });
         }
+
+
+        //TODO: Add contracts
+        protected abstract TKeyLoaderDetails GetKeyLoaderDetails(TWorkflowDetails workflowDetails);
     }
 }

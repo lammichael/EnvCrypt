@@ -13,27 +13,20 @@ using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
+using EnvCrypt.Core.Verb.LoadKey.Rsa;
 using EnvCrypt.Core.Verb.SaveDat;
 
-namespace EnvCrypt.Core.Verb.AddEntry
+namespace EnvCrypt.Core.Verb.AddEntry.Rsa
 {
     public class AddRsaEntryBuilder
     {
         public bool IsBuilt { get; private set; }
 
-        private AddEntryWorkflow<RsaKey> _workflow;
-        private readonly AddEntryWorkflowOptions _options;
+        private AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions> _workflow;
 
-        public AddRsaEntryBuilder(AddEntryWorkflowOptions options)
+        public AddRsaEntryBuilder()
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.CategoryName), "category name cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.EntryName), "entry name cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.KeyFilePath), "key file path cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(options.StringToEncrypt), "string to encrypt cannot be null or empty");
-            //
-            _options = options;
+            
         }
 
 
@@ -46,8 +39,8 @@ namespace EnvCrypt.Core.Verb.AddEntry
         {
             var myFile = new MyFile();
 
-            var encryptWorkflow = new EncryptWorkflow<RsaKey>(
-                new RsaKeyLoader(
+            var encryptWorkflow = new EncryptWorkflow<RsaKey, KeyFromFileDetails>(
+                new RsaKeyFromXmlFileLoader(
                     myFile,
                     new TextReader(myFile),
                     new XmlSerializationUtils<EnvCryptKey>(),
@@ -64,19 +57,26 @@ namespace EnvCrypt.Core.Verb.AddEntry
                 new DatToXmlMapper(new Base64PersistConverter()),
                 new XmlSerializationUtils<EnvCryptEncryptedData>(),
                 new StringToFileWriter(new MyDirectory(), myFile, new TextWriter(myFile)));
-            _workflow = new AddEntryWorkflow<RsaKey>(encryptWorkflow, datLoader, datSaver);
+            _workflow = new AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions>(encryptWorkflow, datLoader, datSaver);
             IsBuilt = true;
             return this;
         }
 
 
-        public void Run()
+        public void Run(AddEntryUsingKeyFileWorkflowOptions options)
         {
+            Contract.Requires<ArgumentNullException>(options != null, "options");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.CategoryName), "category name cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.EntryName), "entry name cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.KeyFilePath), "key file path cannot be null or whitespace");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(options.StringToEncrypt), "string to encrypt cannot be null or empty");
+            //
             if (!IsBuilt)
             {
                 throw new EnvCryptException("workflow cannot be run because it has not been built");
             }
-            _workflow.Run(_options);
+            _workflow.Run(options);
         }
 
 

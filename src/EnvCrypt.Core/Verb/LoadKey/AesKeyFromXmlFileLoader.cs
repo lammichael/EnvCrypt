@@ -6,11 +6,11 @@ using EnvCrypt.Core.Utils.IO;
 
 namespace EnvCrypt.Core.Verb.LoadKey
 {
-    class AesKeyLoader : KeyLoaderFromXmlFile<AesKey>
+    class AesKeyFromXmlFileLoader : KeyFromXmlFileLoader<AesKey, KeyFromFileDetails>
     {
         private readonly IExternalRepresentationToKeyMapper<EnvCryptKey, AesKey> _mapper;
 
-        public AesKeyLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptKey> xmlSerializationUtils, IExternalRepresentationToKeyMapper<EnvCryptKey, AesKey> mapper)
+        public AesKeyFromXmlFileLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptKey> xmlSerializationUtils, IExternalRepresentationToKeyMapper<EnvCryptKey, AesKey> mapper)
             : base(myFile, xmlReader, xmlSerializationUtils)
         {
             _mapper = mapper;
