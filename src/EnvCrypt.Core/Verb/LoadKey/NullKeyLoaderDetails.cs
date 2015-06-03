@@ -1,5 +1,5 @@
 ﻿namespace EnvCrypt.Core.Verb.LoadKey
 {
-    class NullKeyLoaderDetails
+    public class NullKeyLoaderDetails
     {}
 }

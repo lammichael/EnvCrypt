@@ -9,14 +9,14 @@ using EnvCrypt.Core.Utils.IO;
 
 namespace EnvCrypt.Core.Verb.LoadDat
 {
-    class DatLoader : IDatLoader
+    class DatFromXmlFileLoader : IDatLoader
     {
         private readonly IMyFile _myFile;
         private readonly ITextReader _xmlReader;
         private readonly IXmlSerializationUtils<EnvCryptEncryptedData> _xmlSerializationUtils;
         private readonly IExternalRepresentationToDatMapper<EnvCryptEncryptedData> _xmlToPocoMapper;
 
-        public DatLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptEncryptedData> xmlSerializationUtils, IExternalRepresentationToDatMapper<EnvCryptEncryptedData> xmlToPocoMapper)
+        public DatFromXmlFileLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptEncryptedData> xmlSerializationUtils, IExternalRepresentationToDatMapper<EnvCryptEncryptedData> xmlToPocoMapper)
         {
             Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
             Contract.Requires<ArgumentNullException>(xmlReader != null, "xmlReader");

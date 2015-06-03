@@ -13,13 +13,13 @@ using EnvCryptKey = EnvCrypt.Core.Key.XmlPoco.EnvCryptKey;
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
-    class RsaKeyFilePersister : AsymmetricKeyFilePersister<RsaKey, EnvCryptKey>
+    class RsaKeyPersister : AsymmetricKeyPersister<RsaKey, EnvCryptKey>
     {
         private readonly IKeyToExternalRepresentationMapper<RsaKey, EnvCryptKey> _pocoMapper;
         private readonly IXmlSerializationUtils<EnvCryptKey> _serializationUtils;
         private readonly IStringToFileWriter _writer;
 
-        public RsaKeyFilePersister(
+        public RsaKeyPersister(
             IKeyToExternalRepresentationMapper<RsaKey, EnvCryptKey> pocoMapper, 
             IXmlSerializationUtils<EnvCryptKey> serializationUtils,
             IStringToFileWriter writer)
@@ -34,7 +34,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister
         }
 
 
-        public override void WriteToFile(RsaKey thisKey, AsymmetricKeyFilePersisterOptions withOptions)
+        public override void Persist(RsaKey thisKey, AsymmetricKeyToFilePersisterOptions withOptions)
         {
             if (thisKey.GetKeyType() != KeyTypeEnum.Private)
             {

@@ -1,5 +1,5 @@
 ﻿namespace EnvCrypt.Core.Key
 {
-    interface IAsymmetricKeyMarker
+    public interface IAsymmetricKeyMarker
     {}
 }

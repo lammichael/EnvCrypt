@@ -8,19 +8,16 @@ namespace EnvCrypt.Core.Verb.GenerateKey
         where TKey : KeyBase
         where TKeyGenOptions : KeyGenerationOptions<TKey>
         where TKeyExtRep : IKeyExternalRepresentation<TKey>
-        where TPersisterOptions : KeyFilePersisterOptions
+        where TPersisterOptions : KeyPersisterOptions
     {
         private readonly IKeyGenerator<TKey, TKeyGenOptions> _encryptionAlgo;
-        private readonly TKeyGenOptions _generationOptions;
-        private readonly IKeyFilePersister<TKey, TKeyExtRep, TPersisterOptions> _filePersister;
-        private readonly TPersisterOptions _filePersisterOptions;
 
-        public GenerateKeyWorkflow(IKeyGenerator<TKey, TKeyGenOptions> encryptionAlgo, TKeyGenOptions generationOptions, IKeyFilePersister<TKey, TKeyExtRep, TPersisterOptions> filePersister, TPersisterOptions filePersisterOptions)
+        private readonly IKeyPersister<TKey, TKeyExtRep, TPersisterOptions> _persister;
+
+        public GenerateKeyWorkflow(IKeyGenerator<TKey, TKeyGenOptions> encryptionAlgo, IKeyPersister<TKey, TKeyExtRep, TPersisterOptions> persister)
         {
             _encryptionAlgo = encryptionAlgo;
-            _generationOptions = generationOptions;
-            _filePersister = filePersister;
-            _filePersisterOptions = filePersisterOptions;
+            _persister = persister;
         }
 
 
@@ -32,10 +29,10 @@ namespace EnvCrypt.Core.Verb.GenerateKey
         ///     <item>Writes the public & private key to its respective file</item>
         /// </list>
         /// </summary>
-        public void Run()
+        public void Run(TKeyGenOptions generationOptions, TPersisterOptions filePersisterOptions)
         {
-            var newKey = _encryptionAlgo.GetNewKey(_generationOptions);
-            _filePersister.WriteToFile(newKey, _filePersisterOptions);
+            var newKey = _encryptionAlgo.GetNewKey(generationOptions);
+            _persister.Persist(newKey, filePersisterOptions);
         }
     }
 }

@@ -1,62 +1,33 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
 using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
-using EnvCrypt.Core.Utils;
-using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
 
 namespace EnvCrypt.Core.Verb.GenerateKey
 {
-    public class GenerateRsaKeyBuilder
+    public class GenerateRsaKeyBuilder : GenericBuilder
     {
         public const int DefaultRsaKeySize = 2048;
         public const bool DefaultUseOaepPadding = true;
 
-        public bool IsBuilt { get; private set; }
-        private GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyFilePersisterOptions> _workflow;
-
-        private readonly IKeyGenerator<RsaKey, RsaKeyGenerationOptions> _rsaKeyGenerator;
-        private readonly RsaKeyGenerationOptions _keyGenerationOptions;
-
-        private IKeyFilePersister<RsaKey, EnvCryptKey, AsymmetricKeyFilePersisterOptions> _persister;
-        private readonly AsymmetricKeyFilePersisterOptions _fileOptions;
-        private ITextWriter _textWriter;
+        private IKeyPersister<RsaKey, EnvCryptKey, AsymmetricKeyToFilePersisterOptions> _persister;
+        private GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyToFilePersisterOptions> _workflow;
 
 
-        public GenerateRsaKeyBuilder(AsymmetricKeyFilePersisterOptions fileOptions)
+        public GenerateRsaKeyBuilder()
         {
-            Contract.Requires<ArgumentNullException>(fileOptions != null, "fileOptions");
             Contract.Ensures(!IsBuilt);
             //
             IsBuilt = false;
-            _fileOptions = fileOptions;
-
-            _rsaKeyGenerator = new RsaKeyGenerator();
-            _keyGenerationOptions = new RsaKeyGenerationOptions()
-            {
-                KeySize = DefaultRsaKeySize,
-                UseOaepPadding = DefaultUseOaepPadding,
-                NewKeyName = fileOptions.NewKeyName
-            };
-            _textWriter = new TextWriter(new MyFile());
+            _persister = AsymmetricKeyPersisterFactory.GetRsaKeyPersister();
         }
 
 
-        /// <summary>
-        /// Returns a new Builder instance with a custom text writer used
-        /// to write the XML contents.
-        /// </summary>
-        public GenerateRsaKeyBuilder WithCustomTextWriter(ITextWriter textWriter)
+        public GenerateRsaKeyBuilder WithKeyPersister(AsymmetricKeyPersister<RsaKey, EnvCryptKey> persister)
         {
-            Contract.Requires<ArgumentNullException>(textWriter != null, "textWriter");
-            Contract.Ensures(Contract.Result<GenerateRsaKeyBuilder>() != null);
-            Contract.Ensures(!IsBuilt, "Build() must be called for Builder to be built");
-            //
-            _textWriter = textWriter;
-            IsBuilt = false;
+            _persister = persister;
+            SetWorkflowToNull();
             return this;
         }
 
@@ -71,35 +42,39 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             Contract.Ensures(Contract.Result<GenerateRsaKeyBuilder>() != null);
             Contract.Ensures(IsBuilt);
             //
-            _persister = new RsaKeyFilePersister(new RsaKeyToXmlMapper(new Base64PersistConverter()), new XmlSerializationUtils<EnvCryptKey>(), new StringToFileWriter(new MyDirectory(), new MyFile(), _textWriter));
-
-            _workflow = new GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyFilePersisterOptions>(_rsaKeyGenerator, _keyGenerationOptions, _persister, _fileOptions);
+            _workflow = new GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyToFilePersisterOptions>(
+                new RsaKeyGenerator(),
+                _persister);
             IsBuilt = true;
             return this;
         }
 
 
-        public void Run()
+        public void Run(AsymmetricKeyToFilePersisterOptions toFileOptions)
         {
-            if (_workflow == null)
+            Contract.Requires<ArgumentNullException>(toFileOptions != null, "fileOptions");
+            //
+            ThrowIfNotBuilt();
+
+            var keyGenerationOptions = new RsaKeyGenerationOptions()
             {
-                throw new EnvCryptException("workflow cannot be run because it has not been built");
-            }
-            _workflow.Run();
+                KeySize = DefaultRsaKeySize,
+                UseOaepPadding = DefaultUseOaepPadding,
+                NewKeyName = toFileOptions.NewKeyName
+            };
+
+            _workflow.Run(keyGenerationOptions, toFileOptions);
         }
 
 
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
-        private void ObjectInvariant()
+        protected override void SetWorkflowToNull()
         {
-            // If workflow is null then not built
-            Contract.Invariant(IsBuilt == (_workflow != null));
-            Contract.Invariant(IsBuilt == (_persister != null));
-            Contract.Invariant(_rsaKeyGenerator != null);
-            Contract.Invariant(_keyGenerationOptions != null);
-            Contract.Invariant(_fileOptions != null);
-            Contract.Invariant(_textWriter != null);
+            _workflow = null;
+        }
+
+        protected override bool IsWorkflowNull()
+        {
+            return _workflow == null;
         }
     }
 }

@@ -3,20 +3,20 @@ using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
-    [ContractClass(typeof(AsymmetricKeyFilePersisterContracts<,>))]
-    abstract class AsymmetricKeyFilePersister<TKeyPoco, TKeyXmlPoco> : IAsymmetricKeyFilePersister<TKeyPoco, TKeyXmlPoco> 
+    [ContractClass(typeof(AsymmetricKeyPersisterContracts<,>))]
+    public abstract class AsymmetricKeyPersister<TKeyPoco, TKeyXmlPoco> : IAsymmetricKeyPersister<TKeyPoco, TKeyXmlPoco> 
         where TKeyPoco : KeyBase, IAsymmetricKeyMarker
         where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
     {
-        public abstract void WriteToFile(TKeyPoco thisKey, AsymmetricKeyFilePersisterOptions withOptions);
+        public abstract void Persist(TKeyPoco thisKey, AsymmetricKeyToFilePersisterOptions withOptions);
 
         [Pure]
         protected abstract TKeyPoco GetPublicKey(TKeyPoco fromPrivateKey);
     }
 
 
-    [ContractClassFor(typeof(AsymmetricKeyFilePersister<,>))]
-    internal abstract class AsymmetricKeyFilePersisterContracts<TKeyPoco, TKeyXmlPoco> : AsymmetricKeyFilePersister<TKeyPoco, TKeyXmlPoco> where TKeyPoco : KeyBase, IAsymmetricKeyMarker where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
+    [ContractClassFor(typeof(AsymmetricKeyPersister<,>))]
+    internal abstract class AsymmetricKeyPersisterContracts<TKeyPoco, TKeyXmlPoco> : AsymmetricKeyPersister<TKeyPoco, TKeyXmlPoco> where TKeyPoco : KeyBase, IAsymmetricKeyMarker where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
     {
         protected override TKeyPoco GetPublicKey(TKeyPoco fromPrivateKey)
         {

@@ -2,7 +2,7 @@
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
-    interface ISymetricKeyFilePersister<in TKeyPoco, TKeyXmlPoco> : IKeyFilePersister<TKeyPoco, TKeyXmlPoco, SymmetricKeyFilePersisterOptions>
+    interface ISymmetricKeyPersister<in TKeyPoco, TKeyXmlPoco> : IKeyPersister<TKeyPoco, TKeyXmlPoco, SymmetricKeyPersisterOptions>
         where TKeyPoco : KeyBase, ISymmetricKeyMarker
         where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
     {}

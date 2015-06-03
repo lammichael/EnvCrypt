@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Verb.DecryptEntry;
+using EnvCrypt.Core.Verb.DecryptEntry.Rsa;
 
 namespace EnvCrypt.Console.DecryptEntry
 {
@@ -35,7 +36,7 @@ namespace EnvCrypt.Console.DecryptEntry
             var encryptionType = options.GetAlgorithm();
             if (encryptionType == EnvCryptAlgoEnum.Rsa)
             {
-                decryptionResults = new DecryptRsaEntryWorkflowBuilder(workflowOptions).Build().Run();
+                decryptionResults = new DecryptRsaEntryWorkflowBuilder().Build().Run(workflowOptions);
             }
             else
             {

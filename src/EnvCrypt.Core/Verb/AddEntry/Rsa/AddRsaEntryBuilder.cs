@@ -18,15 +18,47 @@ using EnvCrypt.Core.Verb.SaveDat;
 
 namespace EnvCrypt.Core.Verb.AddEntry.Rsa
 {
-    public class AddRsaEntryBuilder
+    public class AddRsaEntryBuilder : GenericBuilder
     {
-        public bool IsBuilt { get; private set; }
+        private IKeyLoader<RsaKey, KeyFromFileDetails> _keyLoader;
+        private IDatLoader _datLoader;
+        private IDatSaver<DatToFileSaverDetails> _datSaver;
+
 
         private AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions> _workflow;
 
         public AddRsaEntryBuilder()
         {
-            
+            _keyLoader = LoadKeyFromXmlFileFactory.GetRsaKeyLoader();
+            _datLoader = DatFromXmlFileFactory.GetDatLoader();
+            _datSaver = DatXmlFileSaverFactory.GetDatSaver();
+        }
+
+
+        public AddRsaEntryBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
+        {
+            _keyLoader = keyLoader;
+            IsBuilt = false;
+            _workflow = null;
+            return this;
+        }
+
+
+        public AddRsaEntryBuilder WithDatLoader(IDatLoader datLoader)
+        {
+            _datLoader = datLoader;
+            IsBuilt = false;
+            _workflow = null;
+            return this;
+        }
+
+
+        public AddRsaEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
+        {
+            _datSaver = datSaver;
+            IsBuilt = false;
+            _workflow = null;
+            return this;
         }
 
 
@@ -37,27 +69,12 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
         /// <returns>the same Builder instance</returns>
         public AddRsaEntryBuilder Build()
         {
-            var myFile = new MyFile();
-
             var encryptWorkflow = new EncryptWorkflow<RsaKey, KeyFromFileDetails>(
-                new RsaKeyFromXmlFileLoader(
-                    myFile,
-                    new TextReader(myFile),
-                    new XmlSerializationUtils<EnvCryptKey>(),
-                    new XmlToRsaKeyMapper(new Base64PersistConverter())),
+                _keyLoader,
                 new RsaKeySuitabilityChecker(),
                 new Utf16LittleEndianUserStringConverter(),
                 new RsaSegmentEncryptionAlgo(new RsaAlgo(), new RsaMaxEncryptionCalc()));
-            var datLoader = new DatLoader(
-                myFile,
-                new TextReader(myFile),
-                new XmlSerializationUtils<EnvCryptEncryptedData>(),
-                new XmlToDatMapper(new Base64PersistConverter()));
-            var datSaver = new DatToXmlFileSaver(
-                new DatToXmlMapper(new Base64PersistConverter()),
-                new XmlSerializationUtils<EnvCryptEncryptedData>(),
-                new StringToFileWriter(new MyDirectory(), myFile, new TextWriter(myFile)));
-            _workflow = new AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions>(encryptWorkflow, datLoader, datSaver);
+            _workflow = new AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions>(encryptWorkflow, _datLoader, _datSaver);
             IsBuilt = true;
             return this;
         }
@@ -72,19 +89,19 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.KeyFilePath), "key file path cannot be null or whitespace");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(options.StringToEncrypt), "string to encrypt cannot be null or empty");
             //
-            if (!IsBuilt)
-            {
-                throw new EnvCryptException("workflow cannot be run because it has not been built");
-            }
+            ThrowIfNotBuilt();
             _workflow.Run(options);
         }
 
 
-        [ContractInvariantMethod]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]
-        private void ObjectInvariant()
+        protected override void SetWorkflowToNull()
         {
-            Contract.Invariant(IsBuilt == (_workflow != null));
+            _workflow = null;
+        }
+
+        protected override bool IsWorkflowNull()
+        {
+            return _workflow == null;
         }
     }
 }

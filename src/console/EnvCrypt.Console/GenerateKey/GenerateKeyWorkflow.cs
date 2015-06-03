@@ -12,7 +12,7 @@ namespace EnvCrypt.Console.GenerateKey
 
         public void Run(GenerateKeyVerbOptions options)
         {
-            var keyPersisterOpts = new AsymmetricKeyFilePersisterOptions()
+            var keyPersisterOpts = new AsymmetricKeyToFilePersisterOptions()
             {
                 NewKeyName = options.KeyName,
                 NewPrivateKeyFullFilePath = Path.Combine(
@@ -29,12 +29,13 @@ namespace EnvCrypt.Console.GenerateKey
             {
                 if (options.OutputKeyToConsole)
                 {
-                    new GenerateRsaKeyBuilder(keyPersisterOpts)
-                        .WithCustomTextWriter(new ToConsoleTextWriter()).Build().Run();
+                    new GenerateRsaKeyBuilder()
+                    .WithKeyPersister(AsymmetricKeyPersisterFactory.GetRsaKeyPersister(new ToConsoleTextWriter()))
+                        .Build().Run(keyPersisterOpts);
                 }
                 else
                 {
-                    new GenerateRsaKeyBuilder(keyPersisterOpts).Build().Run();
+                    new GenerateRsaKeyBuilder().Build().Run(keyPersisterOpts);
                 }
             }
             else

@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 namespace EnvCrypt.Core.Key.Mapper
 {
     [ContractClass(typeof(ExternalRepresentationToKeyMapperContracts<,>))]
-    interface IExternalRepresentationToKeyMapper<in TExtRep, out TKey>
+    public interface IExternalRepresentationToKeyMapper<in TExtRep, out TKey>
         where TKey : KeyBase
         where TExtRep : class, IKeyExternalRepresentation<TKey>
     {

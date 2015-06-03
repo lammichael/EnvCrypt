@@ -6,7 +6,7 @@ using EnvCrypt.Core.Utils.IO;
 
 namespace EnvCrypt.Core.Verb.LoadKey.Rsa
 {
-    class RsaKeyFromXmlFileLoader : KeyFromXmlFileLoader<RsaKey, KeyFromFileDetails>
+    public class RsaKeyFromXmlFileLoader : KeyFromXmlFileLoader<RsaKey, KeyFromFileDetails>
     {
         private readonly IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> _mapper;
 

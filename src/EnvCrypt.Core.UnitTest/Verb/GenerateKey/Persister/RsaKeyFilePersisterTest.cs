@@ -40,7 +40,7 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
             
             const string privateKeyFile = @"C:\some\path\privatekey.xml";
             const string publicKeyFile = @"C:\some\path\publickey.xml";
-            var opts = new AsymmetricKeyFilePersisterOptions()
+            var opts = new AsymmetricKeyToFilePersisterOptions()
             {
                 NewPrivateKeyFullFilePath = privateKeyFile,
                 NewPublicKeyFullFilePath = publicKeyFile,
@@ -48,8 +48,8 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
             };
 
             // Act
-            var persister = new RsaKeyFilePersister(pocoMapper.Object, serialisationUtil.Object, writer.Object);
-            persister.WriteToFile(privateKey, opts);
+            var persister = new RsaKeyPersister(pocoMapper.Object, serialisationUtil.Object, writer.Object);
+            persister.Persist(privateKey, opts);
 
             // Assert
             serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Private.ToString())), Times.Once);

@@ -15,15 +15,35 @@ using EnvCrypt.Core.Verb.SaveDat;
 
 namespace EnvCrypt.Core.Verb.AddEntry.PlainText
 {
-    public class AddPlainTextEntryBuilder
+    public class AddPlainTextEntryBuilder : GenericBuilder
     {
-        public bool IsBuilt { get; private set; }
+        private IDatLoader _datLoader;
+        private IDatSaver<DatToFileSaverDetails> _datSaver;
 
         private AddPlainTextEntryWorkflow<PlainTextKey, AddPlainTextEntryWorkflowOptions> _workflow;
 
         public AddPlainTextEntryBuilder()
         {
+            _datLoader = DatFromXmlFileFactory.GetDatLoader();
+            _datSaver = DatXmlFileSaverFactory.GetDatSaver();
+        }
 
+
+        public AddPlainTextEntryBuilder WithDatLoader(IDatLoader datLoader)
+        {
+            _datLoader = datLoader;
+            IsBuilt = false;
+            _workflow = null;
+            return this;
+        }
+
+
+        public AddPlainTextEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
+        {
+            _datSaver = datSaver;
+            IsBuilt = false;
+            _workflow = null;
+            return this;
         }
 
 
@@ -34,26 +54,15 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
         /// <returns>the same Builder instance</returns>
         public AddPlainTextEntryBuilder Build()
         {
-            var myFile = new MyFile();
-
             var userStringConverter = new Utf16LittleEndianUserStringConverter();
-            var persistConverter = new PlainTextPersistConverter(userStringConverter);
 
             var encryptWorkflow = new EncryptWorkflow<PlainTextKey, NullKeyLoaderDetails>(
                 new PlainTextKeyLoader(),
                 new PlainTextKeySuitabilityChecker(),
                 userStringConverter,
                 new PlainTextSegmentEncryptionAlgo());
-            var datLoader = new DatLoader(
-                myFile,
-                new TextReader(myFile),
-                new XmlSerializationUtils<EnvCryptEncryptedData>(),
-                new XmlToDatMapper(persistConverter));
-            var datSaver = new DatToXmlFileSaver(
-                new DatToXmlMapper(persistConverter),
-                new XmlSerializationUtils<EnvCryptEncryptedData>(),
-                new StringToFileWriter(new MyDirectory(), myFile, new TextWriter(myFile)));
-            _workflow = new AddPlainTextEntryWorkflow<PlainTextKey, AddPlainTextEntryWorkflowOptions>(encryptWorkflow, datLoader, datSaver);
+            
+            _workflow = new AddPlainTextEntryWorkflow<PlainTextKey, AddPlainTextEntryWorkflowOptions>(encryptWorkflow, _datLoader, _datSaver);
             IsBuilt = true;
             return this;
         }
@@ -74,6 +83,16 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
             _workflow.Run(options);
         }
 
+
+        protected override void SetWorkflowToNull()
+        {
+            _workflow = null;            
+        }
+
+        protected override bool IsWorkflowNull()
+        {
+            return _workflow == null;
+        }
 
         [ContractInvariantMethod]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]

@@ -5,7 +5,7 @@ using System.Text;
 namespace EnvCrypt.Core.Utils
 {
     [ContractClass(typeof(XmlSerializationUtilsContracts<>))]
-    internal interface IXmlSerializationUtils<T> where T : class
+    public interface IXmlSerializationUtils<T> where T : class
     {
         [Pure]
         string Serialize(T poco);

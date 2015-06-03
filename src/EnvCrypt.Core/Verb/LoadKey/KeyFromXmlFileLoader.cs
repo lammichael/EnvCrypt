@@ -8,7 +8,7 @@ using EnvCrypt.Core.Utils.IO;
 namespace EnvCrypt.Core.Verb.LoadKey
 {
     [ContractClass(typeof(KeyFromXmlFileLoaderContracts<,>))]
-    abstract class KeyFromXmlFileLoader<TKey, TLoadDetails> : IKeyLoader<TKey, TLoadDetails>
+    public abstract class KeyFromXmlFileLoader<TKey, TLoadDetails> : IKeyLoader<TKey, TLoadDetails>
         where TKey : KeyBase
         where TLoadDetails : KeyFromFileDetails
     {
@@ -30,9 +30,11 @@ namespace EnvCrypt.Core.Verb.LoadKey
 
         public TKey Load(TLoadDetails keyFileDetails)
         {
-            Contract.Requires<ArgumentNullException>(keyFileDetails != null, "keyFileDetails");
-            Contract.Requires<ArgumentException>(!String.IsNullOrWhiteSpace(keyFileDetails.FilePath), "key file path cannot be empty");
-            //
+            if (keyFileDetails == null || string.IsNullOrWhiteSpace(keyFileDetails.FilePath))
+            {
+                throw new EnvCryptException("key file path cannot be empty");
+
+            }
             if (!_myFile.Exists(keyFileDetails.FilePath))
             {
                 throw new EnvCryptException("key file does not exist: {0}", keyFileDetails);

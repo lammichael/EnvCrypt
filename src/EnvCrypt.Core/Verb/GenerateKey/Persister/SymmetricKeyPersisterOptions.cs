@@ -1,6 +1,6 @@
 ﻿namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
-    class SymmetricKeyFilePersisterOptions : KeyFilePersisterOptions
+    class SymmetricKeyPersisterOptions : KeyPersisterOptions
     {
         public string NewKeyFileFullPath { get; set; }
     }

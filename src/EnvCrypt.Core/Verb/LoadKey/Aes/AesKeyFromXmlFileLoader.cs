@@ -4,9 +4,9 @@ using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 
-namespace EnvCrypt.Core.Verb.LoadKey
+namespace EnvCrypt.Core.Verb.LoadKey.Aes
 {
-    class AesKeyFromXmlFileLoader : KeyFromXmlFileLoader<AesKey, KeyFromFileDetails>
+    public class AesKeyFromXmlFileLoader : KeyFromXmlFileLoader<AesKey, KeyFromFileDetails>
     {
         private readonly IExternalRepresentationToKeyMapper<EnvCryptKey, AesKey> _mapper;
 

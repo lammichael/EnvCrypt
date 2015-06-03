@@ -6,7 +6,7 @@ namespace EnvCrypt.Core.Key.PlainText
     /// Key used when value is stored in plain text.
     /// All PlainText keys are the same and have the same hash code.
     /// </summary>
-    class PlainTextKey : KeyBase
+    public class PlainTextKey : KeyBase
     {
         public override EnvCryptAlgoEnum Algorithm
         {

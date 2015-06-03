@@ -2,7 +2,7 @@
 
 namespace EnvCrypt.Core.Verb.LoadKey.PlainText
 {
-    class PlainTextKeyLoader : IKeyLoader<PlainTextKey, NullKeyLoaderDetails>
+    public class PlainTextKeyLoader : IKeyLoader<PlainTextKey, NullKeyLoaderDetails>
     {
         public PlainTextKey Load(NullKeyLoaderDetails notUsed)
         {
