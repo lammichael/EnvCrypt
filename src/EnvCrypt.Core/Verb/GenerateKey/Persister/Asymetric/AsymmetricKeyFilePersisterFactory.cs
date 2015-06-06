@@ -15,7 +15,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister.Asymetric
         {
             Contract.Ensures(Contract.Result<AsymmetricKeyFilePersister<RsaKey, EnvCryptKey, StringToFileWriterOptions>>() != null);
             //
-            return GetRsaKeyPersister();
+            return GetRsaKeyPersister(new StringToFileWriter(new MyDirectory(), new MyFile()));
         }
 
 

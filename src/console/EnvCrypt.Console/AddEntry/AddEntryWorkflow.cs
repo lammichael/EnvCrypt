@@ -1,5 +1,6 @@
 ﻿using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Verb.AddEntry;
+using EnvCrypt.Core.Verb.AddEntry.Aes;
 using EnvCrypt.Core.Verb.AddEntry.PlainText;
 using EnvCrypt.Core.Verb.AddEntry.Rsa;
 
@@ -22,6 +23,11 @@ namespace EnvCrypt.Console.AddEntry
             {
                 addEntryOpts.KeyFilePath = options.KeyFile;
                 new AddRsaEntryBuilder().Build().Run(addEntryOpts);
+            }
+            else if (encryptionType == EnvCryptAlgoEnum.Aes)
+            {
+                addEntryOpts.KeyFilePath = options.KeyFile;
+                new AddAesEntryBuilder().Build().Run(addEntryOpts);
             }
             else if (encryptionType == EnvCryptAlgoEnum.PlainText)
             {

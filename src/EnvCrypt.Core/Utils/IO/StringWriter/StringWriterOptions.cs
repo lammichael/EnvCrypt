@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace EnvCrypt.Core.Utils.IO.StringWriter
 {
@@ -10,6 +12,8 @@ namespace EnvCrypt.Core.Utils.IO.StringWriter
 
         protected bool Equals(StringWriterOptions other)
         {
+            Contract.Requires<ArgumentNullException>(other != null, "other");
+            //
             return string.Equals(Contents, other.Contents) && Equals(Encoding, other.Encoding);
         }
 

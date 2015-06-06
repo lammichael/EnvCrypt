@@ -10,7 +10,7 @@ namespace EnvCrypt.Console
 {
     class Program
     {
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
             ParserResult<object> parserResult = null;
 #if (!DEBUG)

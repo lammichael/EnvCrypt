@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 using EnvCrypt.Core.Verb.LoadDat;
 
@@ -15,18 +16,21 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
     {
         private readonly IDatLoader _datLoader;
         private readonly EntriesDecrypter<TKey> _entriesDecrypter;
+        private readonly IAuditLogger<TKey, TWorkflowOptions> _auditLogger;
 
-        protected DecryptEntryWorkflow(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter)
+        protected DecryptEntryWorkflow(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             Contract.Requires<ArgumentNullException>(entriesDecrypter != null, "encryptWorkflow");
+            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
             //
             _datLoader = datLoader;
             _entriesDecrypter = entriesDecrypter;
+            _auditLogger = auditLogger;
         }
 
 
-        public IList<EntriesDecrypterResult> Run(TWorkflowOptions options)
+        public IList<EntriesDecrypterResult<TKey>> Run(TWorkflowOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
 
@@ -40,12 +44,17 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
             /*Contract.Requires<ArgumentException>(typeof(TKey) == typeof(PlainTextKey) || 
                 Contract.ForAll(options.KeyFilePaths, s => !string.IsNullOrWhiteSpace(s)), 
                 "key file path cannot be null or whitespace");*/
+            Contract.Ensures(Contract.Result<IList<EntriesDecrypterResult<TKey>>>() != null);
             //
 
             var datPoco = _datLoader.Load(options.DatFilePath);
             var loadedKeys = LoadKeys(options);
 
-            return _entriesDecrypter.Decrypt(loadedKeys, datPoco, options.CategoryEntryPair);
+            var ret = _entriesDecrypter.Decrypt(loadedKeys, datPoco, options.CategoryEntryPair);
+
+            _auditLogger.LogDecryption(options, datPoco, loadedKeys, ret);
+
+            return ret;
         }
 
 
@@ -59,9 +68,8 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
     {
-        private DecryptEntryWorkflowContracts(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter) : base(datLoader, entriesDecrypter)
+        protected DecryptEntryWorkflowContracts(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger) : base(datLoader, entriesDecrypter, auditLogger)
         {}
-
 
         protected override List<TKey> LoadKeys(TWorkflowOptions workflowOptions)
         {

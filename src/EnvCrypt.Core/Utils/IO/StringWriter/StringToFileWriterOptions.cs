@@ -1,4 +1,7 @@
-﻿namespace EnvCrypt.Core.Utils.IO.StringWriter
+﻿using System;
+using System.Diagnostics.Contracts;
+
+namespace EnvCrypt.Core.Utils.IO.StringWriter
 {
     public class StringToFileWriterOptions : StringWriterOptions
     {
@@ -8,6 +11,8 @@
 
         protected bool Equals(StringToFileWriterOptions other)
         {
+            Contract.Requires<ArgumentNullException>(other != null, "other");
+            //
             return base.Equals(other) && string.Equals(Path, other.Path) && OverwriteIfFileExists.Equals(other.OverwriteIfFileExists);
         }
 

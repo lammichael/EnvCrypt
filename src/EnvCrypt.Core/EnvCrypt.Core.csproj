@@ -163,8 +163,10 @@
     <Compile Include="Key\Mapper\Xml\ToKeyPoco\XmlToRsaKeyMapper.cs" />
     <Compile Include="Key\PlainText\PlainTextKey.cs" />
     <Compile Include="Utils\ByteArrayHashUtils.cs" />
+    <Compile Include="Utils\IMyDateTime.cs" />
     <Compile Include="Utils\IO\StringWriter\StringToFileWriterOptions.cs" />
     <Compile Include="Utils\IO\StringWriter\StringWriterOptions.cs" />
+    <Compile Include="Utils\MyDateTime.cs" />
     <Compile Include="Utils\PlainTextPersistConverter.cs" />
     <Compile Include="Utils\IO\IMyFile.cs" />
     <Compile Include="Utils\IO\IMyDirectory.cs" />
@@ -217,13 +219,17 @@
     <Compile Include="Verb\AddEntry\Rsa\AddRsaEntryBuilder.cs" />
     <Compile Include="Verb\AddEntry\EncryptWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\Aes\DecryptAesEntryWorkflowBuilder.cs" />
+    <Compile Include="Verb\DecryptEntry\Audit\IAuditLogger.cs" />
+    <Compile Include="Verb\DecryptEntry\Audit\NullAuditLogger.cs" />
+    <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLogger.cs" />
+    <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLoggerConfig.cs" />
     <Compile Include="Verb\DecryptEntry\DecryptEntryUsingKeyWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\PlainText\DecryptEntryUsingKeyWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\PlainText\DecryptPlainTextEntryWorkflowOptions.cs" />
     <Compile Include="Verb\DecryptEntry\PlainText\DecryptPlainTextEntryWorkflowBuilder.cs" />
     <Compile Include="Verb\GenerateKey\Aes\GenerateAesKeyBuilder.cs" />
     <Compile Include="Verb\GenerateKey\Persister\KeyFilePersisterOptions.cs" />
-    <Compile Include="Verb\GenerateKey\Persister\Symmetric\SymmetricKeyPersisterFactory.cs" />
+    <Compile Include="Verb\GenerateKey\Persister\Symmetric\SymmetricKeyFilePersisterFactory.cs" />
     <Compile Include="Verb\GenerateKey\Persister\Symmetric\SymmetricKeyFilePersister.cs" />
     <Compile Include="Verb\GenerateKey\Persister\Asymetric\AsymmetricKeyFilePersisterFactory.cs" />
     <Compile Include="Verb\GenericBuilder.cs" />
@@ -231,7 +237,6 @@
     <Compile Include="Verb\DecryptEntry\DecryptEntryWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\DecryptEntryWorkflowOptions.cs" />
     <Compile Include="Verb\DecryptEntry\EntriesDecrypter.cs" />
-    <Compile Include="Verb\DecryptEntry\DecryptWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\Rsa\GenerateRsaKeyBuilder.cs" />
     <Compile Include="Verb\GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="Verb\GenerateKey\Persister\Asymetric\AsymmetricKeyFilePersister.cs" />

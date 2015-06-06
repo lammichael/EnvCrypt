@@ -5,6 +5,7 @@ using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
 using EnvCrypt.Core.Key.Rsa;
+using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 
@@ -14,6 +15,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
     {
         private IKeyLoader<RsaKey, KeyFromFileDetails> _keyLoader;
         private IDatLoader _datLoader;
+        private IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> _auditLogger;
 
         private DecryptEntryWorkflow<RsaKey, DecryptEntryWorkflowOptions> _workflow;
 
@@ -21,6 +23,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         {
             _keyLoader = LoadKeyFromXmlFileFactory.GetRsaKeyLoader();
             _datLoader = DatFromXmlFileFactory.GetDatLoader();
+            _auditLogger = new NullAuditLogger<RsaKey, DecryptEntryWorkflowOptions>();
         }
 
 
@@ -40,6 +43,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         }
 
 
+        public DecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger)
+        {
+            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
+            //
+            _auditLogger = auditLogger;
+            MarkAsNotBuilt();
+            return this;
+        }
+
+
         /// <summary>
         /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="Run"/> method.
         /// This method is idempotent.
@@ -52,13 +65,13 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
                 new Utf16LittleEndianUserStringConverter(),
                 new RsaSegmentEncryptionAlgo(new RsaAlgo(), new RsaMaxEncryptionCalc()));
 
-            _workflow = new DecryptEntryUsingKeyWorkflow<RsaKey, DecryptEntryWorkflowOptions>(_datLoader, entriesDecrypter, _keyLoader);
+            _workflow = new DecryptEntryUsingKeyWorkflow<RsaKey, DecryptEntryWorkflowOptions>(_datLoader, entriesDecrypter, _auditLogger, _keyLoader);
             IsBuilt = true;
             return this;
         }
 
 
-        public IList<EntriesDecrypterResult> Run(DecryptEntryWorkflowOptions options)
+        public IList<EntriesDecrypterResult<RsaKey>> Run(DecryptEntryWorkflowOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
 

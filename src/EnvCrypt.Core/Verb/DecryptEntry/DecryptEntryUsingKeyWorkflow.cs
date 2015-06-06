@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.Key;
+using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 
@@ -13,13 +14,12 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
     {
         private readonly IKeyLoader<TKey, KeyFromFileDetails> _keyLoader;
 
-        public DecryptEntryUsingKeyWorkflow(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IKeyLoader<TKey, KeyFromFileDetails> keyLoader) : base(datLoader, entriesDecrypter)
+        public DecryptEntryUsingKeyWorkflow(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger, IKeyLoader<TKey, KeyFromFileDetails> keyLoader) : base(datLoader, entriesDecrypter, auditLogger)
         {
             Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
             //
             _keyLoader = keyLoader;
         }
-
 
         protected override List<TKey> LoadKeys(TWorkflowOptions workflowOptions)
         {

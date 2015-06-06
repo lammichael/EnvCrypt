@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using EnvCrypt.Core.EncryptionAlgo;
+using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Verb.DecryptEntry;
+using EnvCrypt.Core.Verb.DecryptEntry.Aes;
+using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 using EnvCrypt.Core.Verb.DecryptEntry.Rsa;
 
 namespace EnvCrypt.Console.DecryptEntry
@@ -31,24 +34,35 @@ namespace EnvCrypt.Console.DecryptEntry
                 CategoryEntryPair = categoryEntryPairs
             };
 
-            IList<EntriesDecrypterResult> decryptionResults = null;
 
             var encryptionType = options.GetAlgorithm();
             if (encryptionType == EnvCryptAlgoEnum.Rsa)
             {
-                decryptionResults = new DecryptRsaEntryWorkflowBuilder().Build().Run(workflowOptions);
+                var decryptionResults = new DecryptRsaEntryWorkflowBuilder().Build()
+                    .Run(workflowOptions);
+                OutputToConsole(decryptionResults);
+            }
+            else if (encryptionType == EnvCryptAlgoEnum.Aes)
+            {
+                var decryptionResults = new DecryptAesEntryWorkflowBuilder().Build()
+                    .Run(workflowOptions);
+                OutputToConsole(decryptionResults);
+            }
+            else if (encryptionType == EnvCryptAlgoEnum.PlainText)
+            {
+                var decryptionResults = new DecryptPlainTextEntryWorkflowBuilder().Build()
+                    .Run(workflowOptions);
+                OutputToConsole(decryptionResults);
             }
             else
             {
                 System.Console.Error.WriteLine("Unsupported encryption type: {0}", encryptionType);
             }
-
-
-            OutputToConsole(decryptionResults);
         }
 
 
-        private static void OutputToConsole(IList<EntriesDecrypterResult> decryptionResults)
+        private static void OutputToConsole<TKey>(IList<EntriesDecrypterResult<TKey>> decryptionResults)
+            where TKey : KeyBase
         {
             foreach (var result in decryptionResults)
             {

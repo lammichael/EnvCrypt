@@ -19,7 +19,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Aes
             Contract.Ensures(!IsBuilt);
             //
             IsBuilt = false;
-            _persister = SymmetricKeyPersisterFactory.GetAesKeyPersister();
+            _persister = SymmetricKeyFilePersisterFactory.GetAesKeyPersister();
         }
 
 

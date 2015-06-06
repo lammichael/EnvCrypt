@@ -29,16 +29,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, IList<CategoryEntryPair> categoryEntryPairs, bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
+        public IList<EntriesDecrypterResult<TKey>> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, IList<CategoryEntryPair> categoryEntryPairs, bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
         {
             Contract.Requires<ArgumentNullException>(usingKeys != null, "usingKeys");
             Contract.Requires<ArgumentException>(usingKeys.Any(), "usingKeys");
             Contract.Requires<EnvCryptException>(Contract.ForAll(usingKeys, k => k != null), "all keys in the list can be null");
             Contract.Requires<ArgumentNullException>(inDat != null, "inDat");
             Contract.Requires<ArgumentNullException>(categoryEntryPairs != null, "entryDetails");
-
+            Contract.Ensures(Contract.Result<IList<EntriesDecrypterResult<TKey>>>() != null);
             //
-            var ret = new List<EntriesDecrypterResult>();
+            var ret = new List<EntriesDecrypterResult<TKey>>();
 
             var keysToUse = new List<TKey>(usingKeys.Count);
             for (uint kI = 0; kI < usingKeys.Count; kI++)
@@ -73,7 +73,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
                 Entry foundEntry;
                 if (inDat.SearchForEntry(catName, entryName, out foundEntry))
                 {
-                    EntriesDecrypterResult toAdd = null;
+                    EntriesDecrypterResult<TKey> toAdd = null;
                     for (uint kI = 0; kI < keysToUse.Count; kI++)
                     {
                         
@@ -81,12 +81,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
                         if (currentKey.Name == foundEntry.KeyName &&
                             currentKey.GetHashCode() == foundEntry.KeyHash)
                         {
-                            var encodedDecryptedData = _segmentEncrypter.Decrypt(foundEntry.EncryptedValue, currentKey);
+                            var encodedDecryptedData = 
+                                _segmentEncrypter.Decrypt(foundEntry.EncryptedValue, currentKey);
+                            var decodedDecryptedData = 
+                                _userStringConverter.Decode(encodedDecryptedData);
 
-                            toAdd = new EntriesDecrypterResult
+                            toAdd = new EntriesDecrypterResult<TKey>()
                             {
                                 CategoryEntryPair = currentRequest,
-                                DecryptedValue = _userStringConverter.Decode(encodedDecryptedData)
+                                DecryptedValue = decodedDecryptedData,
+                                DecryptedUsingKey = currentKey
                             };
 
                             ret.Add(toAdd);
@@ -115,7 +119,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(
+        public IList<EntriesDecrypterResult<TKey>> Decrypt(
             IList<TKey> usingKeys,
             EnvCryptDat inDat,
             CategoryEntryPair categoryEntryPair,
@@ -133,7 +137,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(
+        public IList<EntriesDecrypterResult<TKey>> Decrypt(
             TKey usingKey,
             EnvCryptDat inDat,
             CategoryEntryPair categoryEntryPair,

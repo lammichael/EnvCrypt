@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using EnvCrypt.Core.Key.Aes;
 using EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco;
 using EnvCrypt.Core.Key.XmlPoco;
@@ -8,7 +9,7 @@ using EnvCrypt.Core.Utils.IO.StringWriter;
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister.Symmetric
 {
-    public static class SymmetricKeyPersisterFactory
+    public static class SymmetricKeyFilePersisterFactory
     {
         public static SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions> GetAesKeyPersister()
         {
@@ -20,6 +21,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister.Symmetric
 
         public static SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions> GetAesKeyPersister(IStringWriter<StringToFileWriterOptions> writer)
         {
+            Contract.Requires<ArgumentNullException>(writer != null, "writer");
             Contract.Ensures(Contract.Result<SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions>>() != null);
             //
             return new SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions>(

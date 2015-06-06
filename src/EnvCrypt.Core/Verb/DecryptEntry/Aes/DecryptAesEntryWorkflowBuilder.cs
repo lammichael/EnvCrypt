@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.Aes;
 using EnvCrypt.Core.Key.Aes;
+using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 
@@ -13,6 +14,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
     {
         private IKeyLoader<AesKey, KeyFromFileDetails> _keyLoader;
         private IDatLoader _datLoader;
+        private IAuditLogger<AesKey, DecryptEntryWorkflowOptions> _auditLogger;
 
         private DecryptEntryWorkflow<AesKey, DecryptEntryWorkflowOptions> _workflow;
 
@@ -20,6 +22,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         {
             _keyLoader = LoadKeyFromXmlFileFactory.GetAesKeyLoader();
             _datLoader = DatFromXmlFileFactory.GetDatLoader();
+            _auditLogger = new NullAuditLogger<AesKey, DecryptEntryWorkflowOptions>();
         }
 
 
@@ -43,6 +46,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         }
 
 
+        public DecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger)
+        {
+            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
+            //
+            _auditLogger = auditLogger;
+            MarkAsNotBuilt();
+            return this;
+        }
+
+
         /// <summary>
         /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="Run"/> method.
         /// This method is idempotent.
@@ -55,13 +68,13 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
                 new Utf16LittleEndianUserStringConverter(),
                 new AesSegmentEncryptionAlgo(new AesAlgo()));
 
-            _workflow = new DecryptEntryUsingKeyWorkflow<AesKey, DecryptEntryWorkflowOptions>(_datLoader, entriesDecrypter, _keyLoader);
+            _workflow = new DecryptEntryUsingKeyWorkflow<AesKey, DecryptEntryWorkflowOptions>(_datLoader, entriesDecrypter, _auditLogger, _keyLoader);
             IsBuilt = true;
             return this;
         }
 
 
-        public IList<EntriesDecrypterResult> Run(DecryptEntryWorkflowOptions options)
+        public IList<EntriesDecrypterResult<AesKey>> Run(DecryptEntryWorkflowOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
 

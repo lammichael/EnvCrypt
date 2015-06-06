@@ -10,7 +10,7 @@ namespace EnvCrypt.Console.AddEntry
         [Option('k', "Key", HelpText = "Full path to ECKey file to use for encryption. If excluded then key will be added in plaintext.", Required = false)]
         public string KeyFile { get; set; }
 
-        [Option('a', "Algorithm", HelpText = "Algorithm to use - RSA or AES.", Required = true)]
+        [Option('a', "Algorithm", HelpText = "Algorithm to use - RSA, AES, PlainText.", Required = true)]
         public string AlgorithmToUse { get; set; }
 
         [Option('c', "Category", HelpText = "Category to add entry under.", Required = true)]

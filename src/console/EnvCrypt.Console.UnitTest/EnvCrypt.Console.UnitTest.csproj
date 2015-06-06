@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="GenerateKey\GenerateKeyVerbTest.cs" />
     <Compile Include="Helper\OptionsToStringArgsHelper.cs" />
+    <Compile Include="Helper\TempDir.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

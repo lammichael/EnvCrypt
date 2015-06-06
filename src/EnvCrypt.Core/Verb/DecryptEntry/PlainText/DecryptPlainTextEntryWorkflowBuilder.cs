@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.PlainText;
+using EnvCrypt.Core.Key.Aes;
 using EnvCrypt.Core.Key.PlainText;
+using EnvCrypt.Core.Verb.DecryptEntry.Aes;
+using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 
@@ -12,12 +15,14 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
     public class DecryptPlainTextEntryWorkflowBuilder : GenericBuilder
     {
         private IDatLoader _datLoader;
+        private IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> _auditLogger;
 
         private DecryptEntryWorkflow<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> _workflow;
 
         public DecryptPlainTextEntryWorkflowBuilder()
         {
             _datLoader = DatFromXmlFileFactory.GetDatLoader();
+            _auditLogger = new NullAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions>();
         }
 
 
@@ -26,6 +31,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //
             _datLoader = datLoader;
+            MarkAsNotBuilt();
+            return this;
+        }
+
+
+        public DecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger)
+        {
+            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
+            //
+            _auditLogger = auditLogger;
             MarkAsNotBuilt();
             return this;
         }
@@ -43,13 +58,13 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
                 new Utf16LittleEndianUserStringConverter(),
                 new PlainTextSegmentEncryptionAlgo());
 
-            _workflow = new DecryptPlainTextEntryWorkflow<PlainTextKey, DecryptPlainTextEntryWorkflowOptions>(_datLoader, entriesDecrypter, LoadKeyFromXmlFileFactory.GetPlainTextKeyLoader());
+            _workflow = new DecryptPlainTextEntryWorkflow<PlainTextKey, DecryptPlainTextEntryWorkflowOptions>(_datLoader, entriesDecrypter, _auditLogger, LoadKeyFromXmlFileFactory.GetPlainTextKeyLoader());
             IsBuilt = true;
             return this;
         }
 
 
-        public IList<EntriesDecrypterResult> Run(DecryptEntryWorkflowOptions options)
+        public IList<EntriesDecrypterResult<PlainTextKey>> Run(DecryptEntryWorkflowOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
 
