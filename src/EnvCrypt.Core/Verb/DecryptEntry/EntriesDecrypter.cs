@@ -29,10 +29,13 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, IList<CategoryEntryPair> entryDetails, bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
+        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, IList<CategoryEntryPair> categoryEntryPairs, bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
         {
-            Contract.Requires<ArgumentNullException>(usingKeys != null);
-            Contract.Requires<ArgumentException>(usingKeys.Any());
+            Contract.Requires<ArgumentNullException>(usingKeys != null, "usingKeys");
+            Contract.Requires<ArgumentException>(usingKeys.Any(), "usingKeys");
+            Contract.Requires<EnvCryptException>(Contract.ForAll(usingKeys, k => k != null), "all keys in the list can be null");
+            Contract.Requires<ArgumentNullException>(inDat != null, "inDat");
+            Contract.Requires<ArgumentNullException>(categoryEntryPairs != null, "entryDetails");
 
             //
             var ret = new List<EntriesDecrypterResult>();
@@ -61,9 +64,9 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
             }
 
 
-            for (uint tI = 0; tI < entryDetails.Count; tI++)
+            for (uint tI = 0; tI < categoryEntryPairs.Count; tI++)
             {
-                var currentRequest = entryDetails[(int)tI];
+                var currentRequest = categoryEntryPairs[(int)tI];
                 var catName = currentRequest.Category;
                 var entryName = currentRequest.Entry;
 
@@ -112,20 +115,34 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(IList<TKey> usingKeys, EnvCryptDat inDat, CategoryEntryPair categoryEntryPair,
-            bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
+        public IList<EntriesDecrypterResult> Decrypt(
+            IList<TKey> usingKeys,
+            EnvCryptDat inDat,
+            CategoryEntryPair categoryEntryPair,
+            bool throwExceptionIfEntryNotFound = true,
+            bool throwIfDecryptingKeyNotFound = true,
+            bool throwIfKeyCannotDecrypt = true)
         {
-
+            Contract.Requires<ArgumentNullException>(usingKeys != null, "usingKeys");
+            Contract.Requires<ArgumentException>(usingKeys.Any(), "usingKeys");
+            Contract.Requires<EnvCryptException>(Contract.ForAll(usingKeys, k => k != null), "all keys in the list can be null");
+            Contract.Requires<ArgumentNullException>(inDat != null, "inDat");
             //
             return this.Decrypt(usingKeys, inDat, new[] {categoryEntryPair}, throwExceptionIfEntryNotFound,
                 throwIfDecryptingKeyNotFound, throwIfKeyCannotDecrypt);
         }
 
 
-        public IList<EntriesDecrypterResult> Decrypt(TKey usingKey, EnvCryptDat inDat, CategoryEntryPair categoryEntryPair,
-            bool throwExceptionIfEntryNotFound = true, bool throwIfDecryptingKeyNotFound = true, bool throwIfKeyCannotDecrypt = true)
+        public IList<EntriesDecrypterResult> Decrypt(
+            TKey usingKey,
+            EnvCryptDat inDat,
+            CategoryEntryPair categoryEntryPair,
+            bool throwExceptionIfEntryNotFound = true,
+            bool throwIfDecryptingKeyNotFound = true,
+            bool throwIfKeyCannotDecrypt = true)
         {
-
+            Contract.Requires<ArgumentNullException>(usingKey != null, "usingKey");
+            Contract.Requires<ArgumentNullException>(inDat != null, "inDat");
             //
             return this.Decrypt(new[] {usingKey}, inDat, new[] {categoryEntryPair}, throwExceptionIfEntryNotFound,
                 throwIfDecryptingKeyNotFound, throwIfKeyCannotDecrypt);

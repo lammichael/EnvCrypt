@@ -24,6 +24,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
             // Act
             var key = new AesKeyGenerator().GetNewKey(new AesKeyGenerationOptions()
             {
+                NewKeyName = "my new aes key",
                 KeySize = keySize
             });
             var result = algo.Decrypt(algo.Encrypt(strAsBytes, key), key);

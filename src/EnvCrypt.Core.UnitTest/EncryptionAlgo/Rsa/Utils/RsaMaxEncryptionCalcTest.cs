@@ -39,7 +39,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Utils
             var aNewKey = generator.GetNewKey(new RsaKeyGenerationOptions()
             {
                 KeySize = keySize,
-                UseOaepPadding = true,
+                UseOaepPadding = false,
                 NewKeyName = "test"
             });
 

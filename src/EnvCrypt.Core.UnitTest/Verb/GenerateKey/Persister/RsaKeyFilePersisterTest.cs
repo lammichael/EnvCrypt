@@ -4,7 +4,10 @@ using EnvCrypt.Core.Key.Mapper;
 using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
+using EnvCrypt.Core.Utils.IO.StringWriter;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
+using EnvCrypt.Core.Verb.GenerateKey.Persister.Asymetric;
+using EnvCrypt.Core.Verb.GenerateKey.Rsa;
 using Moq;
 using NUnit.Framework;
 using EnvCryptKey = EnvCrypt.Core.Key.XmlPoco.EnvCryptKey;
@@ -35,12 +38,12 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
             serialisationUtil.Setup(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Private.ToString()))).Returns(privateKeyXmlContents);
             serialisationUtil.Setup(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Public.ToString()))).Returns(publicKeyXmlContents);
             serialisationUtil.Setup(u => u.GetUsedEncoding()).Returns(usedEncoding);
-            var writer = new Mock<IStringToFileWriter>();
+            var writer = new Mock<IStringWriter<StringToFileWriterOptions>>();
 
             
             const string privateKeyFile = @"C:\some\path\privatekey.xml";
             const string publicKeyFile = @"C:\some\path\publickey.xml";
-            var opts = new AsymmetricKeyToFilePersisterOptions()
+            var opts = new AsymmetricKeyFilePersisterOptions()
             {
                 NewPrivateKeyFullFilePath = privateKeyFile,
                 NewPublicKeyFullFilePath = publicKeyFile,
@@ -53,10 +56,22 @@ namespace EnvCrypt.Core.UnitTest.Verb.GenerateKey.Persister
 
             // Assert
             serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Private.ToString())), Times.Once);
-            writer.Verify(w => w.Write(privateKeyFile, privateKeyXmlContents, true, usedEncoding), Times.Once);
+            writer.Verify(w => w.Write(new StringToFileWriterOptions()
+            {
+                Path = privateKeyFile,
+                Contents = privateKeyXmlContents,
+                OverwriteIfFileExists = true,
+                Encoding = usedEncoding
+            }) , Times.Once);
 
             serialisationUtil.Verify(u => u.Serialize(It.Is<EnvCryptKey>(p => p.Type == KeyTypeEnum.Public.ToString())), Times.Once);
-            writer.Verify(w => w.Write(publicKeyFile, publicKeyXmlContents, true, usedEncoding), Times.Once);
+            writer.Verify(w => w.Write(new StringToFileWriterOptions()
+            {
+                Path = publicKeyFile,
+                Contents = publicKeyXmlContents,
+                OverwriteIfFileExists = true,
+                Encoding = usedEncoding
+            }), Times.Once);
         }
     }
 }

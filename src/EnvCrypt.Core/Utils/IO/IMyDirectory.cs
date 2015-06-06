@@ -3,7 +3,7 @@ using System.IO;
 
 namespace EnvCrypt.Core.Utils.IO
 {
-    interface IMyDirectory
+    public interface IMyDirectory
     {
         DirectoryInfo CreateDirectory(String path);
     }

@@ -16,6 +16,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Aes
             // Arrange
             var algo = new Mock<IEncryptionAlgo<AesKey>>();
             var key = new AesKey();
+            algo.Setup(encryptionAlgo => encryptionAlgo.Encrypt(It.IsAny<byte[]>(), key)).Returns(new byte[1]);
             var dataToEncrypt = RandomByteArrayUtils.CreateRandomByteArray(actualKeySize);
 
             // Act

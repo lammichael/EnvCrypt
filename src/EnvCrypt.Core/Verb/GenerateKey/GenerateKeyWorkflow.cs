@@ -1,4 +1,6 @@
-﻿using EnvCrypt.Core.EncryptionAlgo;
+﻿using System;
+using System.Diagnostics.Contracts;
+using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
 
@@ -11,11 +13,13 @@ namespace EnvCrypt.Core.Verb.GenerateKey
         where TPersisterOptions : KeyPersisterOptions
     {
         private readonly IKeyGenerator<TKey, TKeyGenOptions> _encryptionAlgo;
+        private readonly IKeyPersister<TKey, TPersisterOptions> _persister;
 
-        private readonly IKeyPersister<TKey, TKeyExtRep, TPersisterOptions> _persister;
-
-        public GenerateKeyWorkflow(IKeyGenerator<TKey, TKeyGenOptions> encryptionAlgo, IKeyPersister<TKey, TKeyExtRep, TPersisterOptions> persister)
+        public GenerateKeyWorkflow(IKeyGenerator<TKey, TKeyGenOptions> encryptionAlgo, IKeyPersister<TKey, TPersisterOptions> persister)
         {
+            Contract.Requires<ArgumentNullException>(encryptionAlgo != null, "encryptionAlgo");
+            Contract.Requires<ArgumentNullException>(persister != null, "persister");
+            //
             _encryptionAlgo = encryptionAlgo;
             _persister = persister;
         }

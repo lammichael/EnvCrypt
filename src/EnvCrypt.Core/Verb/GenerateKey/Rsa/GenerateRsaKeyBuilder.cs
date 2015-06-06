@@ -2,17 +2,19 @@
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
+using EnvCrypt.Core.Utils.IO.StringWriter;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
+using EnvCrypt.Core.Verb.GenerateKey.Persister.Asymetric;
 
-namespace EnvCrypt.Core.Verb.GenerateKey
+namespace EnvCrypt.Core.Verb.GenerateKey.Rsa
 {
     public class GenerateRsaKeyBuilder : GenericBuilder
     {
         public const int DefaultRsaKeySize = 2048;
         public const bool DefaultUseOaepPadding = true;
 
-        private IKeyPersister<RsaKey, EnvCryptKey, AsymmetricKeyToFilePersisterOptions> _persister;
-        private GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyToFilePersisterOptions> _workflow;
+        private IKeyPersister<RsaKey, AsymmetricKeyFilePersisterOptions> _persister;
+        private GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyFilePersisterOptions> _workflow;
 
 
         public GenerateRsaKeyBuilder()
@@ -20,11 +22,11 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             Contract.Ensures(!IsBuilt);
             //
             IsBuilt = false;
-            _persister = AsymmetricKeyPersisterFactory.GetRsaKeyPersister();
+            _persister = AsymmetricKeyFilePersisterFactory.GetRsaKeyPersister();
         }
 
 
-        public GenerateRsaKeyBuilder WithKeyPersister(AsymmetricKeyPersister<RsaKey, EnvCryptKey> persister)
+        public GenerateRsaKeyBuilder WithKeyPersister(AsymmetricKeyFilePersister<RsaKey, EnvCryptKey, StringToFileWriterOptions> persister)
         {
             _persister = persister;
             SetWorkflowToNull();
@@ -42,7 +44,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             Contract.Ensures(Contract.Result<GenerateRsaKeyBuilder>() != null);
             Contract.Ensures(IsBuilt);
             //
-            _workflow = new GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyToFilePersisterOptions>(
+            _workflow = new GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyFilePersisterOptions>(
                 new RsaKeyGenerator(),
                 _persister);
             IsBuilt = true;
@@ -50,9 +52,9 @@ namespace EnvCrypt.Core.Verb.GenerateKey
         }
 
 
-        public void Run(AsymmetricKeyToFilePersisterOptions toFileOptions)
+        public void Run(AsymmetricKeyFilePersisterOptions options)
         {
-            Contract.Requires<ArgumentNullException>(toFileOptions != null, "fileOptions");
+            Contract.Requires<ArgumentNullException>(options != null, "fileOptions");
             //
             ThrowIfNotBuilt();
 
@@ -60,10 +62,10 @@ namespace EnvCrypt.Core.Verb.GenerateKey
             {
                 KeySize = DefaultRsaKeySize,
                 UseOaepPadding = DefaultUseOaepPadding,
-                NewKeyName = toFileOptions.NewKeyName
+                NewKeyName = options.NewKeyName
             };
 
-            _workflow.Run(keyGenerationOptions, toFileOptions);
+            _workflow.Run(keyGenerationOptions, options);
         }
 
 

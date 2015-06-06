@@ -12,8 +12,13 @@ namespace EnvCrypt.Console
     {
         private static void Main(string[] args)
         {
+            ParserResult<object> parserResult = null;
+#if (!DEBUG)
+            try
+            {
+#endif
             var parser = new Parser(settings => settings.CaseSensitive = false);
-            var parserResult = parser.ParseArguments(args,
+            parserResult = parser.ParseArguments(args,
                 typeof(GenerateKeyVerbOptions),
                 typeof(AddEntryVerbOptions),
                 typeof(DecryptEntryVerbOptions));
@@ -21,6 +26,14 @@ namespace EnvCrypt.Console
             {
                 // Occurs when an exact enum value is not passed
             }*/
+#if (!DEBUG)
+            }
+            catch (Exception ex)
+            {
+                System.Console.Error.WriteLine("Exception whilst parsing arguments:{0}{1}", Environment.NewLine, ex);
+                Environment.Exit(1);
+            }
+#endif
 
             if (parserResult.Errors.Any())
             {

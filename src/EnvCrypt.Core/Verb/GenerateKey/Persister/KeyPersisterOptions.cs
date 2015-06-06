@@ -2,6 +2,6 @@
 {
     public abstract class KeyPersisterOptions
     {
-        public bool OverwriteFileIfExists { get; set; }
+        public string NewKeyName { get; set; }
     }
 }

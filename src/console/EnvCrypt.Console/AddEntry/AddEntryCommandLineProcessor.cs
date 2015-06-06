@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncryptionAlgo;
+﻿using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Console.AddEntry
 {
@@ -8,8 +6,6 @@ namespace EnvCrypt.Console.AddEntry
     {
         protected override bool ReportErrors(AddEntryVerbOptions options)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-            //
             var hasErrors = false;
             var algorithm = options.GetAlgorithm();
             if (algorithm == null)

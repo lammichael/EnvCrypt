@@ -37,18 +37,18 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa.Key
 
 
         [Test]
-        public void Given_ValidRSAKey_When_PublicKeyParametersChanged_Then_HashCodeIsTheSame()
+        public void Given_ValidRSAKey_When_PublicKeyParametersChanged_Then_HashCodeIsDifferent()
         {
             // Arrange
             var key1 = new RsaKey(new RSAParameters()
             {
                 Exponent = RandomByteArrayUtils.CreateRandomByteArray(5),
-                Modulus = RandomByteArrayUtils.CreateRandomByteArray(5),
+                Modulus = RandomByteArrayUtils.CreateRandomByteArray(6),
             }, true);
             var key2 = new RsaKey(new RSAParameters()
             {
                 Exponent = key1.Key.Exponent,
-                Modulus = RandomByteArrayUtils.CreateRandomByteArray(5),
+                Modulus = RandomByteArrayUtils.CreateRandomByteArray(7),
             }, true);
 
             // Act

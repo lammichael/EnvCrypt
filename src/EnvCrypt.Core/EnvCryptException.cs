@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace EnvCrypt.Core
 {
@@ -17,6 +18,8 @@ namespace EnvCrypt.Core
 
         public EnvCryptException(string format, params object[] args)
             : base(string.Format(format, args))
-        {}
+        {
+            Contract.Requires<ArgumentException>(!String.IsNullOrEmpty(format));            
+        }
     }
 }

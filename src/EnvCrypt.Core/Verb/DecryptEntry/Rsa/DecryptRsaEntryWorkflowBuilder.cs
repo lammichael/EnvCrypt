@@ -1,30 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
-using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.EncryptionAlgo.Rsa;
 using EnvCrypt.Core.EncryptionAlgo.Rsa.Utils;
-using EnvCrypt.Core.Key.Mapper.Xml.ToKeyPoco;
 using EnvCrypt.Core.Key.Rsa;
-using EnvCrypt.Core.Key.XmlPoco;
-using EnvCrypt.Core.Utils;
-using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
-using EnvCrypt.Core.Verb.LoadKey.Rsa;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
 {
-    public class DecryptRsaEntryWorkflowBuilder
+    public class DecryptRsaEntryWorkflowBuilder : GenericBuilder
     {
-        public bool IsBuilt { get; private set; }
-
         private IKeyLoader<RsaKey, KeyFromFileDetails> _keyLoader;
         private IDatLoader _datLoader;
 
-        private DecryptEntryWorkflow<RsaKey> _workflow;
+        private DecryptEntryWorkflow<RsaKey, DecryptEntryWorkflowOptions> _workflow;
 
         public DecryptRsaEntryWorkflowBuilder()
         {
@@ -36,8 +27,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         public DecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
         {
             _keyLoader = keyLoader;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 
@@ -45,8 +35,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         public DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader)
         {
             _datLoader = datLoader;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 
@@ -63,7 +52,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
                 new Utf16LittleEndianUserStringConverter(),
                 new RsaSegmentEncryptionAlgo(new RsaAlgo(), new RsaMaxEncryptionCalc()));
 
-            _workflow = new DecryptEntryWorkflow<RsaKey>(_keyLoader, _datLoader, entriesDecrypter);
+            _workflow = new DecryptEntryUsingKeyWorkflow<RsaKey, DecryptEntryWorkflowOptions>(_datLoader, entriesDecrypter, _keyLoader);
             IsBuilt = true;
             return this;
         }
@@ -90,6 +79,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
             return _workflow.Run(options);
         }
 
+
+        protected override void SetWorkflowToNull()
+        {
+            _workflow = null;
+        }
+
+        protected override bool IsWorkflowNull()
+        {
+            return _workflow == null;
+        }
 
         [ContractInvariantMethod]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Required for code contracts.")]

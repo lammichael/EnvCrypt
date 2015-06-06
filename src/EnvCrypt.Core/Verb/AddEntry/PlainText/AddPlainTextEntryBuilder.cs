@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
-using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco;
-using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToXmlPoco;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
-using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.EncryptionAlgo.PlainText;
 using EnvCrypt.Core.Key.PlainText;
-using EnvCrypt.Core.Utils;
-using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 using EnvCrypt.Core.Verb.LoadKey.PlainText;
@@ -31,6 +26,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
 
         public AddPlainTextEntryBuilder WithDatLoader(IDatLoader datLoader)
         {
+            Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
+            //
             _datLoader = datLoader;
             IsBuilt = false;
             _workflow = null;
@@ -40,6 +37,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
 
         public AddPlainTextEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
         {
+            Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
+            //
             _datSaver = datSaver;
             IsBuilt = false;
             _workflow = null;
@@ -54,6 +53,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
         /// <returns>the same Builder instance</returns>
         public AddPlainTextEntryBuilder Build()
         {
+            Contract.Ensures(Contract.Result<AddPlainTextEntryBuilder>() != null);
+            //
             var userStringConverter = new Utf16LittleEndianUserStringConverter();
 
             var encryptWorkflow = new EncryptWorkflow<PlainTextKey, NullKeyLoaderDetails>(
@@ -74,12 +75,9 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.CategoryName), "category name cannot be null or whitespace");
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.EntryName), "entry name cannot be null or whitespace");
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(options.StringToEncrypt), "string to encrypt cannot be null or empty");
+            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(options.StringToEncrypt), "string to add as plaintext cannot be null or empty");
             //
-            if (!IsBuilt)
-            {
-                throw new EnvCryptException("workflow cannot be run because it has not been built");
-            }
+            ThrowIfNotBuilt();
             _workflow.Run(options);
         }
 

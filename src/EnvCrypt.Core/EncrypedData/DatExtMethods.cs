@@ -106,6 +106,8 @@ namespace EnvCrypt.Core.EncrypedData
         {
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(categoryName), "categoryName");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(entryName), "entryName");
+            Contract.Requires<ArgumentNullException>(key != null, "key");
+            Contract.Requires<ArgumentNullException>(segments != null, "segments");
             //
             var isNewEntry = true;
             var entryToAdd = new Entry();

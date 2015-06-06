@@ -1,14 +1,9 @@
-﻿using System;
-using System.Diagnostics.Contracts;
-
-namespace EnvCrypt.Console.GenerateKey
+﻿namespace EnvCrypt.Console.GenerateKey
 {
     class GenerateKeyCommandLineProcessor : VerbCommandLineProcessor<GenerateKeyVerbOptions>
     {
         protected override bool ReportErrors(GenerateKeyVerbOptions options)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-            //
             var hasErrors = false;
             if (options.GetAlgorithm() == null)
             {

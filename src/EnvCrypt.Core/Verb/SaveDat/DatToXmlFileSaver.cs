@@ -4,7 +4,7 @@ using EnvCrypt.Core.EncrypedData.Mapper;
 using EnvCrypt.Core.EncrypedData.Poco;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.Utils;
-using EnvCrypt.Core.Utils.IO;
+using EnvCrypt.Core.Utils.IO.StringWriter;
 
 namespace EnvCrypt.Core.Verb.SaveDat
 {
@@ -12,11 +12,11 @@ namespace EnvCrypt.Core.Verb.SaveDat
     {
         private readonly IDatToExternalRepresentationMapper<EnvCryptEncryptedData> _pocoToXmlMapper;
         private readonly IXmlSerializationUtils<EnvCryptEncryptedData> _serializationUtils;
-        private readonly IStringToFileWriter _fileWriter;
+        private readonly IStringWriter<StringToFileWriterOptions> _fileWriter;
 
         public DatToXmlFileSaver(IDatToExternalRepresentationMapper<EnvCryptEncryptedData> pocoToXmlMapper,
             IXmlSerializationUtils<EnvCryptEncryptedData> serializationUtils,
-            IStringToFileWriter fileWriter)
+            IStringWriter<StringToFileWriterOptions> fileWriter)
         {
             Contract.Requires<ArgumentNullException>(pocoToXmlMapper != null, "pocoToXmlMapper");
             Contract.Requires<ArgumentNullException>(serializationUtils != null, "serializationUtils");
@@ -38,7 +38,15 @@ namespace EnvCrypt.Core.Verb.SaveDat
 
             var xmlPoco = _pocoToXmlMapper.Map(data);
             var xmlStr = _serializationUtils.Serialize(xmlPoco);
-            _fileWriter.Write(fileSaverDetails.DestinationFilePath, xmlStr, true, _serializationUtils.GetUsedEncoding());
+
+            var fileWriterOptions = new StringToFileWriterOptions()
+            {
+                Contents = xmlStr,
+                Encoding = _serializationUtils.GetUsedEncoding(),
+                Path = fileSaverDetails.DestinationFilePath,
+                OverwriteIfFileExists = true
+            };
+            _fileWriter.Write(fileWriterOptions);
         }
     }
 }

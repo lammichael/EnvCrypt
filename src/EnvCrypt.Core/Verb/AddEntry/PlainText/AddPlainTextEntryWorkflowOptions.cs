@@ -1,4 +1,4 @@
-﻿namespace EnvCrypt.Core.Verb.AddEntry
+﻿namespace EnvCrypt.Core.Verb.AddEntry.PlainText
 {
     public class AddPlainTextEntryWorkflowOptions
     {

@@ -24,7 +24,6 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
         private IDatLoader _datLoader;
         private IDatSaver<DatToFileSaverDetails> _datSaver;
 
-
         private AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions> _workflow;
 
         public AddRsaEntryBuilder()
@@ -37,27 +36,30 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
 
         public AddRsaEntryBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
         {
+            Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
+            //
             _keyLoader = keyLoader;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 
 
         public AddRsaEntryBuilder WithDatLoader(IDatLoader datLoader)
         {
+            Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
+            //
             _datLoader = datLoader;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 
 
         public AddRsaEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
         {
+            Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
+            //
             _datSaver = datSaver;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 
@@ -69,6 +71,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
         /// <returns>the same Builder instance</returns>
         public AddRsaEntryBuilder Build()
         {
+            Contract.Ensures(Contract.Result<AddRsaEntryBuilder>() != null);
+            //
             var encryptWorkflow = new EncryptWorkflow<RsaKey, KeyFromFileDetails>(
                 _keyLoader,
                 new RsaKeySuitabilityChecker(),

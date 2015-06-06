@@ -15,6 +15,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Aes.Utils
             // Arrange
             var newKey = new AesKeyGenerator().GetNewKey(new AesKeyGenerationOptions()
             {
+                NewKeyName = "n/a",
                 KeySize = actualKeySize
             });
 

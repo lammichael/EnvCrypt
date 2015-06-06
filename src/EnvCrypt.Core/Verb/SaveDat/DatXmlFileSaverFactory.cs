@@ -3,6 +3,7 @@ using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToXmlPoco;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
+using EnvCrypt.Core.Utils.IO.StringWriter;
 
 namespace EnvCrypt.Core.Verb.SaveDat
 {
@@ -16,7 +17,7 @@ namespace EnvCrypt.Core.Verb.SaveDat
             return new DatToXmlFileSaver(
                 new DatToXmlMapper(new Base64PersistConverter()),
                 new XmlSerializationUtils<EnvCryptEncryptedData>(),
-                new StringToFileWriter(new MyDirectory(), myFile, new TextWriter(myFile)));
+                new StringToFileWriter(new MyDirectory(), myFile));
         }
     }
 }

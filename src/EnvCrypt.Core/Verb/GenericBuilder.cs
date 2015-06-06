@@ -4,6 +4,7 @@ namespace EnvCrypt.Core.Verb
 {
     public abstract class GenericBuilder
     {
+        [Pure]
         public bool IsBuilt { get; protected set; }
 
         protected void MarkAsNotBuilt()
@@ -14,6 +15,7 @@ namespace EnvCrypt.Core.Verb
 
         protected abstract void SetWorkflowToNull();
 
+        [Pure]
         protected abstract bool IsWorkflowNull();
 
         protected void ThrowIfNotBuilt()

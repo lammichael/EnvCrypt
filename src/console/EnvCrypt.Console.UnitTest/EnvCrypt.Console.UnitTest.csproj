@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine">
+      <HintPath>..\..\packages\CommandLineParser20.2.0.0.0\lib\net40\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -54,7 +57,19 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="GenerateKey\GenerateKeyVerbTest.cs" />
+    <Compile Include="Helper\OptionsToStringArgsHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EnvCrypt.Core\EnvCrypt.Core.csproj">
+      <Project>{06757fd4-6162-4dda-b2a2-04bea95b39ef}</Project>
+      <Name>EnvCrypt.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EnvCrypt.Console\EnvCrypt.Console.csproj">
+      <Project>{fe7a9d17-d917-44a7-8c50-2395a8f83e61}</Project>
+      <Name>EnvCrypt.Console</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

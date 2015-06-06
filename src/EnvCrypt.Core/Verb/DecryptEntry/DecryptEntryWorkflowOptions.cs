@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
+using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry
 {
-    public class DecryptEntryWorkflowOptions
+    public class DecryptEntryWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
     {
-        public string DatFilePath { get; set; }
         public IList<string> KeyFilePaths { get; set; }
-        public IList<CategoryEntryPair> CategoryEntryPair { get; set; }
     }
 }

@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics.Contracts;
 using EnvCrypt.Core.Key.Mapper;
 using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Key.XmlPoco;
@@ -12,6 +14,11 @@ namespace EnvCrypt.Core.Verb.LoadKey.Rsa
 
         public RsaKeyFromXmlFileLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptKey> xmlSerializationUtils, IExternalRepresentationToKeyMapper<EnvCryptKey, RsaKey> mapper) : base(myFile, xmlReader, xmlSerializationUtils)
         {
+            Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
+            Contract.Requires<ArgumentNullException>(xmlReader != null, "xmlReader");
+            Contract.Requires<ArgumentNullException>(xmlSerializationUtils != null, "xmlSerializationUtils");
+            Contract.Requires<ArgumentNullException>(mapper != null, "mapper");
+            //
             _mapper = mapper;
         }
 

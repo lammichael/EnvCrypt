@@ -34,7 +34,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             //      Each segment should be empty because the mocked algo returns nothing
             foreach (var encryptedSegment in encryptedList)
             {
-                encryptedSegment.Should().BeEquivalentTo(new byte[0]);
+                encryptedSegment.Should().BeEquivalentTo(new byte[1]);
             }
         }
 
@@ -90,6 +90,8 @@ namespace EnvCrypt.Core.UnitTest.EncryptionAlgo.Rsa
             var rsaKeyCopy = rsaKey;
 
             algoMock = new Mock<IEncryptionAlgo<RsaKey>>();
+            algoMock.Setup(algo => algo.Encrypt(It.IsAny<byte[]>(), rsaKeyCopy)).Returns(new byte[] { 0 });
+
             var maxEncryptionSizeCalcMock = new Mock<IRsaMaxEncryptionCalc>();
             maxEncryptionSizeCalcMock.Setup(calc => calc.GetMaxBytesThatCanBeEncrypted(rsaKeyCopy))
                 .Returns(maxSegmentSize);

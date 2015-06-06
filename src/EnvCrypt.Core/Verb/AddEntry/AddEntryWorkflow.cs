@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Key.PlainText;
+using EnvCrypt.Core.Verb.AddEntry.PlainText;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.SaveDat;
 
@@ -13,15 +14,15 @@ namespace EnvCrypt.Core.Verb.AddEntry
     /// Gets key and EC DAT from file, adds the encrypted entry, and saves the DAT file
     /// back to the same file location.
     /// </summary>
-    public abstract class AddEntryWorkflow<TKey, TWorkflowDetails, TKeyLoaderDetails>
+    public abstract class AddEntryWorkflow<TKey, TWorkflowOptions, TKeyLoaderOptions>
         where TKey : KeyBase
-        where TWorkflowDetails : AddPlainTextEntryWorkflowOptions
+        where TWorkflowOptions : AddPlainTextEntryWorkflowOptions
     {
-        private readonly EncryptWorkflow<TKey, TKeyLoaderDetails> _encryptWorkflow;
+        private readonly EncryptWorkflow<TKey, TKeyLoaderOptions> _encryptWorkflow;
         private readonly IDatLoader _datLoader;
         private readonly IDatSaver<DatToFileSaverDetails> _datSaver;
 
-        protected AddEntryWorkflow(EncryptWorkflow<TKey, TKeyLoaderDetails> encryptWorkflow, IDatLoader datLoader, IDatSaver<DatToFileSaverDetails> datSaver)
+        protected AddEntryWorkflow(EncryptWorkflow<TKey, TKeyLoaderOptions> encryptWorkflow, IDatLoader datLoader, IDatSaver<DatToFileSaverDetails> datSaver)
         {
             Contract.Requires<ArgumentNullException>(encryptWorkflow != null, "encryptWorkflow");
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
@@ -33,7 +34,7 @@ namespace EnvCrypt.Core.Verb.AddEntry
         }
 
 
-        public void Run(TWorkflowDetails workflowDetails)
+        public void Run(TWorkflowOptions workflowDetails)
         {
             Contract.Requires<ArgumentNullException>(workflowDetails != null, "options");
             Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(workflowDetails.CategoryName), "category name cannot be null or whitespace");
@@ -56,11 +57,6 @@ namespace EnvCrypt.Core.Verb.AddEntry
             TKey key;
             var encryptedSegments = _encryptWorkflow.GetEncryptedSegments(GetKeyLoaderDetails(workflowDetails),
                 workflowDetails.StringToEncrypt, out key);
-                
-                //_encryptWorkflow.GetEncryptedSegments(
-                //new KeyFromFileDetails(){ FilePath = options.KeyFilePath}, 
-                
-                //options.StringToEncrypt, out key);
 
 
             var datPoco = _datLoader.Load(workflowDetails.DatFilePath);
@@ -71,6 +67,6 @@ namespace EnvCrypt.Core.Verb.AddEntry
 
 
         //TODO: Add contracts
-        protected abstract TKeyLoaderDetails GetKeyLoaderDetails(TWorkflowDetails workflowDetails);
+        protected abstract TKeyLoaderOptions GetKeyLoaderDetails(TWorkflowOptions workflowDetails);
     }
 }

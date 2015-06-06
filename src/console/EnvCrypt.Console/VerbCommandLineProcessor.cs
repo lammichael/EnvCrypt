@@ -18,7 +18,7 @@ namespace EnvCrypt.Console
             if (ReportErrors(options))
             {
                 System.Console.Error.WriteLine(HelpText.AutoBuild(parserResult));
-                Environment.Exit(1);
+                throw new EnvCryptConsoleException("Command line argument validation errors found");
             }
 
             RunWorflow(options);

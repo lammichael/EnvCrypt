@@ -28,6 +28,7 @@ namespace EnvCrypt.Core.Key.Aes
             }
 
             var generated = new AesKey();
+            generated.Name = options.NewKeyName;
             using (var myAes = new AesManaged())
             {
                 myAes.KeySize = options.KeySize;

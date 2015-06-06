@@ -4,21 +4,18 @@ using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Persister
 {
-    [ContractClass(typeof (KeyPersisterContracts<,,>))]
-    public interface IKeyPersister<in TKeyPoco, TKeyXmlPoco, in TOptions>
+    [ContractClass(typeof (KeyPersisterContracts<,>))]
+    public interface IKeyPersister<in TKeyPoco, in TOptions>
         where TKeyPoco : KeyBase
-        where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
         where TOptions : KeyPersisterOptions
     {
         void Persist(TKeyPoco thisKey, TOptions withOptions);
     }
 
 
-    [ContractClassFor(typeof(IKeyPersister<,,>))]
-    internal abstract class KeyPersisterContracts<TKeyPoco, TKeyXmlPoco, TOptions> : IKeyPersister<TKeyPoco, TKeyXmlPoco, TOptions>
-        where TKeyPoco : KeyBase
-        where TKeyXmlPoco : IKeyExternalRepresentation<TKeyPoco>
-        where TOptions : KeyPersisterOptions
+    [ContractClassFor(typeof(IKeyPersister<,>))]
+    internal abstract class KeyPersisterContracts<TKeyPoco, TOptions> : IKeyPersister<TKeyPoco, TOptions>
+        where TKeyPoco : KeyBase where TOptions : KeyPersisterOptions
     {
         public void Persist(TKeyPoco thisKey, TOptions withOptions)
         {

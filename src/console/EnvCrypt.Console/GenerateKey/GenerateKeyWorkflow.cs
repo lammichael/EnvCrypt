@@ -2,6 +2,8 @@
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Verb.GenerateKey;
 using EnvCrypt.Core.Verb.GenerateKey.Persister;
+using EnvCrypt.Core.Verb.GenerateKey.Persister.Asymetric;
+using EnvCrypt.Core.Verb.GenerateKey.Rsa;
 
 namespace EnvCrypt.Console.GenerateKey
 {
@@ -12,7 +14,7 @@ namespace EnvCrypt.Console.GenerateKey
 
         public void Run(GenerateKeyVerbOptions options)
         {
-            var keyPersisterOpts = new AsymmetricKeyToFilePersisterOptions()
+            var keyPersisterOpts = new AsymmetricKeyFilePersisterOptions()
             {
                 NewKeyName = options.KeyName,
                 NewPrivateKeyFullFilePath = Path.Combine(
@@ -30,7 +32,7 @@ namespace EnvCrypt.Console.GenerateKey
                 if (options.OutputKeyToConsole)
                 {
                     new GenerateRsaKeyBuilder()
-                    .WithKeyPersister(AsymmetricKeyPersisterFactory.GetRsaKeyPersister(new ToConsoleTextWriter()))
+                    .WithKeyPersister(AsymmetricKeyFilePersisterFactory.GetRsaKeyPersister(new ToConsoleTextWriter()))
                         .Build().Run(keyPersisterOpts);
                 }
                 else

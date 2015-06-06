@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EnvCrypt.Core.Utils.IO;
+﻿using EnvCrypt.Core.Utils.IO.StringWriter;
 
 namespace EnvCrypt.Console.GenerateKey
 {
-    class ToConsoleTextWriter : ITextWriter
+    class ToConsoleTextWriter : IStringWriter<StringToFileWriterOptions>
     {
-        public void WriteAllText(string path, string contents, Encoding encoding)
+        public void Write(StringToFileWriterOptions options)
         {
-            System.Console.WriteLine(contents);
+            System.Console.WriteLine(options.Contents);
             System.Console.WriteLine();
         }
     }
