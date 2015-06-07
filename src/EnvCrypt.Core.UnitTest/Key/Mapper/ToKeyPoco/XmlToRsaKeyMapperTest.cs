@@ -36,7 +36,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToKeyPoco
                 Aes = null,
             };
 
-            var strConverterMock = new Mock<IStringPersistConverter>(MockBehavior.Strict);
+            var strConverterMock = new Mock<IKeyDetailsPersistConverter>(MockBehavior.Strict);
             {
                 var counter = 1;
                 strConverterMock.Setup(c => c.Decode("D")).Returns(new byte[counter++]);
@@ -86,7 +86,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToKeyPoco
                 Aes = null,
             };
 
-            var strConverterMock = new Mock<IStringPersistConverter>(MockBehavior.Strict);
+            var strConverterMock = new Mock<IKeyDetailsPersistConverter>(MockBehavior.Strict);
             {
                 var counter = 1;
                 strConverterMock.Setup(c => c.Decode("Exponent")).Returns(new byte[counter++]);

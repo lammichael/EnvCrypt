@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.Poco;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.EncryptionAlgo;
@@ -9,12 +10,15 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco
 {
     class XmlToDatMapper : IExternalRepresentationToDatMapper<EnvCryptEncryptedData>
     {
-        private readonly IStringPersistConverter _strConverter;
+        private readonly IEncryptedDetailsPersistConverter _detailConverter;
 
-        public XmlToDatMapper(IStringPersistConverter strConverter)
+        public XmlToDatMapper(IEncryptedDetailsPersistConverter detailConverter)
         {
-            _strConverter = strConverter;
+            Contract.Requires<ArgumentNullException>(detailConverter != null, "detailConverter");
+            //
+            _detailConverter = detailConverter;
         }
+
 
         /// <summary>
         /// If there is no Decryption element in XML, then don't
@@ -74,18 +78,6 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco
                     }
                     entryToAdd.Name = currentXmlEntry.Name;
 
-                    if (currentXmlEntry.EncryptedValue != null)
-                    {
-                        entryToAdd.EncryptedValue = new List<byte[]>(currentXmlEntry.EncryptedValue.Length);
-                        for (uint evI = 0; evI < currentXmlEntry.EncryptedValue.Length; evI++)
-                        {
-                            var currentEncrypedSegment = currentXmlEntry.EncryptedValue[evI].Value;
-                            entryToAdd.EncryptedValue.Add(
-                                string.IsNullOrWhiteSpace(currentEncrypedSegment)
-                                    ? new byte[0]
-                                    : _strConverter.Decode(currentEncrypedSegment));
-                        }
-                    }
 
                     var currentEntryDecryption = currentXmlEntry.Decryption;
                     if (currentEntryDecryption == null)
@@ -108,6 +100,20 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco
                             throw new EnvCryptException("{0} is an unrecognised EnvCrypt encryption algo name in Category: {0}  Entry: {1}", currentXmlCategory.Name, currentXmlEntry.Name);
                         }
                         entryToAdd.EncryptionAlgorithm = parsedAlgoType;
+                    }
+
+
+                    if (currentXmlEntry.EncryptedValue != null)
+                    {
+                        entryToAdd.EncryptedValue = new List<byte[]>(currentXmlEntry.EncryptedValue.Length);
+                        for (uint evI = 0; evI < currentXmlEntry.EncryptedValue.Length; evI++)
+                        {
+                            var currentEncrypedSegment = currentXmlEntry.EncryptedValue[evI].Value;
+                            entryToAdd.EncryptedValue.Add(
+                                string.IsNullOrWhiteSpace(currentEncrypedSegment)
+                                    ? new byte[0]
+                                    : _detailConverter.Decode(currentEncrypedSegment, entryToAdd.EncryptionAlgorithm));
+                        }
                     }
 
                     categoryToAdd.Entries.Add(entryToAdd);

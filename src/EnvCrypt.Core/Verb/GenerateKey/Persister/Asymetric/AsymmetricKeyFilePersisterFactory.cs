@@ -24,9 +24,9 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister.Asymetric
             Contract.Ensures(Contract.Result<AsymmetricKeyFilePersister<RsaKey, EnvCryptKey, StringToFileWriterOptions>>() != null);
             //
             return new RsaKeyPersister(
-                new RsaKeyToXmlMapper(new Base64PersistConverter()),
+                new RsaKeyToXmlMapper(new KeyDetailsPersistConverter()),
                 new XmlSerializationUtils<EnvCryptKey>(),
-                new StringToFileWriter(new MyDirectory(), new MyFile()));
+                writer);
         }
     }
 }

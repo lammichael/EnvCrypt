@@ -11,9 +11,9 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToXmlPoco
 {
     class DatToXmlMapper : IDatToExternalRepresentationMapper<EnvCryptEncryptedData>
     {
-        private readonly IStringPersistConverter _strConverter;
+        private readonly IEncryptedDetailsPersistConverter _strConverter;
 
-        public DatToXmlMapper(IStringPersistConverter strConverter)
+        public DatToXmlMapper(IEncryptedDetailsPersistConverter strConverter)
         {
             Contract.Requires<ArgumentNullException>(strConverter != null, "strConverter");
             _strConverter = strConverter;
@@ -75,7 +75,7 @@ namespace EnvCrypt.Core.EncrypedData.Mapper.Xml.ToXmlPoco
 
                             xmlEncryptedValues.Add(new EnvCryptEncryptedDataCategoryEntryEncryptedValue()
                             {
-                                Value = _strConverter.Encode(currentValueAsByteArr)
+                                Value = _strConverter.Encode(currentValueAsByteArr, currentEntry.EncryptionAlgorithm)
                             });
                         }
                         xmlEntryToAdd.EncryptedValue = xmlEncryptedValues.ToArray();

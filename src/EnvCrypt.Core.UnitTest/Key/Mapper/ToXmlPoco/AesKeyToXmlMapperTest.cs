@@ -22,7 +22,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToXmlPoco
             };
             var ivMapsTo = "myIVString";
             var keyMapsTo = "myIVString";
-            var converter = new Mock<IStringPersistConverter>(MockBehavior.Strict);
+            var converter = new Mock<IKeyDetailsPersistConverter>(MockBehavior.Strict);
             converter.Setup(c => c.Encode(key.Iv)).Returns(ivMapsTo);
             converter.Setup(c => c.Encode(key.Key)).Returns(keyMapsTo);
 
@@ -51,7 +51,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToXmlPoco
                 Iv = new byte[1],
                 Key = new byte[1],
             };
-            var converter = new Mock<IStringPersistConverter>();
+            var converter = new Mock<IKeyDetailsPersistConverter>();
             converter.Setup(c => c.Encode(It.IsAny<byte[]>())).Returns("a string not important to the test, but required to satisfy the method's post condition");
 
             // Act

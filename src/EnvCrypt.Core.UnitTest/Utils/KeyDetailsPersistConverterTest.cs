@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace EnvCrypt.Core.UnitTest.Utils
 {
     [TestFixture]
-    public class Base64PersistConverterTest
+    public class KeyDetailsPersistConverterTest
     {
         [Test]
         public void Given_RandomBinaryData_When_EncodeAndDecode_Then_BinaryDataMustBeUnchanged()
@@ -14,7 +14,7 @@ namespace EnvCrypt.Core.UnitTest.Utils
             var randomData = RandomByteArrayUtils.CreateRandomByteArray(9999);
 
             // Act
-            var converter = new Base64PersistConverter();
+            var converter = new KeyDetailsPersistConverter();
             var result = converter.Decode(converter.Encode(randomData));
 
             // Assert

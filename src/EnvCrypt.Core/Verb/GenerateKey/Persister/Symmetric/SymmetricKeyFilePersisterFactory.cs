@@ -25,7 +25,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Persister.Symmetric
             Contract.Ensures(Contract.Result<SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions>>() != null);
             //
             return new SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions>(
-                new AesKeyToXmlMapper(new Base64PersistConverter()),
+                new AesKeyToXmlMapper(new KeyDetailsPersistConverter()),
                 new XmlSerializationUtils<EnvCryptKey>(), writer
                 );
         }

@@ -84,8 +84,8 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToDatPoco
                 }
             };
 
-            var strConverterMock = new Mock<IStringPersistConverter>(MockBehavior.Strict);
-            strConverterMock.Setup(c => c.Decode(It.IsAny<string>()))
+            var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>(MockBehavior.Strict);
+            strConverterMock.Setup(c => c.Decode(It.IsAny<string>(), It.IsAny<EnvCryptAlgoEnum>()))
                 .Returns<string>(s => new byte[s.Length]);
 
             // Act
@@ -109,6 +109,16 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToDatPoco
             res.Categories[1].Entries[0].EncryptedValue.Should().HaveCount(2);
             res.Categories[1].Entries[0].EncryptedValue[0].Should().BeEquivalentTo(
                 new byte[3]);
+        }
+
+
+        [Test]
+        public void Given_XMLWithPlainTextAndRSA_When_Map_Then_CorrectAlgoEnumPassedIntoConverter()
+        {
+            // Arrange
+            // Act
+            // Assert
+            Assert.Fail();
         }
     }
 }

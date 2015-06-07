@@ -42,20 +42,31 @@ namespace EnvCrypt.Console.UnitTest.Helper
         }
 
 
-        private static void AddNewEntry(List<string> list, OptionAttribute option, object value)
+        private static void AddNewEntry(List<string> toList, OptionAttribute option, object value)
         {
             if (value == null)
             {
                 return;
             }
+
+            // Bools just require the flag to exist to be set to true
+            if (value is bool)
+            {
+                if (bool.Parse(value.ToString()))
+                {
+                    toList.Add("--" + option.LongName);
+                }
+                return;
+            }
+
             var valueString = value.ToString();
             if (string.IsNullOrWhiteSpace(valueString))
             {
                 return;
             }
 
-            list.Add("--" + option.LongName);
-            list.Add(valueString);
+            toList.Add("--" + option.LongName);
+            toList.Add(valueString);
         }
     }
 }

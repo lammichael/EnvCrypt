@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToXmlPoco;
+using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
@@ -15,7 +17,8 @@ namespace EnvCrypt.Core.Verb.SaveDat
             //
             var myFile = new MyFile();
             return new DatToXmlFileSaver(
-                new DatToXmlMapper(new Base64PersistConverter()),
+                new DatToXmlMapper(
+                    new EncryptedDetailsPersistConverter(new Utf16LittleEndianUserStringConverter())),
                 new XmlSerializationUtils<EnvCryptEncryptedData>(),
                 new StringToFileWriter(new MyDirectory(), myFile));
         }

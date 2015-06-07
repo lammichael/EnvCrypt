@@ -7,7 +7,7 @@ namespace EnvCrypt.Core.Utils
     /// Encoding is for when you've got binary data which genuinely is encoded text"
     /// http://haacked.com/archive/2012/01/30/hazards-of-converting-binary-data-to-a-string.aspx/
     /// </summary>
-    class Base64PersistConverter : IStringPersistConverter
+    class KeyDetailsPersistConverter : IKeyDetailsPersistConverter
     {
         public string Encode(byte[] dataToPersist)
         {

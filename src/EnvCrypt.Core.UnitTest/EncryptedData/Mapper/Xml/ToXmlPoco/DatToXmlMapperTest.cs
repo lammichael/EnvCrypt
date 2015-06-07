@@ -69,9 +69,10 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToXmlPoco
                 }
             };
 
-            var strConverterMock = new Mock<IStringPersistConverter>();
+            var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>();
             //      Array of length 1 returns "1", length 2 returns "2"...
-            strConverterMock.Setup(c => c.Encode(It.IsAny<byte[]>())).Returns<byte[]>(bytes => bytes.Length.ToString());
+            strConverterMock.Setup(c => c.Encode(It.IsAny<byte[]>(), It.IsAny<EnvCryptAlgoEnum>()))
+                .Returns<byte[]>(b => b.Length.ToString());
 
             // Act
             var mapper = new DatToXmlMapper(strConverterMock.Object);
@@ -127,9 +128,10 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToXmlPoco
                 }
             };
 
-            var strConverterMock = new Mock<IStringPersistConverter>();
+            var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>();
             //      Array of length 1 returns "1", length 2 returns "2"...
-            strConverterMock.Setup(c => c.Encode(It.IsAny<byte[]>())).Returns<byte[]>(bytes => bytes.Length.ToString());
+            strConverterMock.Setup(c => c.Encode(It.IsAny<byte[]>(), It.IsAny<EnvCryptAlgoEnum>()))
+                .Returns<byte[]>(b => b.Length.ToString());
 
             // Act
             var mapper = new DatToXmlMapper(strConverterMock.Object);

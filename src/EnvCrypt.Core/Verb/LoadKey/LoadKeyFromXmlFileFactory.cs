@@ -20,7 +20,7 @@ namespace EnvCrypt.Core.Verb.LoadKey
             //
             var myFile = new MyFile();
 
-            var persistConverter = new Base64PersistConverter();
+            var persistConverter = new KeyDetailsPersistConverter();
 
             return new RsaKeyFromXmlFileLoader(
                 myFile,
@@ -36,7 +36,7 @@ namespace EnvCrypt.Core.Verb.LoadKey
             //
             var myFile = new MyFile();
 
-            var persistConverter = new Base64PersistConverter();
+            var persistConverter = new KeyDetailsPersistConverter();
 
             return new AesKeyFromXmlFileLoader(
                 myFile,

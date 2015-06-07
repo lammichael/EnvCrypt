@@ -29,7 +29,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToXmlPoco
                 P = RandomByteArrayUtils.CreateRandomByteArray(16),
                 Q = RandomByteArrayUtils.CreateRandomByteArray(17),
             }, true);
-            var converter = new Mock<IStringPersistConverter>(MockBehavior.Strict);
+            var converter = new Mock<IKeyDetailsPersistConverter>(MockBehavior.Strict);
             converter.Setup(c => c.Encode(key.Key.D)).Returns("d");
             converter.Setup(c => c.Encode(key.Key.DP)).Returns("dp");
             converter.Setup(c => c.Encode(key.Key.DQ)).Returns("dq");
@@ -77,7 +77,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToXmlPoco
             }, true);
             const string keyName = "My Rsa Key";
             key.Name = keyName;
-            var converter = new Mock<IStringPersistConverter>(MockBehavior.Strict);
+            var converter = new Mock<IKeyDetailsPersistConverter>(MockBehavior.Strict);
             converter.Setup(c => c.Encode(key.Key.Exponent)).Returns("exponent");
             converter.Setup(c => c.Encode(key.Key.Modulus)).Returns("modulus");
 

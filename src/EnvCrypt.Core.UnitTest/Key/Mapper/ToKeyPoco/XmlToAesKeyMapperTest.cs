@@ -29,7 +29,7 @@ namespace EnvCrypt.Core.UnitTest.Key.Mapper.ToKeyPoco
                 },
             };
 
-            var strConverterMock = new Mock<IStringPersistConverter>(MockBehavior.Strict);
+            var strConverterMock = new Mock<IKeyDetailsPersistConverter>(MockBehavior.Strict);
             {
                 var counter = 1;
                 strConverterMock.Setup(c => c.Decode("Iv")).Returns(new byte[counter++]);

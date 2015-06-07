@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using EnvCrypt.Console.AddEntry;
 using EnvCrypt.Console.DecryptEntry;
 using EnvCrypt.Console.GenerateKey;
@@ -26,7 +28,7 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
 
         private string _datFile;
 
-        private IList<Entry> _rsaEntries = new []
+        private readonly IList<Entry> _rsaEntries = new []
         {
             new Entry()
             {
@@ -39,7 +41,7 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
                 DecryptedValue = "g1tRoCk5"
             }
         };
-        private IList<Entry> _aesEntries = new[]
+        private readonly IList<Entry> _aesEntries = new[]
         {
             new Entry()
             {
@@ -52,7 +54,7 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
                 DecryptedValue = "g1tRoCk5"
             }
         };
-        private IList<Entry> _plainTextEntries = new[]
+        private readonly IList<Entry> _plainTextEntries = new[]
         {
             new Entry()
             {
@@ -94,30 +96,9 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
                 /*
                  * Decrypt entry
                  */
-                var decryptRsaEntryArgObj = new DecryptEntryVerbOptions()
-                {
-                    AlgorithmToUse = EnvCryptAlgoEnum.Rsa.ToString(),
-                    DatFile = Path.Combine(tempFolder.TempDirectory, "mydat.xml"),
-                    KeyFiles = _rsaPrivateKeyFile,
-                    Categories = "PROD",
-                    Entries = "some password"
-                };
-                var decryptRsaEntryArgs = OptionsToStringArgsHelper.GetArgs(decryptRsaEntryArgObj);
-
-                var consoleOutput = string.Empty;
-                var originalConsoleOut = System.Console.Out; // preserve the original stream
-                using (var writer = new StringWriter())
-                {
-                    System.Console.SetOut(writer);
-                    Program.Main(decryptRsaEntryArgs);
-                    writer.Flush(); // when you're done, make sure everything is written out
-
-                    consoleOutput = writer.GetStringBuilder().ToString();
-                }
-                System.Console.SetOut(originalConsoleOut); // restore Console.Out
-
-                // Assert
-                consoleOutput.Should().Contain("passw0rd");
+                DecryptRsaEntries();
+                DecryptAesEntries();
+                GetPlainTextEntries();
             }
         }
 
@@ -182,7 +163,8 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
             var keyXml = File.ReadAllText(_aesKeyFile);
             keyXml = keyXml.Replace(Environment.NewLine, string.Empty);
 
-            keyXml.Should().MatchRegex(".+<Exponent>.+</Exponent>");
+            keyXml.Should().MatchRegex(".+<Key>.+</Key>");
+            keyXml.Should().MatchRegex(".+<Iv>.+</Iv>");
 
         }
 
@@ -209,7 +191,10 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
                 // Assert
                 var datFileXml = File.ReadAllText(addEntryArgObj.DatFile);
                 datFileXml = datFileXml.Replace(Environment.NewLine, string.Empty);
-                datFileXml.Should().MatchRegex(string.Format(@".+<Category Name=""{0}"">.+<Entry Name=""{1}"">.+<Decryption KeyName=""{2}"".+", rsaEntry.CategoryEntryPair.Category, rsaEntry.CategoryEntryPair.Entry, RsaKeyName));
+                datFileXml.Should().MatchRegex(string.Format(@".+<Category Name=""{0}"">.+<Entry Name=""{1}"">.+<Decryption KeyName=""{2}"".+", 
+                    Regex.Escape(rsaEntry.CategoryEntryPair.Category),
+                    Regex.Escape(rsaEntry.CategoryEntryPair.Entry),
+                    Regex.Escape(RsaKeyName)));
             }
         }
 
@@ -236,7 +221,10 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
                 // Assert
                 var datFileXml = File.ReadAllText(addEntryArgObj.DatFile);
                 datFileXml = datFileXml.Replace(Environment.NewLine, string.Empty);
-                datFileXml.Should().MatchRegex(string.Format(@".+<Category Name=""{0}"">.+<Entry Name=""{1}"">.+<Decryption KeyName=""{2}"".+", aesEntry.CategoryEntryPair.Category, aesEntry.CategoryEntryPair.Entry, AesKeyName));
+                datFileXml.Should().MatchRegex(string.Format(@".+<Category Name=""{0}"">.+<Entry Name=""{1}"">.+<Decryption KeyName=""{2}"".+", 
+                    Regex.Escape(aesEntry.CategoryEntryPair.Category),
+                    Regex.Escape(aesEntry.CategoryEntryPair.Entry),
+                    Regex.Escape(AesKeyName)));
             }
         }
 
@@ -262,7 +250,93 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
                 // Assert
                 var datFileXml = File.ReadAllText(addEntryArgObj.DatFile);
                 datFileXml = datFileXml.Replace(Environment.NewLine, string.Empty);
-                datFileXml.Should().MatchRegex(string.Format(@".+<Category Name=""{0}"">.+<Entry Name=""{1}"">.+<Decryption KeyName=""{2}"".+", plainTextEntries.CategoryEntryPair.Category, plainTextEntries.CategoryEntryPair.Entry, AesKeyName));
+                datFileXml.Should().MatchRegex(string.Format(@".+<Category Name=""{0}"">.+<Entry Name=""{1}"">.*<EncryptedValue>{2}</EncryptedValue>.+", 
+                    Regex.Escape(plainTextEntries.CategoryEntryPair.Category),
+                    Regex.Escape(plainTextEntries.CategoryEntryPair.Entry),
+                    Regex.Escape(plainTextEntries.DecryptedValue)));
+            }
+        }
+
+
+        private void DecryptRsaEntries()
+        {
+            var categoriesInString = string.Join("|", _rsaEntries.Select(e => e.CategoryEntryPair.Category));
+            var entriesInString = string.Join("|", _rsaEntries.Select(e => e.CategoryEntryPair.Entry));
+
+            var decryptRsaEntryArgObj = new DecryptEntryVerbOptions()
+            {
+                AlgorithmToUse = EnvCryptAlgoEnum.Rsa.ToString(),
+                DatFile = _datFile,
+                KeyFiles = _rsaPrivateKeyFile,
+                Categories = categoriesInString,
+                Entries = entriesInString
+            };
+            var decryptRsaEntryArgs = OptionsToStringArgsHelper.GetArgs(decryptRsaEntryArgObj);
+
+            var consoleOutput = new ConsoleScraper(() => Program.Main(decryptRsaEntryArgs)).Run();
+
+            // Assert
+            foreach (var entry in _rsaEntries)
+            {
+                consoleOutput.Should().MatchRegex(string.Format(@".*{0}\s+{1}\s+{2}.*",
+                    Regex.Escape(entry.CategoryEntryPair.Category),
+                    Regex.Escape(entry.CategoryEntryPair.Entry),
+                    Regex.Escape(entry.DecryptedValue)));
+            }
+        }
+
+
+        private void DecryptAesEntries()
+        {
+            var categoriesInString = string.Join("|", _aesEntries.Select(e => e.CategoryEntryPair.Category));
+            var entriesInString = string.Join("|", _aesEntries.Select(e => e.CategoryEntryPair.Entry));
+
+            var decryptEntryArgObj = new DecryptEntryVerbOptions()
+            {
+                AlgorithmToUse = EnvCryptAlgoEnum.Aes.ToString(),
+                DatFile = _datFile,
+                KeyFiles = _aesKeyFile,
+                Categories = categoriesInString,
+                Entries = entriesInString
+            };
+            var decryptEntryArgs = OptionsToStringArgsHelper.GetArgs(decryptEntryArgObj);
+
+            var consoleOutput = new ConsoleScraper(() => Program.Main(decryptEntryArgs)).Run();
+
+            // Assert
+            foreach (var entry in _aesEntries)
+            {
+                consoleOutput.Should().MatchRegex(string.Format(@".*{0}\s+{1}\s+{2}.*",
+                    Regex.Escape(entry.CategoryEntryPair.Category),
+                    Regex.Escape(entry.CategoryEntryPair.Entry),
+                    Regex.Escape(entry.DecryptedValue)));
+            }
+        }
+
+
+        private void GetPlainTextEntries()
+        {
+            var categoriesInString = string.Join("|", _plainTextEntries.Select(e => e.CategoryEntryPair.Category));
+            var entriesInString = string.Join("|", _plainTextEntries.Select(e => e.CategoryEntryPair.Entry));
+
+            var decryptEntryArgObj = new DecryptEntryVerbOptions()
+            {
+                AlgorithmToUse = EnvCryptAlgoEnum.PlainText.ToString(),
+                DatFile = _datFile,
+                Categories = categoriesInString,
+                Entries = entriesInString
+            };
+            var decryptEntryArgs = OptionsToStringArgsHelper.GetArgs(decryptEntryArgObj);
+
+            var consoleOutput = new ConsoleScraper(() => Program.Main(decryptEntryArgs)).Run();
+
+            // Assert
+            foreach (var entry in _plainTextEntries)
+            {
+                consoleOutput.Should().MatchRegex(string.Format(@".*{0}\s+{1}\s+{2}.*",
+                    Regex.Escape(entry.CategoryEntryPair.Category),
+                    Regex.Escape(entry.CategoryEntryPair.Entry),
+                    Regex.Escape(entry.DecryptedValue)));
             }
         }
     }

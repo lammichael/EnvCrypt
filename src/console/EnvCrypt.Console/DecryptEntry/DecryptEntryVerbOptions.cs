@@ -41,6 +41,10 @@ namespace EnvCrypt.Console.DecryptEntry
         [Pure]
         public IList<string> GetKeyFiles()
         {
+            if (KeyFiles == null)
+            {
+                return new List<string>();
+            }
             return KeyFiles.Split(Delimiter);
         }
 
@@ -48,6 +52,8 @@ namespace EnvCrypt.Console.DecryptEntry
         [Pure]
         public IList<string> GetCategories()
         {
+            Contract.Requires<NullReferenceException>(Categories != null, "Categories");
+            //
             return Categories.Split(Delimiter);
         }
 
@@ -55,6 +61,8 @@ namespace EnvCrypt.Console.DecryptEntry
         [Pure]
         public IList<string> GetEntries()
         {
+            Contract.Requires<NullReferenceException>(Entries != null, "Entries");
+            //
             return Entries.Split(Delimiter);
         }
     }

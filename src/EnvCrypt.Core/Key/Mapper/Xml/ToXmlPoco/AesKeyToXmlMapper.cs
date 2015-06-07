@@ -12,9 +12,9 @@ namespace EnvCrypt.Core.Key.Mapper.Xml.ToXmlPoco
     {
         public const EnvCryptAlgoEnum AlgorithmType = EnvCryptAlgoEnum.Aes;
 
-        private readonly IStringPersistConverter _strConverter;
+        private readonly IKeyDetailsPersistConverter _strConverter;
 
-        public AesKeyToXmlMapper(IStringPersistConverter strConverter)
+        public AesKeyToXmlMapper(IKeyDetailsPersistConverter strConverter)
         {
             Contract.Requires<ArgumentNullException>(strConverter != null, "strConverter");
             //

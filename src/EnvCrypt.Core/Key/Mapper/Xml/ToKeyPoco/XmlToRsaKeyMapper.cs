@@ -12,9 +12,9 @@ namespace EnvCrypt.Core.Key.Mapper.Xml.ToKeyPoco
     {
         public const EnvCryptAlgoEnum AlgorithmType = EnvCryptAlgoEnum.Rsa;
 
-        private readonly IStringPersistConverter _strConverter;
+        private readonly IKeyDetailsPersistConverter _strConverter;
 
-        public XmlToRsaKeyMapper(IStringPersistConverter strConverter)
+        public XmlToRsaKeyMapper(IKeyDetailsPersistConverter strConverter)
         {
             _strConverter = strConverter;
         }

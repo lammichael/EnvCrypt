@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.PlainText;
 using EnvCrypt.Core.Key.PlainText;
+using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 using EnvCrypt.Core.Verb.LoadKey.PlainText;
@@ -55,12 +56,10 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
         {
             Contract.Ensures(Contract.Result<AddPlainTextEntryBuilder>() != null);
             //
-            var userStringConverter = new Utf16LittleEndianUserStringConverter();
-
             var encryptWorkflow = new EncryptWorkflow<PlainTextKey, NullKeyLoaderDetails>(
                 new PlainTextKeyLoader(),
                 new PlainTextKeySuitabilityChecker(),
-                userStringConverter,
+                new Utf16LittleEndianUserStringConverter(),
                 new PlainTextSegmentEncryptionAlgo());
             
             _workflow = new AddPlainTextEntryWorkflow<PlainTextKey, AddPlainTextEntryWorkflowOptions>(encryptWorkflow, _datLoader, _datSaver);
