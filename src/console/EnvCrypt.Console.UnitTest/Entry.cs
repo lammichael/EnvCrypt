@@ -1,6 +1,6 @@
 ﻿using EnvCrypt.Core.Verb.DecryptEntry;
 
-namespace EnvCrypt.Console.UnitTest.DecryptEntry
+namespace EnvCrypt.Console.UnitTest
 {
     internal class Entry
     {

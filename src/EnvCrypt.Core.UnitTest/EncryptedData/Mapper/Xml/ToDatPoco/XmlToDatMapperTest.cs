@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.CodeDom;
+using System.Collections.Generic;
 using EnvCrypt.Core.EncrypedData.Mapper.Xml.ToDatPoco;
 using EnvCrypt.Core.EncrypedData.XmlPoco;
 using EnvCrypt.Core.EncryptionAlgo;
@@ -86,7 +87,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToDatPoco
 
             var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>(MockBehavior.Strict);
             strConverterMock.Setup(c => c.Decode(It.IsAny<string>(), It.IsAny<EnvCryptAlgoEnum>()))
-                .Returns<string>(s => new byte[s.Length]);
+                .Returns<string, EnvCryptAlgoEnum>((s,_) => new byte[s.Length]);
 
             // Act
             var mapper = new XmlToDatMapper(strConverterMock.Object);
@@ -116,9 +117,61 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToDatPoco
         public void Given_XMLWithPlainTextAndRSA_When_Map_Then_CorrectAlgoEnumPassedIntoConverter()
         {
             // Arrange
+            var xmlProdKey = new EnvCryptEncryptedDataCategoryEntryDecryption()
+            {
+                KeyName = "Production Key",
+                Algo = "Rsa",
+                Hash = 123,
+            };
+
+            var xmlPoco = new EnvCryptEncryptedData()
+            {
+                Items = new[]
+                {
+                    new EnvCryptEncryptedDataCategory()
+                    {
+                        Name = "Production",
+                        Entry = new[]
+                        {
+                            new EnvCryptEncryptedDataCategoryEntry()
+                            {
+                                Name = "root password",
+                                Decryption = xmlProdKey,
+                                EncryptedValue = new[]
+                                {
+                                    new EnvCryptEncryptedDataCategoryEntryEncryptedValue()
+                                    {
+                                        Value = "r0ot"
+                                    }
+                                }
+                            },
+                            new EnvCryptEncryptedDataCategoryEntry()
+                            {
+                                Name = "username",
+                                EncryptedValue = new[]
+                                {
+                                    new EnvCryptEncryptedDataCategoryEntryEncryptedValue()
+                                    {
+                                        Value = "michael"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>();
+            strConverterMock.Setup(c => c.Decode(It.IsAny<string>(), It.IsAny<EnvCryptAlgoEnum>()))
+                .Returns<string, EnvCryptAlgoEnum>((s, _) => new byte[s.Length]);
+
             // Act
+            var mapper = new XmlToDatMapper(strConverterMock.Object);
+            var res = mapper.Map(xmlPoco);
+
             // Assert
-            Assert.Fail();
+            strConverterMock.Verify(converter => converter.Decode("r0ot", EnvCryptAlgoEnum.Rsa), Times.Once);
+            strConverterMock.Verify(converter => converter.Decode("michael", EnvCryptAlgoEnum.PlainText), Times.Once);
         }
     }
 }

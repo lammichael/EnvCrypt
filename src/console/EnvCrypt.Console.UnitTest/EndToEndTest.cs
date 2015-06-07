@@ -12,7 +12,7 @@ using EnvCrypt.Core.Verb.DecryptEntry;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace EnvCrypt.Console.UnitTest.DecryptEntry
+namespace EnvCrypt.Console.UnitTest
 {
     [TestFixture]
     public class EndToEndTest
@@ -51,20 +51,20 @@ namespace EnvCrypt.Console.UnitTest.DecryptEntry
             new Entry()
             {
                 CategoryEntryPair = new CategoryEntryPair("APAC", "root password (AES)"),
-                DecryptedValue = "g1tRoCk5"
+                DecryptedValue = "AE5R0ck5"
             }
         };
         private readonly IList<Entry> _plainTextEntries = new[]
         {
             new Entry()
             {
-                CategoryEntryPair = new CategoryEntryPair("EMEA", "DB username"),
-                DecryptedValue = "lammichaelProd"
+                CategoryEntryPair = new CategoryEntryPair("EMEA", "DB username 1"),
+                DecryptedValue = "lammichaelEUR"
             },
             new Entry()
             {
-                CategoryEntryPair = new CategoryEntryPair("APAC", "DB username"),
-                DecryptedValue = "lammichaelDev"
+                CategoryEntryPair = new CategoryEntryPair("APAC", "DB username 2"),
+                DecryptedValue = "lammichaelAPAC"
             }
         };
 

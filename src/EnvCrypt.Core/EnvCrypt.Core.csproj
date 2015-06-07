@@ -165,6 +165,9 @@
     <Compile Include="Utils\ByteArrayHashUtils.cs" />
     <Compile Include="Utils\EncryptedDetailsPersistConverter.cs" />
     <Compile Include="Utils\IMyDateTime.cs" />
+    <Compile Include="Utils\IO\IMyFileInfoFactory.cs" />
+    <Compile Include="Utils\IO\IMyFileInfo.cs" />
+    <Compile Include="Utils\IO\MyFileInfo.cs" />
     <Compile Include="Utils\IO\StringWriter\StringToFileWriterOptions.cs" />
     <Compile Include="Utils\IO\StringWriter\StringWriterOptions.cs" />
     <Compile Include="Utils\IKeyDetailsPersistConverter.cs" />

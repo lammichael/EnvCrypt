@@ -72,7 +72,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToXmlPoco
             var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>();
             //      Array of length 1 returns "1", length 2 returns "2"...
             strConverterMock.Setup(c => c.Encode(It.IsAny<byte[]>(), It.IsAny<EnvCryptAlgoEnum>()))
-                .Returns<byte[]>(b => b.Length.ToString());
+                .Returns<byte[], EnvCryptAlgoEnum>((b,_) => b.Length.ToString());
 
             // Act
             var mapper = new DatToXmlMapper(strConverterMock.Object);
@@ -131,7 +131,7 @@ namespace EnvCrypt.Core.UnitTest.EncryptedData.Mapper.Xml.ToXmlPoco
             var strConverterMock = new Mock<IEncryptedDetailsPersistConverter>();
             //      Array of length 1 returns "1", length 2 returns "2"...
             strConverterMock.Setup(c => c.Encode(It.IsAny<byte[]>(), It.IsAny<EnvCryptAlgoEnum>()))
-                .Returns<byte[]>(b => b.Length.ToString());
+                .Returns<byte[], EnvCryptAlgoEnum>((b,_) => b.Length.ToString());
 
             // Act
             var mapper = new DatToXmlMapper(strConverterMock.Object);
