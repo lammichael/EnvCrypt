@@ -227,6 +227,7 @@
     <Compile Include="Verb\DecryptEntry\Audit\NullAuditLogger.cs" />
     <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLogger.cs" />
     <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLoggerConfig.cs" />
+    <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLoggerFactory.cs" />
     <Compile Include="Verb\DecryptEntry\DecryptEntryUsingKeyWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\PlainText\DecryptEntryUsingKeyWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\PlainText\DecryptPlainTextEntryWorkflowOptions.cs" />

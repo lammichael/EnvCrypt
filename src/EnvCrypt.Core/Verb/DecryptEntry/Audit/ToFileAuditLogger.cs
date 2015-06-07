@@ -17,20 +17,21 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
     {
-        private readonly ToFileAuditLoggerConfig _options;
+        private readonly ToFileAuditLoggerConfig _config;
         private readonly IMyDirectory _myDirectory;
         private readonly IMyFile _myFile;
         private readonly IMyDateTime _myDateTime;
         private readonly IMyFileInfoFactory _myFileInfoFactory;
 
-        public ToFileAuditLogger(ToFileAuditLoggerConfig options, IMyDirectory myDirectory, IMyFile myFile, IMyDateTime myDateTime, IMyFileInfoFactory myFileInfoFactory)
+        public ToFileAuditLogger(ToFileAuditLoggerConfig config, IMyDirectory myDirectory, IMyFile myFile, IMyDateTime myDateTime, IMyFileInfoFactory myFileInfoFactory)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
+            Contract.Requires<ArgumentNullException>(config != null, "options");
             Contract.Requires<ArgumentNullException>(myDirectory != null, "myDirectory");
             Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
+            Contract.Requires<ArgumentNullException>(myDateTime != null, "myDateTime");
             Contract.Requires<ArgumentNullException>(myFileInfoFactory != null, "myFileInfoFactory");
             //
-            _options = options;
+            _config = config;
             _myDirectory = myDirectory;
             _myFile = myFile;
             _myDateTime = myDateTime;
@@ -38,26 +39,41 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
         }
 
 
-        public void LogDecryption(TWorkflowOptions withWorkflowOptions, EnvCryptDat ecDat, IList<TKey> usingLoadedKeys, IList<EntriesDecrypterResult<TKey>> results)
+        public void LogDecryption(TWorkflowOptions withWorkflowOptions, EnvCryptDat ecDat, IList<TKey> usingLoadedKeys,
+            IList<EntriesDecrypterResult<TKey>> results)
         {
-            _myDirectory.CreateDirectory(_options.LogDirectory);
-            
-            var fileName = string.Format(_options.FileNameFormat,
-                _myDateTime.UtcNow().ToString("O"), Process.GetCurrentProcess().MainModule.FileName) + _options.LogFileExtension;
+            try
+            {
+                _myDirectory.CreateDirectory(_config.LogDirectory);
+            }
+            catch
+            {
+                return;
+            }
+
+            var fileName = string.Format(_config.FileNameFormat,
+                _myDateTime.UtcNow().ToString("O"), Process.GetCurrentProcess().MainModule.FileName) +
+                           _config.LogFileExtension;
 
             var content = string.Format("EC DDAT file: {1}{0}Entries decrypted: {2}",
                 Environment.NewLine, withWorkflowOptions.DatFilePath,
                 string.Join("  ",
                     results.Select(r => string.Join(":", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry))));
 
-            _myFile.WriteAllText(Path.Combine(_options.LogDirectory, fileName), content);
-
+            try
+            {
+                _myFile.WriteAllText(Path.Combine(_config.LogDirectory, fileName), content);
+            }
+            catch
+            {
+                return;
+            }
 
             // Cleanup of old files
             string[] files;
             try
             {
-                files = _myDirectory.GetFiles(_options.LogDirectory);
+                files = _myDirectory.GetFiles(_config.LogDirectory);
             }
             catch
             {
@@ -67,14 +83,15 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             for (int fI = 0; fI < files.Length; fI++)
             {
                 var fileInfo = _myFileInfoFactory.GetNewInstance(files[fI]);
-                if (fileInfo.CreationTimeUtc < DateTime.Now.AddDays(-_options.NumberOfDaysSinceCreationToKeep))
+                if (fileInfo.CreationTimeUtc < DateTime.Now.AddDays(-_config.NumberOfDaysSinceCreationToKeep))
                 {
                     try
                     {
                         fileInfo.Delete();
                     }
                     catch
-                    { }
+                    {
+                    }
                 }
             }
         }
