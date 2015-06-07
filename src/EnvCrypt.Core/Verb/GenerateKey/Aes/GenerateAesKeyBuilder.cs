@@ -4,12 +4,13 @@ using EnvCrypt.Core.Key.Aes;
 using EnvCrypt.Core.Key.XmlPoco;
 using EnvCrypt.Core.Utils.IO.StringWriter;
 using EnvCrypt.Core.Verb.GenerateKey.Persister.Symmetric;
-using EnvCrypt.Core.Verb.GenerateKey.Rsa;
 
 namespace EnvCrypt.Core.Verb.GenerateKey.Aes
 {
     public class GenerateAesKeyBuilder : GenericBuilder
     {
+        public const int DefaultAesKeySize = 256;
+
         private SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions> _persister;
         private GenerateKeyWorkflow<AesKey, AesKeyGenerationOptions, EnvCryptKey, SymmetricKeyFilePersisterOptions> _workflow;
 
@@ -55,7 +56,8 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Aes
 
             var keyGenerationOptions = new AesKeyGenerationOptions()
             {
-                NewKeyName = options.NewKeyName
+                NewKeyName = options.NewKeyName,
+                KeySize = DefaultAesKeySize
             };
             _workflow.Run(keyGenerationOptions, options);
         }

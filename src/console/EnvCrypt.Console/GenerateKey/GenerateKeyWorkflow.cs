@@ -1,9 +1,6 @@
 ﻿using System.IO;
 using EnvCrypt.Core.EncryptionAlgo;
-using EnvCrypt.Core.Utils.IO.StringWriter;
-using EnvCrypt.Core.Verb.GenerateKey;
 using EnvCrypt.Core.Verb.GenerateKey.Aes;
-using EnvCrypt.Core.Verb.GenerateKey.Persister;
 using EnvCrypt.Core.Verb.GenerateKey.Persister.Asymetric;
 using EnvCrypt.Core.Verb.GenerateKey.Persister.Symmetric;
 using EnvCrypt.Core.Verb.GenerateKey.Rsa;
@@ -12,6 +9,7 @@ namespace EnvCrypt.Console.GenerateKey
 {
     class GenerateKeyWorkflow
     {
+        public const string CommonPostFix = ".eckey";
         public const string PrivateKeyPostfix = ".private.eckey";
         public const string PublicKeyPostfix = ".public.eckey";
 
@@ -53,7 +51,7 @@ namespace EnvCrypt.Console.GenerateKey
                     NewKeyName = options.KeyName,
                     NewKeyFileFullPath = Path.Combine(
                         options.OutputDirectory,
-                        string.Concat(options.KeyName, PrivateKeyPostfix)),
+                        string.Concat(options.KeyName, CommonPostFix)),
                     OverwriteFileIfExists = false
                 };
 
