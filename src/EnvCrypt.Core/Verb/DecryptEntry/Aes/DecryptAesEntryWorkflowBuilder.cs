@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
+using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.EncryptionAlgo.Aes;
 using EnvCrypt.Core.Key.Aes;
 using EnvCrypt.Core.Verb.DecryptEntry.Audit;
@@ -12,6 +13,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 {
     public class DecryptAesEntryWorkflowBuilder : GenericBuilder
     {
+        private ISegmentEncryptionAlgo<AesKey> _segmentEncryptionAlgo;
         private IKeyLoader<AesKey, KeyFromFileDetails> _keyLoader;
         private IDatLoader _datLoader;
         private IAuditLogger<AesKey, DecryptEntryWorkflowOptions> _auditLogger;
@@ -20,6 +22,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 
         public DecryptAesEntryWorkflowBuilder()
         {
+            _segmentEncryptionAlgo = new AesSegmentEncryptionAlgo(new AesAlgo());
             _keyLoader = LoadKeyFromXmlFileFactory.GetAesKeyLoader();
             _datLoader = DatFromXmlFileFactory.GetDatLoader();
             _auditLogger = new NullAuditLogger<AesKey, DecryptEntryWorkflowOptions>();
@@ -56,6 +59,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         }
 
 
+        internal DecryptAesEntryWorkflowBuilder WithAesSegmentEncryptionAlgo(ISegmentEncryptionAlgo<AesKey> segmentEncryptionAlgo)
+        {
+            Contract.Requires<ArgumentNullException>(segmentEncryptionAlgo != null, "segmentEncryptionAlgo");
+            //
+            _segmentEncryptionAlgo = segmentEncryptionAlgo;
+            MarkAsNotBuilt();
+            return this;
+        }
+
+
         /// <summary>
         /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="Run"/> method.
         /// This method is idempotent.
@@ -66,7 +79,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
             var entriesDecrypter = new EntriesDecrypter<AesKey>(
                 new AesKeySuitabilityChecker(),
                 new Utf16LittleEndianUserStringConverter(),
-                new AesSegmentEncryptionAlgo(new AesAlgo()));
+                _segmentEncryptionAlgo);
 
             _workflow = new DecryptEntryUsingKeyWorkflow<AesKey, DecryptEntryWorkflowOptions>(_datLoader, entriesDecrypter, _auditLogger, _keyLoader);
             IsBuilt = true;

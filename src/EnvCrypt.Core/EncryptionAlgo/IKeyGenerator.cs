@@ -10,7 +10,7 @@ namespace EnvCrypt.Core.EncryptionAlgo
     /// <typeparam name="T">Key type</typeparam>
     /// <typeparam name="TO">Key generation options</typeparam>
     [ContractClass(typeof(KeyGeneratorContracts<,>))]
-    interface IKeyGenerator<out T, in TO>
+    public interface IKeyGenerator<out T, in TO>
         where T : KeyBase
         where TO : KeyGenerationOptions<T>
     {

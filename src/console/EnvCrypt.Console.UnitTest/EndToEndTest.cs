@@ -8,6 +8,7 @@ using EnvCrypt.Console.DecryptEntry;
 using EnvCrypt.Console.GenerateKey;
 using EnvCrypt.Console.UnitTest.Helper;
 using EnvCrypt.Core.EncryptionAlgo;
+using EnvCrypt.Core.UnitTest;
 using EnvCrypt.Core.Verb.DecryptEntry;
 using FluentAssertions;
 using NUnit.Framework;

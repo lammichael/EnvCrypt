@@ -10,6 +10,7 @@ namespace EnvCrypt.Core.Utils.IO
         void WriteAllText(string path, string contents, Encoding encoding);
         bool Exists(string path);
         string ReadAllText(string path);
+        void Delete(string path);
     }
 
 
@@ -33,6 +34,11 @@ namespace EnvCrypt.Core.Utils.IO
         public string ReadAllText(string path)
         {
             return File.ReadAllText(path);
+        }
+
+        public void Delete(string path)
+        {
+            File.Delete(path);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Aes
         public const int DefaultAesKeySize = 256;
 
         private SymmetricKeyFilePersister<AesKey, EnvCryptKey, StringToFileWriterOptions> _persister;
-        private GenerateKeyWorkflow<AesKey, AesKeyGenerationOptions, EnvCryptKey, SymmetricKeyFilePersisterOptions> _workflow;
+        private GenerateKeyWorkflow<AesKey, AesKeyGenerationOptions, SymmetricKeyFilePersisterOptions> _workflow;
 
 
         public GenerateAesKeyBuilder()
@@ -42,7 +42,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Aes
             Contract.Ensures(Contract.Result<GenerateAesKeyBuilder>() != null);
             Contract.Ensures(IsBuilt);
             //
-            _workflow = new GenerateKeyWorkflow<AesKey, AesKeyGenerationOptions, EnvCryptKey, SymmetricKeyFilePersisterOptions>(new AesKeyGenerator(), _persister);
+            _workflow = new GenerateKeyWorkflow<AesKey, AesKeyGenerationOptions, SymmetricKeyFilePersisterOptions>(new AesKeyGenerator(), _persister);
             IsBuilt = true;
             return this;
         }

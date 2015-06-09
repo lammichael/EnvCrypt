@@ -30,6 +30,9 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
             Contract.Requires<ArgumentNullException>(myDateTime != null, "myDateTime");
             Contract.Requires<ArgumentNullException>(myFileInfoFactory != null, "myFileInfoFactory");
+            Contract.Requires<EnvCryptException>(config.NumberOfDaysSinceCreationToKeep >= 1, "number of days to keep audit log files must be >= 1");
+            Contract.Requires<EnvCryptException>(!string.IsNullOrWhiteSpace(config.FileNameFormat), "filename format cannot be empty");
+            Contract.Requires<EnvCryptException>(!string.IsNullOrWhiteSpace(config.LogDirectory), "log directory cannot be empty");
             //
             _config = config;
             _myDirectory = myDirectory;
@@ -52,7 +55,8 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             }
 
             var fileName = string.Format(_config.FileNameFormat,
-                _myDateTime.UtcNow().ToString("O"), Process.GetCurrentProcess().MainModule.FileName) +
+                _myDateTime.UtcNow().ToString("O"),
+                Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName)) +
                            _config.LogFileExtension;
 
             var content = string.Format("EC DDAT file: {1}{0}Entries decrypted: {2}",
@@ -62,7 +66,8 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
 
             try
             {
-                _myFile.WriteAllText(Path.Combine(_config.LogDirectory, fileName), content);
+                var finalLogFilePath = Path.Combine(_config.LogDirectory, fileName);
+                _myFile.WriteAllText(finalLogFilePath, content);
             }
             catch
             {
@@ -87,7 +92,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
                 {
                     try
                     {
-                        fileInfo.Delete();
+                        _myFile.Delete(files[fI]);
                     }
                     catch
                     {

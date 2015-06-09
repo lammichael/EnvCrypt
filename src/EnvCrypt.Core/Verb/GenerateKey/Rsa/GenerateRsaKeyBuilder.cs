@@ -14,7 +14,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Rsa
         public const bool DefaultUseOaepPadding = true;
 
         private IKeyPersister<RsaKey, AsymmetricKeyFilePersisterOptions> _persister;
-        private GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyFilePersisterOptions> _workflow;
+        private GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, AsymmetricKeyFilePersisterOptions> _workflow;
 
 
         public GenerateRsaKeyBuilder()
@@ -44,7 +44,7 @@ namespace EnvCrypt.Core.Verb.GenerateKey.Rsa
             Contract.Ensures(Contract.Result<GenerateRsaKeyBuilder>() != null);
             Contract.Ensures(IsBuilt);
             //
-            _workflow = new GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, EnvCryptKey, AsymmetricKeyFilePersisterOptions>(
+            _workflow = new GenerateKeyWorkflow<RsaKey, RsaKeyGenerationOptions, AsymmetricKeyFilePersisterOptions>(
                 new RsaKeyGenerator(),
                 _persister);
             IsBuilt = true;

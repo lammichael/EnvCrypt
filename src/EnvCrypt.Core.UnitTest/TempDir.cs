@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace EnvCrypt.Console.UnitTest.Helper
+namespace EnvCrypt.Core.UnitTest
 {
-    class TempDir : IDisposable
+    public class TempDir : IDisposable
     {
         public string TempDirectory { get; private set; }
 

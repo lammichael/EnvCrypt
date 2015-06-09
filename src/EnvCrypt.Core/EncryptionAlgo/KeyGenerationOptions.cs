@@ -2,7 +2,7 @@
 
 namespace EnvCrypt.Core.EncryptionAlgo
 {
-    abstract class KeyGenerationOptions<TKey> where TKey : KeyBase
+    public abstract class KeyGenerationOptions<TKey> where TKey : KeyBase
     {
         public string NewKeyName { get; set; }
     }

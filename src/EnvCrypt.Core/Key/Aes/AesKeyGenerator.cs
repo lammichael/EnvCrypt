@@ -4,7 +4,7 @@ using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Core.Key.Aes
 {
-    class AesKeyGenerator : IKeyGenerator<AesKey, AesKeyGenerationOptions>
+    public class AesKeyGenerator : IKeyGenerator<AesKey, AesKeyGenerationOptions>
     {
         public AesKey GetNewKey(AesKeyGenerationOptions options)
         {

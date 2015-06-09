@@ -4,7 +4,7 @@ using EnvCrypt.Core.EncryptionAlgo;
 
 namespace EnvCrypt.Core.Key.Rsa
 {
-    class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaKeyGenerationOptions>
+    public class RsaKeyGenerator : IKeyGenerator<RsaKey, RsaKeyGenerationOptions>
     {
         /// <summary>
         /// Gets a new key, given the options requested, including the private key.

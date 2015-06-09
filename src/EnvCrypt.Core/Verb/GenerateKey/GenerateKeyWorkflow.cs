@@ -6,10 +6,9 @@ using EnvCrypt.Core.Verb.GenerateKey.Persister;
 
 namespace EnvCrypt.Core.Verb.GenerateKey
 {
-    class GenerateKeyWorkflow<TKey, TKeyGenOptions, TKeyExtRep, TPersisterOptions> 
+    class GenerateKeyWorkflow<TKey, TKeyGenOptions, TPersisterOptions> 
         where TKey : KeyBase
         where TKeyGenOptions : KeyGenerationOptions<TKey>
-        where TKeyExtRep : IKeyExternalRepresentation<TKey>
         where TPersisterOptions : KeyPersisterOptions
     {
         private readonly IKeyGenerator<TKey, TKeyGenOptions> _encryptionAlgo;

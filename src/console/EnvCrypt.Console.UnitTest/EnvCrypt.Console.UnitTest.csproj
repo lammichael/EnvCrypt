@@ -61,10 +61,13 @@
     <Compile Include="Entry.cs" />
     <Compile Include="Helper\ConsoleScraper.cs" />
     <Compile Include="Helper\OptionsToStringArgsHelper.cs" />
-    <Compile Include="Helper\TempDir.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EnvCrypt.Core.UnitTest\EnvCrypt.Core.UnitTest.csproj">
+      <Project>{50ad822e-1b6e-4795-ac1c-a769d0eb8d05}</Project>
+      <Name>EnvCrypt.Core.UnitTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\EnvCrypt.Core\EnvCrypt.Core.csproj">
       <Project>{06757fd4-6162-4dda-b2a2-04bea95b39ef}</Project>
       <Name>EnvCrypt.Core</Name>
