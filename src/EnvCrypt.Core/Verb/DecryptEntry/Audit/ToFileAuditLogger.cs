@@ -17,6 +17,8 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
     {
+        public const string DateTimeFormatInFileName = @"yyyy-MM-dd.HH.mm.ss";
+
         private readonly ToFileAuditLoggerConfig _config;
         private readonly IMyDirectory _myDirectory;
         private readonly IMyFile _myFile;
@@ -55,14 +57,14 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             }
 
             var fileName = string.Format(_config.FileNameFormat,
-                _myDateTime.UtcNow().ToString("O"),
+                _myDateTime.UtcNow().ToString(DateTimeFormatInFileName),
                 Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName)) +
                            _config.LogFileExtension;
 
-            var content = string.Format("EC DDAT file: {1}{0}Entries decrypted: {2}",
+            var content = string.Format("EC DDAT file:{0}{1}{0}Category\tEntry\tKey Name:{0}{2}",
                 Environment.NewLine, withWorkflowOptions.DatFilePath,
-                string.Join("  ",
-                    results.Select(r => string.Join(":", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry))));
+                string.Join(Environment.NewLine,
+                    results.Select(r => string.Join("\t", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry, r.DecryptedUsingKey.Name))));
 
             try
             {

@@ -46,7 +46,8 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
 
             IUserStringConverter converter = new Utf16LittleEndianUserStringConverter();
             const string categoryName = "my category";
-            const string entryName = "my entry";
+            const string entryName1 = "my entry";
+            const string entryName2 = "my entry2";
             var datPoco = new EnvCryptDat()
             {
                 Categories = new[]
@@ -58,7 +59,15 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                         {
                             new Entry()
                             {
-                                Name = entryName,
+                                Name = entryName1,
+                                EncryptedValue = new[] { new byte[1] }, // not important for this test
+                                EncryptionAlgorithm = aesKey.Algorithm,
+                                KeyName = aesKey.Name,
+                                KeyHash = aesKey.GetHashCode()
+                            },
+                            new Entry()
+                            {
+                                Name = entryName2,
                                 EncryptedValue = new[] { new byte[1] }, // not important for this test
                                 EncryptionAlgorithm = aesKey.Algorithm,
                                 KeyName = aesKey.Name,
@@ -76,6 +85,7 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
             encryptionAlgoMock.Setup(a => a.Decrypt(It.IsAny<IList<byte[]>>(), aesKey))
                 .Returns(converter.Encode("not important for this test"));
 
+            var processName = Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName);
 
             var utcNow = new DateTime(2015, 01, 01);
             var dateTimeMock = new Mock<IMyDateTime>();
@@ -84,8 +94,11 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
             var fileInfoMock = new Mock<IMyFileInfo>();
             fileInfoMock.Setup(f => f.CreationTimeUtc)
                 .Returns(utcNow.AddDays(-2));
+            fileInfoFactoryMock.Setup(f => f.GetNewInstance(It.Is<string>(s => s.Contains(processName))))
+                .Returns<string>(s => new MyFileInfo(s));
             fileInfoFactoryMock.Setup(f => f.GetNewInstance(It.IsRegex(@".+deleteme")))
                 .Returns(fileInfoMock.Object);
+            
 
             using (var tempDir = new TempDir())
             {
@@ -104,34 +117,42 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                 File.WriteAllText(deleteFile1Path, "somerandomtext");
                 var deleteFile2Path = Path.Combine(tempDir.TempDirectory, "asd.deleteme");
                 File.WriteAllText(deleteFile2Path, "somerandomtext2");
-                var workflow =
-                    new DecryptAesEntryWorkflowBuilder()
-                        .WithKeyLoader(keyLoaderMock.Object)
-                        .WithDatLoader(datLoaderMock.Object)
-                        .WithAesSegmentEncryptionAlgo(encryptionAlgoMock.Object)
-                        .WithAuditLogger(auditLogger)
-                        .Build().Run(new DecryptEntryWorkflowOptions()
+                const string datFilePath = @"C:\my dat file";
+                new DecryptAesEntryWorkflowBuilder()
+                    .WithKeyLoader(keyLoaderMock.Object)
+                    .WithDatLoader(datLoaderMock.Object)
+                    .WithAesSegmentEncryptionAlgo(encryptionAlgoMock.Object)
+                    .WithAuditLogger(auditLogger)
+                    .Build().Run(new DecryptEntryWorkflowOptions()
+                    {
+                        CategoryEntryPair = new[]
                         {
-                            CategoryEntryPair = new[]
-                            {
-                                new CategoryEntryPair(categoryName, entryName)
-                            },
-                            DatFilePath = "null",
-                            KeyFilePaths = new[]
-                            {
-                                "null"
-                            }
-                        });
+                            new CategoryEntryPair(categoryName, entryName1),
+                            new CategoryEntryPair(categoryName, entryName2)
+                        },
+                        DatFilePath = datFilePath,
+                        KeyFilePaths = new[]
+                        {
+                            "null"
+                        }
+                    });
 
 
                 // Assert
                 File.Exists(deleteFile1Path).Should().BeFalse();
                 File.Exists(deleteFile2Path).Should().BeFalse();
-                File.Exists(Path.Combine(tempDir.TempDirectory, string.Format(loggerConfig.FileNameFormat,
-                    utcNow.ToString("O"), 
-                Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName)) +
-                           loggerConfig.LogFileExtension))
+
+                var expectedFilePath = Path.Combine(tempDir.TempDirectory, string.Format(loggerConfig.FileNameFormat,
+                    utcNow.ToString(ToFileAuditLogger<AesKey, DecryptEntryWorkflowOptions>.DateTimeFormatInFileName),
+                    processName) + loggerConfig.LogFileExtension);
+
+                File.Exists(expectedFilePath)
                            .Should().BeTrue();
+                var lines = File.ReadAllLines(expectedFilePath);
+                lines.Should().HaveCount(5);
+                lines[1].Should().Be(datFilePath);
+                lines[3].Should().Be(categoryName + "\t" + entryName1 + "\t" + keyName);
+                lines[4].Should().Be(categoryName + "\t" + entryName2 + "\t" + keyName);
             }
         }
     }
