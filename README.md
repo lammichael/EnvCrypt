@@ -20,13 +20,21 @@ Distribution of EnvCrypt Files
 ![Where you can put your EnvCrypt files](https://github.com/lammichael/EnvCrypt.Core/blob/master/docs/EnvCrypt-FileDistribution.png)
 
 
-The Key File
+The Key Files
 ---
-For asymmetric encryption two (2) files are generated: the private key (used for decryption and encryption), and the public key (used for encryption only).  For symmetric encryption, only one key for decryption and encryption is generated.
+For asymmetric encryption two (2) files are generated:
+* the private key (used for decryption and encryption)
+* the public key (used for encryption only)
+
+Keep the public key in your publically accessable repository, and your private key in your environment, hidden from the outside world.
+
+For symmetric encryption, only one key for decryption and encryption is generated.
 
 The DAT file
 ---
-All entries in the DAT file are contained within a category. You can only store C# strings in each entry.
+![The variety of strings you can keep in the DAT file](https://github.com/lammichael/EnvCrypt.Core/blob/master/docs/DATTypesOfStringsExample.png)
+
+You store a entry within a category. A category can have many entries. You can only store UTF-16 strings in an entry.
 
 
 Other Features
@@ -39,3 +47,4 @@ What EnvCrypt doesn't do
 ===
 * Provide an online service, but you can create one around EnvCrypt. E.G., Creating a service to transmit private keys for the client to use with EnvCrypt to decrypt.
 * Token level authentication.
+* Provide a way to hide your decryption key. File system level user permissioning is one way to achieve this.
