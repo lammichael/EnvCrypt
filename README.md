@@ -1,9 +1,9 @@
 EnvCrypt Core Library
 ===
 
-EnvCrypt is a C# crendentials manager providing encryption of crendentials, and a simple API for your applications to decrypt and use them at runtime.  The [RSA](http://en.wikipedia.org/wiki/RSA_%28cryptosystem%29) asymmetric and [AES](http://en.wikipedia.org/wiki/Advanced_Encryption_Standard) symmetric encryption algorithms are currently supported.  PlainText is also supported.
+EnvCrypt is a C# credentials manager providing encryption of credentials, and a simple API for your applications to decrypt and use them at runtime.  The [RSA](http://en.wikipedia.org/wiki/RSA_%28cryptosystem%29) asymmetric and [AES](http://en.wikipedia.org/wiki/Advanced_Encryption_Standard) symmetric encryption algorithms are currently supported.  PlainText is also supported.
 
-The aim of EnvCrypt is to provide a way to keep your environment's sensitive crendentials private in an efficient and reliable way without the hassle of creating an online service.  EnvCrypt uses the file system, and it is advised to keep it to the local file system for reliability.
+The aim of EnvCrypt is to provide a way to keep your environment's sensitive credentials private in an efficient and reliable way without the hassle of creating an online service.  EnvCrypt uses the file system, and it is advised to keep it to the local file system for reliability.
 
 To use EnvCrypt you need to have a workflow similar to this:
   1. Understand what you want to keep in EnvCrypt and which parts you want to encrypt.
@@ -26,7 +26,7 @@ For asymmetric encryption two (2) files are generated:
 * the private key (used for decryption and encryption)
 * the public key (used for encryption only)
 
-Keep the public key in your publically accessable repository, and your private key in your environment, hidden from the outside world.
+Keep the public key in your publicly accessible repository, and your private key in your environment, hidden from the outside world.
 
 For symmetric encryption, only one key for decryption and encryption is generated.
 
