@@ -1,0 +1,10 @@
+<EntriesToDecrypt>
+	<Category Name="prod">
+		<Entry>db username</Entry>
+		<Entry>db password</Entry>
+	</Category>
+	<Category Name="dev">
+		<Entry>db username</Entry>
+		<Entry>db password</Entry>
+	</Category>
+</EntriesToDecrypt>
