@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData;
 using EnvCrypt.Core.Key;
-using EnvCrypt.Core.Key.PlainText;
 using EnvCrypt.Core.Verb.AddEntry.PlainText;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.SaveDat;
@@ -14,11 +12,12 @@ namespace EnvCrypt.Core.Verb.AddEntry
     /// Gets key and EC DAT from file, adds the encrypted entry, and saves the DAT file
     /// back to the same file location.
     /// </summary>
+    [ContractClass(typeof(AddEntryWorkflowContracts<,,,,>))]
     public abstract class AddEntryWorkflow<TKey, TWorkflowOptions, TKeyLoaderOptions, TDatLoaderOptions, TDatSaverOptions>
         where TKey : KeyBase
         where TWorkflowOptions : AddPlainTextEntryWorkflowOptions
-        where TDatLoaderOptions : IDatLoaderOptions
-        where TDatSaverOptions : IDatSaverOptions
+        where TDatLoaderOptions : class, IDatLoaderOptions
+        where TDatSaverOptions : class, IDatSaverOptions
     {
         private readonly EncryptWorkflow<TKey, TKeyLoaderOptions> _encryptWorkflow;
         private readonly IDatLoader<TDatLoaderOptions> _datLoader;
@@ -72,5 +71,41 @@ namespace EnvCrypt.Core.Verb.AddEntry
         protected abstract TDatLoaderOptions GetDatLoaderOptions(TWorkflowOptions workflowDetails);
 
         protected abstract TDatSaverOptions GetDatSaverOptions(TWorkflowOptions workflowDetails);
+    }
+
+
+
+    [ContractClassFor(typeof(AddEntryWorkflow<,,,,>))]
+    internal abstract class AddEntryWorkflowContracts<TKey, TWorkflowOptions, TKeyLoaderOptions, TDatLoaderOptions, TDatSaverOptions> : AddEntryWorkflow<TKey, TWorkflowOptions, TKeyLoaderOptions, TDatLoaderOptions, TDatSaverOptions> 
+        where TKey : KeyBase 
+        where TWorkflowOptions : AddPlainTextEntryWorkflowOptions 
+        where TDatLoaderOptions : class, IDatLoaderOptions 
+        where TDatSaverOptions : class, IDatSaverOptions
+    {
+        protected AddEntryWorkflowContracts(EncryptWorkflow<TKey, TKeyLoaderOptions> encryptWorkflow, IDatLoader<TDatLoaderOptions> datLoader, IDatSaver<TDatSaverOptions> datSaver) : base(encryptWorkflow, datLoader, datSaver)
+        {}
+
+
+        protected override TKeyLoaderOptions GetKeyLoaderDetails(TWorkflowOptions workflowDetails)
+        {
+            Contract.Requires<ArgumentNullException>(workflowDetails != null, "workflowDetails");
+            Contract.Ensures(Contract.Result<TKeyLoaderOptions>() != null);
+            return default(TKeyLoaderOptions);
+        }
+
+        protected override TDatLoaderOptions GetDatLoaderOptions(TWorkflowOptions workflowDetails)
+        {
+            Contract.Requires<ArgumentNullException>(workflowDetails != null, "workflowDetails");
+            Contract.Ensures(Contract.Result<TDatLoaderOptions>() != null);
+            return default(TDatLoaderOptions);
+
+        }
+
+        protected override TDatSaverOptions GetDatSaverOptions(TWorkflowOptions workflowDetails)
+        {
+            Contract.Requires<ArgumentNullException>(workflowDetails != null, "workflowDetails");
+            Contract.Ensures(Contract.Result<TDatSaverOptions>() != null);
+            return default(TDatSaverOptions);
+        }
     }
 }

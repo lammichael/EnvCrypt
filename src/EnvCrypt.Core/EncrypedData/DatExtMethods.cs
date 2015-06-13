@@ -70,36 +70,6 @@ namespace EnvCrypt.Core.EncrypedData
         }
 
 
-        /*public static bool GetSegments(this EnvCryptDat inDatPoco,
-            string inCategory, string inEntry, KeyBase encryptedUsingKey,
-            out IList<byte[]> foundSegments)
-        {
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(inCategory), "categoryName");
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(inEntry), "entryName");
-            Contract.Requires<ArgumentNullException>(encryptedUsingKey != null, "encryptedUsingKey");
-            //
-            Entry foundEntry;
-            if (!inDatPoco.SearchForEntry(inCategory, inEntry, out foundEntry))
-            {
-                foundSegments = null;
-                return false;
-            }
-
-            // Was the entry encrypted using the key passed in?
-            if (foundEntry.EncryptionAlgorithm == EnvCryptAlgoEnum.PlainText ||
-                (foundEntry.EncryptionAlgorithm == encryptedUsingKey.Algorithm &&
-                foundEntry.KeyName == encryptedUsingKey.Name &&
-                foundEntry.KeyHash == encryptedUsingKey.GetHashCode()))
-            {
-                foundSegments = foundEntry.EncryptedValue;
-                return true;
-            }
-
-            foundSegments = null;
-            return false;
-        }*/
-
-
         public static void AddEntry(this EnvCryptDat toDatPoco,
             string categoryName, string entryName,
             KeyBase key, IList<byte[]> segments, bool overwriteIfEntryExists = false)

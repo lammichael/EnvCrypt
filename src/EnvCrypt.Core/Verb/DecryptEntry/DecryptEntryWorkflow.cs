@@ -13,7 +13,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
     public abstract class DecryptEntryWorkflow<TKey, TWorkflowOptions, TDatLoaderOptions>
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
-        where TDatLoaderOptions : IDatLoaderOptions
+        where TDatLoaderOptions : class, IDatLoaderOptions
     {
         private readonly IDatLoader<TDatLoaderOptions> _datLoader;
         private readonly EntriesDecrypter<TKey> _entriesDecrypter;
@@ -69,7 +69,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
     internal abstract class DecryptEntryWorkflowContracts<TKey, TWorkflowOptions, TDatLoaderOptions> : DecryptEntryWorkflow<TKey, TWorkflowOptions, TDatLoaderOptions>
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
-        where TDatLoaderOptions : IDatLoaderOptions
+        where TDatLoaderOptions : class, IDatLoaderOptions
     {
         protected DecryptEntryWorkflowContracts(IDatLoader<TDatLoaderOptions> datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger)
             : base(datLoader, entriesDecrypter, auditLogger)
