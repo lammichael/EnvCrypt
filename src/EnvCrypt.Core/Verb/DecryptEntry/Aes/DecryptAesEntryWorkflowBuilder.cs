@@ -11,7 +11,7 @@ using EnvCrypt.Core.Verb.LoadKey;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 {
-    public class DecryptAesEntryWorkflowBuilder : GenericBuilder
+    public class DecryptAesEntryWorkflowBuilder : GenericBuilder, IDecryptAesEntryWorkflowBuilder
     {
         private ISegmentEncryptionAlgo<AesKey> _segmentEncryptionAlgo;
         private IKeyLoader<AesKey, KeyFromFileDetails> _keyLoader;

@@ -1,5 +1,5 @@
 ﻿namespace EnvCrypt.InteractiveDecrypt.Config
 {
-    class EntriesToDecryptSectionHandler : SectionHandlerBase<EntriesToDecrypt>
+    public class EntriesToDecryptSectionHandler : SectionHandlerBase<EntriesToDecrypt>
     {}
 }

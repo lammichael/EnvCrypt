@@ -11,7 +11,7 @@ using EnvCrypt.Core.Verb.LoadKey;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
 {
-    public class DecryptRsaEntryWorkflowBuilder : GenericBuilder
+    public class DecryptRsaEntryWorkflowBuilder : GenericBuilder, IDecryptRsaEntryWorkflowBuilder
     {
         private IKeyLoader<RsaKey, KeyFromFileDetails> _keyLoader;
         private IDatLoader _datLoader;
@@ -75,7 +75,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
 
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
+            /*Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");*/
 
             Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Category)),
                 "none of the category names can be null or whitespace");

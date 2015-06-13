@@ -2,7 +2,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace EnvCrypt.InteractiveDecrypt
+namespace EnvCrypt.InteractiveDecrypt.Config
 {
     public abstract class SectionHandlerBase<TConfig> : IConfigurationSectionHandler
         where TConfig : class
@@ -18,8 +18,8 @@ namespace EnvCrypt.InteractiveDecrypt
                 {
                     throw new ConfigurationErrorsException("deserialized type does not match the expected type of " + typeof(TConfig).Name);
                 }
-                return config;
             }
+            return config;
         }
     }
 }

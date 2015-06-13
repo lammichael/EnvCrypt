@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.PlainText;
-using EnvCrypt.Core.Key.Aes;
 using EnvCrypt.Core.Key.PlainText;
-using EnvCrypt.Core.Verb.DecryptEntry.Aes;
 using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 {
-    public class DecryptPlainTextEntryWorkflowBuilder : GenericBuilder
+    public class DecryptPlainTextEntryWorkflowBuilder : GenericBuilder, IDecryptPlainTextEntryWorkflowBuilder
     {
         private IDatLoader _datLoader;
         private IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> _auditLogger;
@@ -46,11 +44,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
         }
 
 
-        /// <summary>
-        /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="Run"/> method.
-        /// This method is idempotent.
-        /// </summary>
-        /// <returns>the same Builder instance</returns>
         public DecryptPlainTextEntryWorkflowBuilder Build()
         {
             var entriesDecrypter = new EntriesDecrypter<PlainTextKey>(
@@ -64,7 +57,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
         }
 
 
-        public IList<EntriesDecrypterResult<PlainTextKey>> Run(DecryptEntryWorkflowOptions options)
+        public IList<EntriesDecrypterResult<PlainTextKey>> Run(DecryptPlainTextEntryWorkflowOptions options)
         {
             Contract.Requires<ArgumentNullException>(options != null, "options");
 
@@ -74,9 +67,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
                 "none of the category names can be null or whitespace");
             Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Entry)),
                 "none of the entry names can be null or whitespace");
-
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.KeyFilePaths, s => !string.IsNullOrWhiteSpace(s)),
-                "key file path cannot be null or whitespace");
             //
             if (!IsBuilt)
             {
