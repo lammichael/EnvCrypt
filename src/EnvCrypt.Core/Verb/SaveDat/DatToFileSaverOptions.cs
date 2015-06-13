@@ -1,6 +1,6 @@
 ﻿namespace EnvCrypt.Core.Verb.SaveDat
 {
-    public class DatToFileSaverDetails
+    public class DatToFileSaverOptions : IDatSaverOptions
     {
         public string DestinationFilePath { get; set; }
     }

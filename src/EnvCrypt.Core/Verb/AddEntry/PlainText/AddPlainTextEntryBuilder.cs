@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo.PlainText;
 using EnvCrypt.Core.Key.PlainText;
-using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Verb.LoadDat;
 using EnvCrypt.Core.Verb.LoadKey;
 using EnvCrypt.Core.Verb.LoadKey.PlainText;
@@ -13,8 +12,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
 {
     public class AddPlainTextEntryBuilder : GenericBuilder
     {
-        private IDatLoader _datLoader;
-        private IDatSaver<DatToFileSaverDetails> _datSaver;
+        private IDatLoader<DatFromFileLoaderOptions> _datLoader;
+        private IDatSaver<DatToFileSaverOptions> _datSaver;
 
         private AddPlainTextEntryWorkflow<PlainTextKey, AddPlainTextEntryWorkflowOptions> _workflow;
 
@@ -25,7 +24,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
         }
 
 
-        public AddPlainTextEntryBuilder WithDatLoader(IDatLoader datLoader)
+        public AddPlainTextEntryBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //
@@ -36,7 +35,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
         }
 
 
-        public AddPlainTextEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
+        public AddPlainTextEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverOptions> datSaver)
         {
             Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
             //

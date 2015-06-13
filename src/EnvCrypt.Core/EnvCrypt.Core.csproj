@@ -212,6 +212,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\IXmlSerializationUtils.cs" />
     <Compile Include="Utils\XmlSerializationUtils.cs" />
+    <Compile Include="Verb\AddEntry\AddEntryAndLoadSaveDatToFileWorkflow.cs" />
     <Compile Include="Verb\AddEntry\AddEntryUsingKeyFileWorkflowOptions.cs" />
     <Compile Include="Verb\AddEntry\AddEntryWorkflow.cs" />
     <Compile Include="EncrypedData\DatExtMethods.cs" />
@@ -229,6 +230,7 @@
     <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLogger.cs" />
     <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLoggerConfig.cs" />
     <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLoggerFactory.cs" />
+    <Compile Include="Verb\DecryptEntry\DecryptEntryUsingDatFileWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\DecryptEntryUsingKeyWorkflow.cs" />
     <Compile Include="Verb\DecryptEntry\Generic\DecryptGenericWorkflowBuilder.cs" />
     <Compile Include="Verb\DecryptEntry\Generic\DecryptGenericWorkflow.cs" />
@@ -260,6 +262,8 @@
     <Compile Include="Verb\GenerateKey\Persister\Symmetric\SymmetricKeyFilePersisterOptions.cs" />
     <Compile Include="Verb\DecryptEntry\EntriesDecrypterResult.cs" />
     <Compile Include="Verb\DecryptEntry\CategoryEntryPair.cs" />
+    <Compile Include="Verb\LoadDat\IDatLoaderOptions.cs" />
+    <Compile Include="Verb\LoadDat\DatFromFileLoaderOptions.cs" />
     <Compile Include="Verb\LoadDat\DatFromXmlFileFactory.cs" />
     <Compile Include="Verb\LoadDat\DatFromXmlFileLoader.cs" />
     <Compile Include="Verb\LoadDat\IDatLoader.cs" />
@@ -271,10 +275,11 @@
     <Compile Include="Verb\LoadKey\PlainText\PlainTextKeyLoader.cs" />
     <Compile Include="Verb\LoadKey\NullKeyLoaderDetails.cs" />
     <Compile Include="Verb\LoadKey\Rsa\RsaKeyFromXmlFileLoader.cs" />
-    <Compile Include="Verb\SaveDat\DatToFileSaverDetails.cs" />
+    <Compile Include="Verb\SaveDat\DatToFileSaverOptions.cs" />
     <Compile Include="Verb\SaveDat\DatToXmlFileSaver.cs" />
     <Compile Include="Verb\SaveDat\DatXmlFileSaverFactory.cs" />
     <Compile Include="Verb\SaveDat\IDatSaver.cs" />
+    <Compile Include="Verb\SaveDat\IDatSaverOptions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,10 +12,10 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 {
     public class DecryptPlainTextEntryWorkflowBuilder : GenericBuilder, IDecryptPlainTextEntryWorkflowBuilder
     {
-        private IDatLoader _datLoader;
+        private IDatLoader<DatFromFileLoaderOptions> _datLoader;
         private IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> _auditLogger;
 
-        private DecryptEntryWorkflow<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> _workflow;
+        private DecryptEntryWorkflow<PlainTextKey, DecryptPlainTextEntryWorkflowOptions, DatFromFileLoaderOptions> _workflow;
 
         public DecryptPlainTextEntryWorkflowBuilder()
         {
@@ -24,7 +24,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
         }
 
 
-        public DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader)
+        public DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //

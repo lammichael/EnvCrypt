@@ -4,19 +4,21 @@ using EnvCrypt.Core.EncrypedData.Poco;
 
 namespace EnvCrypt.Core.Verb.LoadDat
 {
-    [ContractClass(typeof(DatLoaderContracts))]
-    public interface IDatLoader
+    [ContractClass(typeof(DatLoaderContracts<>))]
+    public interface IDatLoader<in TOptions>
+        where TOptions : IDatLoaderOptions
     {
-        EnvCryptDat Load(string ecDatFilePath);
+        EnvCryptDat Load(TOptions options);
     }
 
 
-    [ContractClassFor(typeof(IDatLoader))]
-    internal abstract class DatLoaderContracts : IDatLoader
+    [ContractClassFor(typeof(IDatLoader<>))]
+    internal abstract class DatLoaderContracts<TOptions> : IDatLoader<TOptions>
+        where TOptions : IDatLoaderOptions
     {
-        public EnvCryptDat Load(string ecDatFilePath)
+        public EnvCryptDat Load(TOptions options)
         {
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(ecDatFilePath), "ecDatFilePath");
+            Contract.Requires<ArgumentNullException>(options != null, "options");
             Contract.Ensures(Contract.Result<EnvCryptDat>() != null);
             Contract.Ensures(Contract.Result<EnvCryptDat>().Categories != null);
 

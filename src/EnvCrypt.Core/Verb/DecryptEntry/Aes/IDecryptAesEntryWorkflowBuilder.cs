@@ -10,7 +10,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
     public interface IDecryptAesEntryWorkflowBuilder
     {
         DecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader);
-        DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader);
+        DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
         DecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger);
 
         /// <summary>

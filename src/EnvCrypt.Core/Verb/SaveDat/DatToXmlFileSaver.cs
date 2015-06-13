@@ -8,7 +8,7 @@ using EnvCrypt.Core.Utils.IO.StringWriter;
 
 namespace EnvCrypt.Core.Verb.SaveDat
 {
-    class DatToXmlFileSaver : IDatSaver<DatToFileSaverDetails>
+    class DatToXmlFileSaver : IDatSaver<DatToFileSaverOptions>
     {
         private readonly IDatToExternalRepresentationMapper<EnvCryptEncryptedData> _pocoToXmlMapper;
         private readonly IXmlSerializationUtils<EnvCryptEncryptedData> _serializationUtils;
@@ -28,10 +28,10 @@ namespace EnvCrypt.Core.Verb.SaveDat
         }
 
 
-        public void Save(EnvCryptDat data, DatToFileSaverDetails fileSaverDetails)
+        public void Save(EnvCryptDat data, DatToFileSaverOptions fileSaverOptions)
         {
-            if (fileSaverDetails == null ||
-                string.IsNullOrWhiteSpace(fileSaverDetails.DestinationFilePath))
+            if (fileSaverOptions == null ||
+                string.IsNullOrWhiteSpace(fileSaverOptions.DestinationFilePath))
             {
                 throw new ArgumentException("destination file path cannot be empty");
             }
@@ -43,7 +43,7 @@ namespace EnvCrypt.Core.Verb.SaveDat
             {
                 Contents = xmlStr,
                 Encoding = _serializationUtils.GetUsedEncoding(),
-                Path = fileSaverDetails.DestinationFilePath,
+                Path = fileSaverOptions.DestinationFilePath,
                 OverwriteIfFileExists = true
             };
             _fileWriter.Write(fileWriterOptions);

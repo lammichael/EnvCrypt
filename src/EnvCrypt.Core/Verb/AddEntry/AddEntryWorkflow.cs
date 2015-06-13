@@ -14,15 +14,17 @@ namespace EnvCrypt.Core.Verb.AddEntry
     /// Gets key and EC DAT from file, adds the encrypted entry, and saves the DAT file
     /// back to the same file location.
     /// </summary>
-    public abstract class AddEntryWorkflow<TKey, TWorkflowOptions, TKeyLoaderOptions>
+    public abstract class AddEntryWorkflow<TKey, TWorkflowOptions, TKeyLoaderOptions, TDatLoaderOptions, TDatSaverOptions>
         where TKey : KeyBase
         where TWorkflowOptions : AddPlainTextEntryWorkflowOptions
+        where TDatLoaderOptions : IDatLoaderOptions
+        where TDatSaverOptions : IDatSaverOptions
     {
         private readonly EncryptWorkflow<TKey, TKeyLoaderOptions> _encryptWorkflow;
-        private readonly IDatLoader _datLoader;
-        private readonly IDatSaver<DatToFileSaverDetails> _datSaver;
+        private readonly IDatLoader<TDatLoaderOptions> _datLoader;
+        private readonly IDatSaver<TDatSaverOptions> _datSaver;
 
-        protected AddEntryWorkflow(EncryptWorkflow<TKey, TKeyLoaderOptions> encryptWorkflow, IDatLoader datLoader, IDatSaver<DatToFileSaverDetails> datSaver)
+        protected AddEntryWorkflow(EncryptWorkflow<TKey, TKeyLoaderOptions> encryptWorkflow, IDatLoader<TDatLoaderOptions> datLoader, IDatSaver<TDatSaverOptions> datSaver)
         {
             Contract.Requires<ArgumentNullException>(encryptWorkflow != null, "encryptWorkflow");
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
@@ -59,14 +61,16 @@ namespace EnvCrypt.Core.Verb.AddEntry
                 workflowDetails.StringToEncrypt, out key);
 
 
-            var datPoco = _datLoader.Load(workflowDetails.DatFilePath);
+            var datPoco = _datLoader.Load(GetDatLoaderOptions(workflowDetails));
             datPoco.AddEntry(workflowDetails.CategoryName, workflowDetails.EntryName, key, encryptedSegments, false);
-            _datSaver.Save(datPoco,
-                new DatToFileSaverDetails() { DestinationFilePath = workflowDetails.DatFilePath });
+            _datSaver.Save(datPoco, GetDatSaverOptions(workflowDetails));
         }
 
 
-        //TODO: Add contracts
         protected abstract TKeyLoaderOptions GetKeyLoaderDetails(TWorkflowOptions workflowDetails);
+
+        protected abstract TDatLoaderOptions GetDatLoaderOptions(TWorkflowOptions workflowDetails);
+
+        protected abstract TDatSaverOptions GetDatSaverOptions(TWorkflowOptions workflowDetails);
     }
 }

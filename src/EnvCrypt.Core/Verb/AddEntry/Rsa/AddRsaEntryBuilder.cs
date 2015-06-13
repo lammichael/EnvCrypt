@@ -21,8 +21,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
     public class AddRsaEntryBuilder : GenericBuilder
     {
         private IKeyLoader<RsaKey, KeyFromFileDetails> _keyLoader;
-        private IDatLoader _datLoader;
-        private IDatSaver<DatToFileSaverDetails> _datSaver;
+        private IDatLoader<DatFromFileLoaderOptions> _datLoader;
+        private IDatSaver<DatToFileSaverOptions> _datSaver;
 
         private AddEntryUsingKeyFileWorkflow<RsaKey, AddEntryUsingKeyFileWorkflowOptions> _workflow;
 
@@ -44,7 +44,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
         }
 
 
-        public AddRsaEntryBuilder WithDatLoader(IDatLoader datLoader)
+        public AddRsaEntryBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //
@@ -54,7 +54,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.Rsa
         }
 
 
-        public AddRsaEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
+        public AddRsaEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverOptions> datSaver)
         {
             Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
             //

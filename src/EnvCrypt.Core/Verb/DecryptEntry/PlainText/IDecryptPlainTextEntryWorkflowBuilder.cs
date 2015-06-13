@@ -8,7 +8,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 {
     public interface IDecryptPlainTextEntryWorkflowBuilder
     {
-        DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader);
+        DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
         DecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger);
 
         /// <summary>

@@ -9,9 +9,9 @@ namespace EnvCrypt.Core.Verb.LoadDat
 {
     public static class DatFromXmlFileFactory
     {
-        public static IDatLoader GetDatLoader()
+        public static IDatLoader<DatFromFileLoaderOptions> GetDatLoader()
         {
-            Contract.Ensures(Contract.Result<IDatLoader>() != null);
+            Contract.Ensures(Contract.Result<IDatLoader<DatFromFileLoaderOptions>>() != null);
             //
             var myFile = new MyFile();
             return new DatFromXmlFileLoader(

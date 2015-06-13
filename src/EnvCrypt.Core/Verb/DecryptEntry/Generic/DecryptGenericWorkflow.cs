@@ -17,13 +17,13 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
     /// </summary>
     public class DecryptGenericWorkflow
     {
-        private readonly IDatLoader _datLoader;
+        private readonly IDatLoader<DatFromFileLoaderOptions> _datLoader;
         private readonly IDecryptPlainTextEntryWorkflowBuilder _plaintextWorkFlowBuilder;
         private readonly IDecryptRsaEntryWorkflowBuilder _rsaWorkFlowBuilder;
         private readonly IDecryptAesEntryWorkflowBuilder _aesWorkFlowBuilder;
 
 
-        public DecryptGenericWorkflow(IDatLoader datLoader, IDecryptPlainTextEntryWorkflowBuilder plaintextWorkFlowBuilder, IDecryptRsaEntryWorkflowBuilder rsaWorkFlowBuilder, IDecryptAesEntryWorkflowBuilder aesWorkFlowBuilder)
+        public DecryptGenericWorkflow(IDatLoader<DatFromFileLoaderOptions> datLoader, IDecryptPlainTextEntryWorkflowBuilder plaintextWorkFlowBuilder, IDecryptRsaEntryWorkflowBuilder rsaWorkFlowBuilder, IDecryptAesEntryWorkflowBuilder aesWorkFlowBuilder)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             Contract.Requires<ArgumentNullException>(plaintextWorkFlowBuilder != null, "plaintextWorkFlowBuilder");
@@ -43,7 +43,11 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
             Contract.Requires<EnvCryptException>(options.CategoryEntryPair.Any(),
                 "at least one entry has to be requested");
             //
-            var dat = _datLoader.Load(options.DatFilePath);
+            var dat = _datLoader.Load(
+                new DatFromFileLoaderOptions()
+                {
+                    DatFilePath = options.DatFilePath
+                });
 
             // Get algo used for all requested entries
             var detailsOfAlgoUsedTakenFromDat = new List<PairWithEncyptionAlgo>(options.CategoryEntryPair.Count);

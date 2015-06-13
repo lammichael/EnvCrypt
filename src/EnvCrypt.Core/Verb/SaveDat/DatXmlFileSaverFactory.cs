@@ -11,9 +11,9 @@ namespace EnvCrypt.Core.Verb.SaveDat
 {
     public static class DatXmlFileSaverFactory
     {
-        public static IDatSaver<DatToFileSaverDetails> GetDatSaver()
+        public static IDatSaver<DatToFileSaverOptions> GetDatSaver()
         {
-            Contract.Ensures(Contract.Result<IDatSaver<DatToFileSaverDetails>>() != null);
+            Contract.Ensures(Contract.Result<IDatSaver<DatToFileSaverOptions>>() != null);
             //
             var myFile = new MyFile();
             return new DatToXmlFileSaver(

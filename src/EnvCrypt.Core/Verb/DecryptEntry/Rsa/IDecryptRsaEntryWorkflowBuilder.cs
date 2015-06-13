@@ -10,7 +10,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
     public interface IDecryptRsaEntryWorkflowBuilder
     {
         DecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader);
-        DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader);
+        DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
         DecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger);
 
         /// <summary>

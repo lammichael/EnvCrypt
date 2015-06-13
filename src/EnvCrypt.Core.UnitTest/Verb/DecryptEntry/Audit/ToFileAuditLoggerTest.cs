@@ -77,8 +77,8 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                     }
                 }
             };
-            var datLoaderMock = new Mock<IDatLoader>();
-            datLoaderMock.Setup(loader => loader.Load(It.IsAny<string>()))
+            var datLoaderMock = new Mock<IDatLoader<DatFromFileLoaderOptions>>();
+            datLoaderMock.Setup(l => l.Load(It.IsAny<DatFromFileLoaderOptions>()))
                 .Returns(datPoco);
 
             var encryptionAlgoMock = new Mock<ISegmentEncryptionAlgo<AesKey>>();

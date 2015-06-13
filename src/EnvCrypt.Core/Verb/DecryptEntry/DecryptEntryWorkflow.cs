@@ -9,16 +9,17 @@ using EnvCrypt.Core.Verb.LoadDat;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry
 {
-    [ContractClass(typeof(DecryptEntryWorkflowContracts<,>))]
-    public abstract class DecryptEntryWorkflow<TKey, TWorkflowOptions>
+    [ContractClass(typeof(DecryptEntryWorkflowContracts<,,>))]
+    public abstract class DecryptEntryWorkflow<TKey, TWorkflowOptions, TDatLoaderOptions>
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
+        where TDatLoaderOptions : IDatLoaderOptions
     {
-        private readonly IDatLoader _datLoader;
+        private readonly IDatLoader<TDatLoaderOptions> _datLoader;
         private readonly EntriesDecrypter<TKey> _entriesDecrypter;
         private readonly IAuditLogger<TKey, TWorkflowOptions> _auditLogger;
 
-        protected DecryptEntryWorkflow(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger)
+        protected DecryptEntryWorkflow(IDatLoader<TDatLoaderOptions> datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             Contract.Requires<ArgumentNullException>(entriesDecrypter != null, "encryptWorkflow");
@@ -47,7 +48,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
             Contract.Ensures(Contract.Result<IList<EntriesDecrypterResult<TKey>>>() != null);
             //
 
-            var datPoco = _datLoader.Load(options.DatFilePath);
+            var datPoco = _datLoader.Load(GetDatLoaderOptions(options));
             var loadedKeys = LoadKeys(options);
 
             var ret = _entriesDecrypter.Decrypt(loadedKeys, datPoco, options.CategoryEntryPair, options.ThrowExceptionIfEntryNotFound, options.ThrowIfDecryptingKeyNotFound, options.ThrowIfKeyCannotDecrypt);
@@ -59,17 +60,21 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
 
 
         protected abstract List<TKey> LoadKeys(TWorkflowOptions workflowOptions);
+
+        protected abstract TDatLoaderOptions GetDatLoaderOptions(TWorkflowOptions workflowOptions);
     }
 
 
-
-    [ContractClassFor(typeof(DecryptEntryWorkflow<,>))]
-    internal abstract class DecryptEntryWorkflowContracts<TKey, TWorkflowOptions> : DecryptEntryWorkflow<TKey, TWorkflowOptions>
+    [ContractClassFor(typeof(DecryptEntryWorkflow<,,>))]
+    internal abstract class DecryptEntryWorkflowContracts<TKey, TWorkflowOptions, TDatLoaderOptions> : DecryptEntryWorkflow<TKey, TWorkflowOptions, TDatLoaderOptions>
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
+        where TDatLoaderOptions : IDatLoaderOptions
     {
-        protected DecryptEntryWorkflowContracts(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger) : base(datLoader, entriesDecrypter, auditLogger)
+        protected DecryptEntryWorkflowContracts(IDatLoader<TDatLoaderOptions> datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger)
+            : base(datLoader, entriesDecrypter, auditLogger)
         {}
+
 
         protected override List<TKey> LoadKeys(TWorkflowOptions workflowOptions)
         {
@@ -78,6 +83,15 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
             Contract.Ensures(Contract.Result<List<TKey>>().Any());
 
             return default(List<TKey>);
+        }
+
+
+        protected override TDatLoaderOptions GetDatLoaderOptions(TWorkflowOptions workflowOptions)
+        {
+            Contract.Requires<ArgumentNullException>(workflowOptions != null, "workflowOptions");
+            Contract.Ensures(Contract.Result<TDatLoaderOptions>() != null);
+
+            return default(TDatLoaderOptions);
         }
     }
 }

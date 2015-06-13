@@ -9,14 +9,18 @@ using EnvCrypt.Core.Utils.IO;
 
 namespace EnvCrypt.Core.Verb.LoadDat
 {
-    class DatFromXmlFileLoader : IDatLoader
+    class DatFromXmlFileLoader : IDatLoader<DatFromFileLoaderOptions>
     {
         private readonly IMyFile _myFile;
         private readonly ITextReader _xmlReader;
         private readonly IXmlSerializationUtils<EnvCryptEncryptedData> _xmlSerializationUtils;
         private readonly IExternalRepresentationToDatMapper<EnvCryptEncryptedData> _xmlToPocoMapper;
 
-        public DatFromXmlFileLoader(IMyFile myFile, ITextReader xmlReader, IXmlSerializationUtils<EnvCryptEncryptedData> xmlSerializationUtils, IExternalRepresentationToDatMapper<EnvCryptEncryptedData> xmlToPocoMapper)
+        public DatFromXmlFileLoader(
+            IMyFile myFile,
+            ITextReader xmlReader,
+            IXmlSerializationUtils<EnvCryptEncryptedData> xmlSerializationUtils,
+            IExternalRepresentationToDatMapper<EnvCryptEncryptedData> xmlToPocoMapper)
         {
             Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
             Contract.Requires<ArgumentNullException>(xmlReader != null, "xmlReader");
@@ -30,9 +34,9 @@ namespace EnvCrypt.Core.Verb.LoadDat
         }
 
 
-        public EnvCryptDat Load(string ecDatFilePath)
+        public EnvCryptDat Load(DatFromFileLoaderOptions options)
         {
-            if (!_myFile.Exists(ecDatFilePath))
+            if (!_myFile.Exists(options.DatFilePath))
             {
                 return new EnvCryptDat()
                 {
@@ -40,10 +44,10 @@ namespace EnvCrypt.Core.Verb.LoadDat
                 };
             }
 
-            var xmlFromFile = _xmlReader.ReadAllText(ecDatFilePath);
+            var xmlFromFile = _xmlReader.ReadAllText(options.DatFilePath);
             if (string.IsNullOrWhiteSpace(xmlFromFile))
             {
-                throw new EnvCryptException("key file is empty: {0}", ecDatFilePath);
+                throw new EnvCryptException("key file is empty: {0}", options.DatFilePath);
             }
 
             var xmlPoco = _xmlSerializationUtils.Deserialize(xmlFromFile);

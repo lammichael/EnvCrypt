@@ -15,10 +15,10 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
     {
         private ISegmentEncryptionAlgo<AesKey> _segmentEncryptionAlgo;
         private IKeyLoader<AesKey, KeyFromFileDetails> _keyLoader;
-        private IDatLoader _datLoader;
+        private IDatLoader<DatFromFileLoaderOptions> _datLoader;
         private IAuditLogger<AesKey, DecryptEntryWorkflowOptions> _auditLogger;
 
-        private DecryptEntryWorkflow<AesKey, DecryptEntryWorkflowOptions> _workflow;
+        private DecryptEntryWorkflow<AesKey, DecryptEntryWorkflowOptions, DatFromFileLoaderOptions> _workflow;
 
         public DecryptAesEntryWorkflowBuilder()
         {
@@ -39,7 +39,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         }
 
 
-        public DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader)
+        public DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //

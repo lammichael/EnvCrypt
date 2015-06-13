@@ -16,8 +16,8 @@ namespace EnvCrypt.Core.Verb.AddEntry.Aes
     public class AddAesEntryBuilder : GenericBuilder
     {
         private IKeyLoader<AesKey, KeyFromFileDetails> _keyLoader;
-        private IDatLoader _datLoader;
-        private IDatSaver<DatToFileSaverDetails> _datSaver;
+        private IDatLoader<DatFromFileLoaderOptions> _datLoader;
+        private IDatSaver<DatToFileSaverOptions> _datSaver;
 
         private AddEntryUsingKeyFileWorkflow<AesKey, AddEntryUsingKeyFileWorkflowOptions> _workflow;
 
@@ -39,7 +39,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.Aes
         }
 
 
-        public AddAesEntryBuilder WithDatLoader(IDatLoader datLoader)
+        public AddAesEntryBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //
@@ -49,7 +49,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.Aes
         }
 
 
-        public AddAesEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverDetails> datSaver)
+        public AddAesEntryBuilder WithDatSaver(IDatSaver<DatToFileSaverOptions> datSaver)
         {
             Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
             //

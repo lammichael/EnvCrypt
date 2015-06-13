@@ -5,11 +5,12 @@ using EnvCrypt.Core.Verb.SaveDat;
 
 namespace EnvCrypt.Core.Verb.AddEntry
 {
-    class AddEntryUsingKeyFileWorkflow<TKey, TWorkflowDetails> : AddEntryWorkflow<TKey, TWorkflowDetails, KeyFromFileDetails>
+    class AddEntryUsingKeyFileWorkflow<TKey, TWorkflowDetails> : AddEntryAndLoadSaveDatToFileWorkflow<TKey, TWorkflowDetails, KeyFromFileDetails>
         where TKey : KeyBase
         where TWorkflowDetails : AddEntryUsingKeyFileWorkflowOptions
+
     {
-        public AddEntryUsingKeyFileWorkflow(EncryptWorkflow<TKey, KeyFromFileDetails> encryptWorkflow, IDatLoader datLoader, IDatSaver<DatToFileSaverDetails> datSaver)
+        public AddEntryUsingKeyFileWorkflow(EncryptWorkflow<TKey, KeyFromFileDetails> encryptWorkflow, IDatLoader<DatFromFileLoaderOptions> datLoader, IDatSaver<DatToFileSaverOptions> datSaver)
             : base(encryptWorkflow, datLoader, datSaver)
         {}
 

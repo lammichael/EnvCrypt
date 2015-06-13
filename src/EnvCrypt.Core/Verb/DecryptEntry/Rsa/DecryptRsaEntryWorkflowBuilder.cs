@@ -14,10 +14,10 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
     public class DecryptRsaEntryWorkflowBuilder : GenericBuilder, IDecryptRsaEntryWorkflowBuilder
     {
         private IKeyLoader<RsaKey, KeyFromFileDetails> _keyLoader;
-        private IDatLoader _datLoader;
+        private IDatLoader<DatFromFileLoaderOptions> _datLoader;
         private IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> _auditLogger;
 
-        private DecryptEntryWorkflow<RsaKey, DecryptEntryWorkflowOptions> _workflow;
+        private DecryptEntryWorkflow<RsaKey, DecryptEntryWorkflowOptions, DatFromFileLoaderOptions> _workflow;
 
         public DecryptRsaEntryWorkflowBuilder()
         {
@@ -35,7 +35,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         }
 
 
-        public DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader datLoader)
+        public DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             _datLoader = datLoader;
             MarkAsNotBuilt();

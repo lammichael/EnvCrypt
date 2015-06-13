@@ -8,13 +8,13 @@ using EnvCrypt.Core.Verb.LoadKey;
 
 namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 {
-    class DecryptPlainTextEntryWorkflow<TKey, TWorkflowOptions> : DecryptEntryWorkflow<TKey, TWorkflowOptions>
+    class DecryptPlainTextEntryWorkflow<TKey, TWorkflowOptions> : DecryptEntryUsingDatFileWorkflow<TKey, TWorkflowOptions>
         where TKey : KeyBase
         where TWorkflowOptions : DecryptPlainTextEntryWorkflowOptions
     {
         private readonly IKeyLoader<TKey, NullKeyLoaderDetails> _keyLoader;
 
-        public DecryptPlainTextEntryWorkflow(IDatLoader datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger, IKeyLoader<TKey, NullKeyLoaderDetails> keyLoader) : base(datLoader, entriesDecrypter, auditLogger)
+        public DecryptPlainTextEntryWorkflow(IDatLoader<DatFromFileLoaderOptions> datLoader, EntriesDecrypter<TKey> entriesDecrypter, IAuditLogger<TKey, TWorkflowOptions> auditLogger, IKeyLoader<TKey, NullKeyLoaderDetails> keyLoader) : base(datLoader, entriesDecrypter, auditLogger)
         {
             Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
             //

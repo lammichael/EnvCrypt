@@ -8,14 +8,14 @@ namespace EnvCrypt.Core.Verb.SaveDat
     [ContractClass(typeof(DatSaverContracts<>))]
     public interface IDatSaver<in TSaverDetails>
     {
-        void Save(EnvCryptDat data, TSaverDetails saverDetails);
+        void Save(EnvCryptDat data, TSaverDetails fileSaverOptions);
     }
 
 
     [ContractClassFor(typeof(IDatSaver<>))]
     internal abstract class DatSaverContracts<TSaverDetails> : IDatSaver<TSaverDetails>
     {
-        public void Save(EnvCryptDat data, TSaverDetails saverDetails)
+        public void Save(EnvCryptDat data, TSaverDetails fileSaverOptions)
         {
             Contract.Requires<ArgumentNullException>(data != null, "data");
         }
