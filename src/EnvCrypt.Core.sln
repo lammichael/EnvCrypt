@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{59B60213-1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCrypt.InteractiveDecrypt", "demo\InteractiveDecrypt\EnvCrypt.InteractiveDecrypt.csproj", "{90D08570-E093-43A7-84FC-C81939F8731E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tool", "tool", "{47865BF1-7999-476C-8622-8666482C4603}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvCrypt.ServiceInstaller", "tool\EnvCrypt.ServiceInstaller\EnvCrypt.ServiceInstaller.csproj", "{3F62738D-7799-483B-9DC6-BC7DA8420861}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +52,10 @@ Global
 		{90D08570-E093-43A7-84FC-C81939F8731E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90D08570-E093-43A7-84FC-C81939F8731E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90D08570-E093-43A7-84FC-C81939F8731E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F62738D-7799-483B-9DC6-BC7DA8420861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F62738D-7799-483B-9DC6-BC7DA8420861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F62738D-7799-483B-9DC6-BC7DA8420861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F62738D-7799-483B-9DC6-BC7DA8420861}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +64,6 @@ Global
 		{FE7A9D17-D917-44A7-8C50-2395A8F83E61} = {EA33EFCA-36DC-40F1-8E74-3091AECC4785}
 		{ECABFF8E-D0DC-4EF2-8CF7-2A5E8B7918D2} = {EA33EFCA-36DC-40F1-8E74-3091AECC4785}
 		{90D08570-E093-43A7-84FC-C81939F8731E} = {59B60213-1294-4F36-9E25-F1140409CD47}
+		{3F62738D-7799-483B-9DC6-BC7DA8420861} = {47865BF1-7999-476C-8622-8666482C4603}
 	EndGlobalSection
 EndGlobal
