@@ -50,7 +50,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry
             var datPoco = _datLoader.Load(options.DatFilePath);
             var loadedKeys = LoadKeys(options);
 
-            var ret = _entriesDecrypter.Decrypt(loadedKeys, datPoco, options.CategoryEntryPair);
+            var ret = _entriesDecrypter.Decrypt(loadedKeys, datPoco, options.CategoryEntryPair, options.ThrowExceptionIfEntryNotFound, options.ThrowIfDecryptingKeyNotFound, options.ThrowIfKeyCannotDecrypt);
 
             _auditLogger.LogDecryption(options, datPoco, loadedKeys, ret);
 

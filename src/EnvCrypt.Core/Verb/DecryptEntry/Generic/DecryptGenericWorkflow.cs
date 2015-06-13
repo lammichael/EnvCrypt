@@ -64,19 +64,21 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
                 }
 
                 // Check that all requested entries use the same encryption algorithm because we are only loading one key
-                if (algorithmThatIsNotPlainText.HasValue)
+                if (foundEntry.EncryptionAlgorithm != EnvCryptAlgoEnum.PlainText)
                 {
-                    if (foundEntry.EncryptionAlgorithm != algorithmThatIsNotPlainText.Value)
+                    if (algorithmThatIsNotPlainText.HasValue)
                     {
-                        throw new EnvCryptException(
-                            "all requested entries to be decrypted must have the same encryption algorithm.  Since if they are not, one key cannot possibly decrypt for more than one algorithm");
+                        if (foundEntry.EncryptionAlgorithm != algorithmThatIsNotPlainText.Value)
+                        {
+                            throw new EnvCryptException(
+                                "all requested entries to be decrypted must have the same encryption algorithm.  Since if they are not, one key cannot possibly decrypt for more than one algorithm");
+                        }
                     }
-                }
-                else
-                {
-                    if (foundEntry.EncryptionAlgorithm != EnvCryptAlgoEnum.PlainText)
+                    else
                     {
-                        algorithmThatIsNotPlainText = foundEntry.EncryptionAlgorithm;
+                        {
+                            algorithmThatIsNotPlainText = foundEntry.EncryptionAlgorithm;
+                        }
                     }
                 }
 
@@ -86,7 +88,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
 
 
             var ret = new List<EntriesDecrypterResult>();
-            DecryptPlainText(detailsOfAlgoUsedTakenFromDat, ret);
+            DecryptPlainText(options, detailsOfAlgoUsedTakenFromDat, ret);
 
             DecryptRsa(options, detailsOfAlgoUsedTakenFromDat, ret);
 
@@ -107,8 +109,9 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
                 var workflowOptions = new DecryptEntryWorkflowOptions()
                 {
                     CategoryEntryPair = aesRequests.Select(r => r.Pair).ToList(),
-                    DatFilePath = "null",
-                    KeyFilePaths = new[] {options.KeyFilePath}
+                    DatFilePath = options.DatFilePath,
+                    KeyFilePaths = new[] {options.KeyFilePath},
+                    ThrowIfDecryptingKeyNotFound = false
                 };
                 var result = _aesWorkFlowBuilder.WithDatLoader(_datLoader)
                     .Build()
@@ -128,8 +131,9 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
                 var workflowOptions = new DecryptEntryWorkflowOptions()
                 {
                     CategoryEntryPair = rsaRequests.Select(r => r.Pair).ToList(),
-                    DatFilePath = "null",
-                    KeyFilePaths = new[] {options.KeyFilePath}
+                    DatFilePath = options.DatFilePath,
+                    KeyFilePaths = new[] {options.KeyFilePath},
+                    ThrowIfDecryptingKeyNotFound = false
                 };
                 var result = _rsaWorkFlowBuilder.WithDatLoader(_datLoader)
                     .Build()
@@ -139,7 +143,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
         }
 
 
-        private void DecryptPlainText(List<PairWithEncyptionAlgo> detailsOfAlgoUsedTakenFromDat, List<EntriesDecrypterResult> ret)
+        private void DecryptPlainText(DecryptGenericWorkflowOptions options, List<PairWithEncyptionAlgo> detailsOfAlgoUsedTakenFromDat, List<EntriesDecrypterResult> ret)
         {
             var plainTextRequests =
                 detailsOfAlgoUsedTakenFromDat.Where(d => d.EncryptionAlgo == EnvCryptAlgoEnum.PlainText).ToArray();
@@ -150,7 +154,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
                 var workflowOptions = new DecryptPlainTextEntryWorkflowOptions()
                 {
                     CategoryEntryPair = plainTextRequests.Select(r => r.Pair).ToList(),
-                    DatFilePath = null
+                    DatFilePath = options.DatFilePath
                 };
                 var result = _plaintextWorkFlowBuilder.WithDatLoader(_datLoader)
                     .Build()

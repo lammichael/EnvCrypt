@@ -17,38 +17,45 @@ namespace EnvCrypt.InteractiveDecrypt
 
         static void Main(string[] args)
         {
+            if (args.Length != 2)
+            {
+                Logger.Fatal()
+                    .Message("2 arguments required - DAT file path & decrypting key file path")
+                    .Write();
+                Environment.Exit(1);
+            }
+
+#if (!DEBUG)
             try
             {
-                Run();
+#endif
+                Run(args[0], args[1]);
+#if (!DEBUG)
             }
             catch (Exception e)
             {
                 Logger.Fatal(e, "Uncaught exception occurred");
                 throw;
             }
+#endif
         }
 
-        private static void Run()
+
+        private static void Run(string datFilePath, string keyFilePath)
         {
-            Console.Write("Enter the DAT file path (your encrypted credentials): ");
-            Console.WriteLine();
-            var datFileFilePath = Console.ReadLine();
-            if (!File.Exists(datFileFilePath))
+            if (!File.Exists(datFilePath))
             {
                 Logger.Fatal()
-                    .Message("DAT file does not exist: {0}", datFileFilePath)
+                    .Message("DAT file does not exist: {0}", datFilePath)
                     .Write();
                 Environment.Exit(1);
             }
 
 
-            Console.Write("Enter private key file path: ");
-            Console.WriteLine();
-            var privateKeyFilePath = Console.ReadLine();
-            if (!File.Exists(privateKeyFilePath))
+            if (!File.Exists(keyFilePath))
             {
                 Logger.Fatal()
-                    .Message("Private key file does not exist: {0}", privateKeyFilePath)
+                    .Message("Private key file does not exist: {0}", keyFilePath)
                     .Write();
                 Environment.Exit(1);
             }
@@ -59,8 +66,8 @@ namespace EnvCrypt.InteractiveDecrypt
             var result = builder.Build().Run(new DecryptGenericWorkflowOptions()
             {
                 CategoryEntryPair = GetPairsFromConfig(),
-                DatFilePath = datFileFilePath,
-                KeyFilePath = privateKeyFilePath,
+                DatFilePath = datFilePath,
+                KeyFilePath = keyFilePath,
                 ThrowExceptionIfEntryNotFound = true,
             });
 
@@ -68,15 +75,10 @@ namespace EnvCrypt.InteractiveDecrypt
             foreach (var r in result)
             {
                 Logger.Info()
-                    .Message("Category: {0}\tEntry{1}\t\tValue: {2}", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry,
+                    .Message("Category: {0}\tEntry: {1}\t\tValue: {2}", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry,
                         r.DecryptedValue)
                     .Write();
             }
-
-            Logger.Info()
-                .Message("Press any key to exit")
-                .Write();
-            Console.ReadKey();
         }
 
 
