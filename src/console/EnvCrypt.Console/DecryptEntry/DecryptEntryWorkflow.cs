@@ -3,6 +3,7 @@ using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
 using EnvCrypt.Core.Verb.DecryptEntry;
 using EnvCrypt.Core.Verb.DecryptEntry.Aes;
+using EnvCrypt.Core.Verb.DecryptEntry.Generic;
 using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 using EnvCrypt.Core.Verb.DecryptEntry.Rsa;
 
@@ -25,44 +26,24 @@ namespace EnvCrypt.Console.DecryptEntry
                 var toAdd = new CategoryEntryPair(categories[(int)catI], entries[(int)catI]);
                 categoryEntryPairs.Add(toAdd);
             }
-            
 
-            var workflowOptions = new DecryptEntryWorkflowOptions()
+
+            var builder = new DecryptGenericWorkflowBuilder(
+                new DecryptPlainTextEntryWorkflowBuilder(),
+                new DecryptRsaEntryWorkflowBuilder(),
+                new DecryptAesEntryWorkflowBuilder());
+            var result = builder.Build().Run(new DecryptGenericWorkflowOptions()
             {
+                CategoryEntryPair = categoryEntryPairs,
                 DatFilePath = options.DatFile,
-                KeyFilePaths = options.GetKeyFiles(),
-                CategoryEntryPair = categoryEntryPairs
-            };
-
-
-            var encryptionType = options.GetAlgorithm();
-            if (encryptionType == EnvCryptAlgoEnum.Rsa)
-            {
-                var decryptionResults = new DecryptRsaEntryWorkflowBuilder().Build()
-                    .Run(workflowOptions);
-                OutputToConsole(decryptionResults);
-            }
-            else if (encryptionType == EnvCryptAlgoEnum.Aes)
-            {
-                var decryptionResults = new DecryptAesEntryWorkflowBuilder().Build()
-                    .Run(workflowOptions);
-                OutputToConsole(decryptionResults);
-            }
-            else if (encryptionType == EnvCryptAlgoEnum.PlainText)
-            {
-                var decryptionResults = new DecryptPlainTextEntryWorkflowBuilder().Build()
-                    .Run(workflowOptions);
-                OutputToConsole(decryptionResults);
-            }
-            else
-            {
-                System.Console.Error.WriteLine("Unsupported encryption type: {0}", encryptionType);
-            }
+                KeyFilePath = options.KeyFile,
+                ThrowExceptionIfEntryNotFound = true,
+            });
+            OutputToConsole(result);
         }
 
 
-        private static void OutputToConsole<TKey>(IList<EntriesDecrypterResult<TKey>> decryptionResults)
-            where TKey : KeyBase
+        private static void OutputToConsole(IList<EntriesDecrypterResult> decryptionResults)
         {
             foreach (var result in decryptionResults)
             {
@@ -70,7 +51,7 @@ namespace EnvCrypt.Console.DecryptEntry
                 System.Console.Write("\t");
                 System.Console.Write(result.CategoryEntryPair.Entry);
                 System.Console.Write("\t");
-                System.Console.Write(result.DecryptedValue);
+                System.Console.WriteLine(result.DecryptedValue);
             }
         }
     }

@@ -11,42 +11,17 @@ namespace EnvCrypt.Console.DecryptEntry
     {
         public const char Delimiter = '|';
 
-        [Option('a', "Algorithm", HelpText = "Algorithm to use - RSA or AES.", Required = true)]
-        public string AlgorithmToUse { get; set; }
-
         [Option('d', "Dat", HelpText = "Full path to ECDat file containing the encrypted entries use for encryption. If ECDat does not already exist then it will be created.", Required = true)]
         public string DatFile { get; set; }
 
-        [Option('k', "Keys", HelpText = "Full path to ECKey files to use for encryption. If excluded then key will be added in plaintext. Accepts multiple key files pipe (|) separated.", Required = false)]
-        public string KeyFiles { get; set; }
+        [Option('k', "Key", HelpText = "Full path to ECKey file to use for encryption.", Required = false)]
+        public string KeyFile { get; set; }
 
         [Option('c', "Categories", HelpText = "Category to add entry under. Accepts pipe (|) separated names corresponding to the specified entries.", Required = true)]
         public string Categories { get; set; }
 
         [Option('e', "Entries", HelpText = "The new entry's name. Accepts pipe (|) separated names corresponding to the strings for each entry.", Required = true)]
         public string Entries { get; set; }
-
-
-        public EnvCryptAlgoEnum? GetAlgorithm()
-        {
-            EnvCryptAlgoEnum ret;
-            if (Enum.TryParse(AlgorithmToUse, true, out ret))
-            {
-                return ret;
-            }
-            return null;
-        }
-
-
-        [Pure]
-        public IList<string> GetKeyFiles()
-        {
-            if (KeyFiles == null)
-            {
-                return new List<string>();
-            }
-            return KeyFiles.Split(Delimiter);
-        }
 
 
         [Pure]

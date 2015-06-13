@@ -7,24 +7,7 @@ namespace EnvCrypt.Console.DecryptEntry
         protected override bool ReportErrors(DecryptEntryVerbOptions options)
         {
             var hasErrors = false;
-            var algorithm = options.GetAlgorithm();
-            if (algorithm == null)
-            {
-                System.Console.Error.WriteLine("Unrecognised algorithm: {0}", options.AlgorithmToUse);
-                hasErrors = true;
-            }
-            else
-            {
-                // PlainText encryption doesn't require any key
-                if (algorithm.Value != EnvCryptAlgoEnum.PlainText)
-                {
-                    if (string.IsNullOrWhiteSpace(options.KeyFiles))
-                    {
-                        System.Console.Error.WriteLine("No key file paths (decryption keys) defined.");
-                        hasErrors = true;
-                    }
-                }
-            }
+            
             if (string.IsNullOrWhiteSpace(options.DatFile))
             {
                 System.Console.Error.WriteLine("DAT file path not defined.");

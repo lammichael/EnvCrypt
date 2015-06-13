@@ -266,9 +266,8 @@ namespace EnvCrypt.Console.UnitTest
 
             var decryptRsaEntryArgObj = new DecryptEntryVerbOptions()
             {
-                AlgorithmToUse = EnvCryptAlgoEnum.Rsa.ToString(),
                 DatFile = _datFile,
-                KeyFiles = _rsaPrivateKeyFile,
+                KeyFile = _rsaPrivateKeyFile,
                 Categories = categoriesInString,
                 Entries = entriesInString
             };
@@ -294,9 +293,8 @@ namespace EnvCrypt.Console.UnitTest
 
             var decryptEntryArgObj = new DecryptEntryVerbOptions()
             {
-                AlgorithmToUse = EnvCryptAlgoEnum.Aes.ToString(),
                 DatFile = _datFile,
-                KeyFiles = _aesKeyFile,
+                KeyFile = _aesKeyFile,
                 Categories = categoriesInString,
                 Entries = entriesInString
             };
@@ -322,7 +320,6 @@ namespace EnvCrypt.Console.UnitTest
 
             var decryptEntryArgObj = new DecryptEntryVerbOptions()
             {
-                AlgorithmToUse = EnvCryptAlgoEnum.PlainText.ToString(),
                 DatFile = _datFile,
                 Categories = categoriesInString,
                 Entries = entriesInString

@@ -61,8 +61,10 @@ namespace EnvCrypt.InteractiveDecrypt
             }
 
 
-            var builder = new DecryptGenericWorkflowBuilder(new DecryptPlainTextEntryWorkflowBuilder(),
-                new DecryptRsaEntryWorkflowBuilder(), new DecryptAesEntryWorkflowBuilder());
+            var builder = new DecryptGenericWorkflowBuilder(
+                new DecryptPlainTextEntryWorkflowBuilder(),
+                new DecryptRsaEntryWorkflowBuilder(),
+                new DecryptAesEntryWorkflowBuilder());
             var result = builder.Build().Run(new DecryptGenericWorkflowOptions()
             {
                 CategoryEntryPair = GetPairsFromConfig(),
