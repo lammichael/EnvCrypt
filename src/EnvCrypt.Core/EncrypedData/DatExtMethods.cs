@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using EnvCrypt.Core.EncrypedData.Poco;
-using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key;
 
 namespace EnvCrypt.Core.EncrypedData
 {
     static class DatExtMethods
     {
-        public static bool SearchForCategory(this EnvCryptDat inDatPoco,
+        #region private methods
+        [Pure]
+        private static bool SearchForCategory(this EnvCryptDat inDatPoco,
             string withCategoryName, out Category foundCategory)
         {
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withCategoryName), "withCategoryName");
+            Contract.Ensures(Contract.Result<bool>() ?
+                Contract.ValueAtReturn(out foundCategory) != null :
+                Contract.ValueAtReturn(out foundCategory) == default(Category));
             //
             for (uint catI = 0; catI < inDatPoco.Categories.Count; catI++)
             {
@@ -29,10 +34,14 @@ namespace EnvCrypt.Core.EncrypedData
         }
 
 
-        public static bool SearchForEntry(this Category inCategory,
+        [Pure]
+        private static bool SearchForEntry(this Category inCategory,
             string withEntryName, out Entry foundEntry)
         {
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withEntryName), "withEntryName");
+            Contract.Ensures(Contract.Result<bool>() ? 
+                Contract.ValueAtReturn(out foundEntry) != null : 
+                Contract.ValueAtReturn(out foundEntry) == default(Entry));
             //
             for (uint entryI = 0; entryI < inCategory.Entries.Count; entryI++)
             {
@@ -47,13 +56,18 @@ namespace EnvCrypt.Core.EncrypedData
             foundEntry = default(Entry);
             return false;
         }
+        #endregion
 
 
+        [Pure]
         public static bool SearchForEntry(this EnvCryptDat inDatPoco,
             string withCategoryName, string withEntryName, out Entry foundEntry)
         {
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withCategoryName), "withCategoryName");
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withEntryName), "withEntryName");
+            Contract.Ensures(Contract.Result<bool>() ?
+                Contract.ValueAtReturn(out foundEntry) != null :
+                Contract.ValueAtReturn(out foundEntry) == default(Entry));
             //
             Category foundCategory;
             if (inDatPoco.SearchForCategory(withCategoryName, out foundCategory))
@@ -119,11 +133,6 @@ namespace EnvCrypt.Core.EncrypedData
                     }
                 }
             }
-            if (isNewCategory)
-            {
-                toDatPoco.Categories.Add(categoryToAddTo);
-                Contract.Assert(isNewEntry);
-            }
             
             entryToAdd.Name = entryName;
             entryToAdd.KeyName = key.Name;
@@ -132,6 +141,11 @@ namespace EnvCrypt.Core.EncrypedData
             entryToAdd.EncryptedValue = segments;
 
             categoryToAddTo.Entries.Add(entryToAdd);
+
+            if (isNewCategory || !isNewEntry)
+            {
+                toDatPoco.Categories.Add(categoryToAddTo);
+            }
         }
 
 
@@ -142,7 +156,8 @@ namespace EnvCrypt.Core.EncrypedData
             Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(withEntryName), "withEntryName");
             Contract.Requires<EnvCryptException>(fromDatPoco != null, "fromDatPoco");
             Contract.Requires<EnvCryptException>(fromDatPoco.Categories != null, "category list in DAT POCO cannnot be null");
-            Contract.Ensures(fromDatPoco.Categories.Count == Contract.OldValue(fromDatPoco.Categories.Count), "Category count changed");
+            Contract.Ensures(fromDatPoco.Categories.Count == Contract.OldValue(fromDatPoco.Categories.Count) || 
+                fromDatPoco.Categories.Count == Contract.OldValue(fromDatPoco.Categories.Count) - 1);
             //
             Category foundCategory;
             if (fromDatPoco.SearchForCategory(inCategory, out foundCategory))
@@ -150,7 +165,14 @@ namespace EnvCrypt.Core.EncrypedData
                 Entry foundEntry;
                 if (foundCategory.SearchForEntry(withEntryName, out foundEntry))
                 {
-                    return foundCategory.Entries.Remove(foundEntry);
+                    foundCategory.Entries.Remove(foundEntry);
+
+                    if (!foundCategory.Entries.Any())
+                    {
+                        fromDatPoco.Categories.Remove(foundCategory);
+                    }
+
+                    return true;
                 }
             }
             return false;

@@ -146,6 +146,7 @@
     <Compile Include="GenerateKey\GenerateKeyCommandLineProcessor.cs" />
     <Compile Include="GenerateKey\GenerateKeyWorkflow.cs" />
     <Compile Include="GenerateKey\GenerateKeyVerbOptions.cs" />
+    <Compile Include="RemoveEntry\GenerateKeyVerbOptions.cs" />
     <Compile Include="VerbCommandLineProcessor.cs" />
     <Compile Include="IVerbCommandLineProcessor.cs" />
     <Compile Include="GenerateKey\ToConsoleTextWriter.cs" />
