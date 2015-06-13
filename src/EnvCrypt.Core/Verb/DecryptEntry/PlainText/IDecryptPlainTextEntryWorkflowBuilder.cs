@@ -10,15 +10,15 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
     [ContractClass(typeof(DecryptPlainTextEntryWorkflowBuilderContracts))]
     public interface IDecryptPlainTextEntryWorkflowBuilder
     {
-        DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
-        DecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger);
+        IDecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
+        IDecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger);
 
         /// <summary>
         /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="DecryptPlainTextEntryWorkflowBuilder.Run"/> method.
         /// This method is idempotent.
         /// </summary>
         /// <returns>the same Builder instance</returns>
-        DecryptPlainTextEntryWorkflowBuilder Build();
+        IDecryptPlainTextEntryWorkflowBuilder Build();
 
         IList<EntriesDecrypterResult<PlainTextKey>> Run(DecryptPlainTextEntryWorkflowOptions options);
 
@@ -30,25 +30,27 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
     [ContractClassFor(typeof(IDecryptPlainTextEntryWorkflowBuilder))]
     internal abstract class DecryptPlainTextEntryWorkflowBuilderContracts : IDecryptPlainTextEntryWorkflowBuilder
     {
-        public DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
+        public IDecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
+            Contract.Ensures(Contract.Result<IDecryptPlainTextEntryWorkflowBuilder>() != null);
 
-            return default(DecryptPlainTextEntryWorkflowBuilder);
+            return default(IDecryptPlainTextEntryWorkflowBuilder);
         }
 
-        public DecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger)
+        public IDecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger)
         {
             Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
+            Contract.Ensures(Contract.Result<IDecryptPlainTextEntryWorkflowBuilder>() != null);
 
-            return default(DecryptPlainTextEntryWorkflowBuilder);
+            return default(IDecryptPlainTextEntryWorkflowBuilder);
         }
 
-        public DecryptPlainTextEntryWorkflowBuilder Build()
+        public IDecryptPlainTextEntryWorkflowBuilder Build()
         {
-            Contract.Ensures(Contract.Result<DecryptPlainTextEntryWorkflowBuilder>() != null);
+            Contract.Ensures(Contract.Result<IDecryptPlainTextEntryWorkflowBuilder>() != null);
 
-            return default(DecryptPlainTextEntryWorkflowBuilder);
+            return default(IDecryptPlainTextEntryWorkflowBuilder);
         }
 
         public IList<EntriesDecrypterResult<PlainTextKey>> Run(DecryptPlainTextEntryWorkflowOptions options)

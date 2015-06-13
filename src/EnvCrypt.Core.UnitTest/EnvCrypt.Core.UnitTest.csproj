@@ -82,6 +82,7 @@
     <Compile Include="Utils\IO\StringToFileWriterTest.cs" />
     <Compile Include="Utils\XmlToAndFromPocoTest.cs" />
     <Compile Include="Verb\DecryptEntry\Audit\ToFileAuditLoggerTest.cs" />
+    <Compile Include="Verb\DecryptEntry\Generic\DecryptGenericWorkflowTest.cs" />
     <Compile Include="Verb\GenerateKey\Persister\RsaKeyFilePersisterTest.cs" />
     <Compile Include="Verb\LoadKey\RsaKeyLoaderTest.cs" />
   </ItemGroup>

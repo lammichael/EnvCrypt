@@ -29,7 +29,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         }
 
 
-        public DecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader)
+        public IDecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader)
         {
             _keyLoader = keyLoader;
             MarkAsNotBuilt();
@@ -37,7 +37,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         }
 
 
-        public DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
+        public IDecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             _datLoader = datLoader;
             MarkAsNotBuilt();
@@ -45,7 +45,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         }
 
 
-        public DecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger)
+        public IDecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger)
         {
             _auditLogger = auditLogger;
             MarkAsNotBuilt();
@@ -68,7 +68,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
         /// This method is idempotent.
         /// </summary>
         /// <returns>the same Builder instance</returns>
-        public DecryptAesEntryWorkflowBuilder Build()
+        public IDecryptAesEntryWorkflowBuilder Build()
         {
             var entriesDecrypter = new EntriesDecrypter<AesKey>(
                 new AesKeySuitabilityChecker(),

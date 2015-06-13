@@ -27,7 +27,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         }
 
 
-        public DecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
+        public IDecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
         {
             _keyLoader = keyLoader;
             MarkAsNotBuilt();
@@ -35,7 +35,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         }
 
 
-        public DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
+        public IDecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             _datLoader = datLoader;
             MarkAsNotBuilt();
@@ -43,7 +43,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         }
 
 
-        public DecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger)
+        public IDecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger)
         {
             _auditLogger = auditLogger;
             MarkAsNotBuilt();
@@ -56,7 +56,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
         /// This method is idempotent.
         /// </summary>
         /// <returns>the same Builder instance</returns>
-        public DecryptRsaEntryWorkflowBuilder Build()
+        public IDecryptRsaEntryWorkflowBuilder Build()
         {
             var entriesDecrypter = new EntriesDecrypter<RsaKey>(
                 new RsaKeySuitabilityChecker(),

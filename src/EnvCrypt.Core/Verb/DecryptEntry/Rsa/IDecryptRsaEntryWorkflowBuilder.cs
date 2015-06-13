@@ -11,16 +11,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
     [ContractClass(typeof(DecryptRsaEntryWorkflowBuilderContracts))]
     public interface IDecryptRsaEntryWorkflowBuilder
     {
-        DecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader);
-        DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
-        DecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger);
+        IDecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader);
+        IDecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
+        IDecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger);
 
         /// <summary>
         /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="DecryptRsaEntryWorkflowBuilder.Run"/> method.
         /// This method is idempotent.
         /// </summary>
         /// <returns>the same Builder instance</returns>
-        DecryptRsaEntryWorkflowBuilder Build();
+        IDecryptRsaEntryWorkflowBuilder Build();
 
         IList<EntriesDecrypterResult<RsaKey>> Run(DecryptEntryWorkflowOptions options);
 
@@ -33,34 +33,34 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
     [ContractClassFor(typeof(IDecryptRsaEntryWorkflowBuilder))]
     internal abstract class DecryptRsaEntryWorkflowBuilderContracts : IDecryptRsaEntryWorkflowBuilder
     {
-        public DecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
+        public IDecryptRsaEntryWorkflowBuilder WithKeyLoader(IKeyLoader<RsaKey, KeyFromFileDetails> keyLoader)
         {
             Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
-            Contract.Ensures(Contract.Result<DecryptRsaEntryWorkflowBuilder>() != null);
+            Contract.Ensures(Contract.Result<IDecryptRsaEntryWorkflowBuilder>() != null);
 
-            return default(DecryptRsaEntryWorkflowBuilder);            
+            return default(IDecryptRsaEntryWorkflowBuilder);            
         }
 
-        public DecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
+        public IDecryptRsaEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
-            Contract.Ensures(Contract.Result<DecryptRsaEntryWorkflowBuilder>() != null);
+            Contract.Ensures(Contract.Result<IDecryptRsaEntryWorkflowBuilder>() != null);
 
-            return default(DecryptRsaEntryWorkflowBuilder);
+            return default(IDecryptRsaEntryWorkflowBuilder);
         }
 
-        public DecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger)
+        public IDecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger)
         {
             Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
-            Contract.Ensures(Contract.Result<DecryptRsaEntryWorkflowBuilder>() != null);
+            Contract.Ensures(Contract.Result<IDecryptRsaEntryWorkflowBuilder>() != null);
 
-            return default(DecryptRsaEntryWorkflowBuilder);
+            return default(IDecryptRsaEntryWorkflowBuilder);
         }
 
-        public DecryptRsaEntryWorkflowBuilder Build()
+        public IDecryptRsaEntryWorkflowBuilder Build()
         {
-            Contract.Ensures(Contract.Result<DecryptRsaEntryWorkflowBuilder>() != null);
-            return default(DecryptRsaEntryWorkflowBuilder);
+            Contract.Ensures(Contract.Result<IDecryptRsaEntryWorkflowBuilder>() != null);
+            return default(IDecryptRsaEntryWorkflowBuilder);
         }
 
         public IList<EntriesDecrypterResult<RsaKey>> Run(DecryptEntryWorkflowOptions options)

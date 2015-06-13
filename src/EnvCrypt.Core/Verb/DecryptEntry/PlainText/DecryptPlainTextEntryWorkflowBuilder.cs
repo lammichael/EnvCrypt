@@ -24,7 +24,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
         }
 
 
-        public DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
+        public IDecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             
             _datLoader = datLoader;
@@ -33,7 +33,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
         }
 
 
-        public DecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger)
+        public IDecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger)
         {
             _auditLogger = auditLogger;
             MarkAsNotBuilt();
@@ -41,7 +41,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
         }
 
 
-        public DecryptPlainTextEntryWorkflowBuilder Build()
+        public IDecryptPlainTextEntryWorkflowBuilder Build()
         {
             var entriesDecrypter = new EntriesDecrypter<PlainTextKey>(
                 new PlainTextKeySuitabilityChecker(),

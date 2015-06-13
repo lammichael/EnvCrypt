@@ -11,16 +11,16 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
     [ContractClass(typeof(DecryptAesEntryWorkflowBuilderContract))]
     public interface IDecryptAesEntryWorkflowBuilder
     {
-        DecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader);
-        DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
-        DecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger);
+        IDecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader);
+        IDecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader);
+        IDecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger);
 
         /// <summary>
         /// Prepares the Builder ready for use. This must be called before your first call to the <see cref="DecryptAesEntryWorkflowBuilder.Run"/> method.
         /// This method is idempotent.
         /// </summary>
         /// <returns>the same Builder instance</returns>
-        DecryptAesEntryWorkflowBuilder Build();
+        IDecryptAesEntryWorkflowBuilder Build();
 
         IList<EntriesDecrypterResult<AesKey>> Run(DecryptEntryWorkflowOptions options);
 
@@ -32,33 +32,36 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
     [ContractClassFor(typeof(IDecryptAesEntryWorkflowBuilder))]
     internal abstract class DecryptAesEntryWorkflowBuilderContract : IDecryptAesEntryWorkflowBuilder
     {
-        public DecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader)
+        public IDecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader)
         {
             Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
-            
-            return default(DecryptAesEntryWorkflowBuilder);
+            Contract.Ensures(Contract.Result<IDecryptAesEntryWorkflowBuilder>() != null);
+
+            return default(IDecryptAesEntryWorkflowBuilder);
         }
 
-        public DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
+        public IDecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
+            Contract.Ensures(Contract.Result<IDecryptAesEntryWorkflowBuilder>() != null);
 
-            return default(DecryptAesEntryWorkflowBuilder);
+            return default(IDecryptAesEntryWorkflowBuilder);
         }
 
-        public DecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger)
+        public IDecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger)
         {
             Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
+            Contract.Ensures(Contract.Result<IDecryptAesEntryWorkflowBuilder>() != null);
 
-            return default(DecryptAesEntryWorkflowBuilder);
+            return default(IDecryptAesEntryWorkflowBuilder);
 
         }
 
-        public DecryptAesEntryWorkflowBuilder Build()
+        public IDecryptAesEntryWorkflowBuilder Build()
         {
-            Contract.Ensures(Contract.Result<DecryptAesEntryWorkflowBuilder>() != null);
+            Contract.Ensures(Contract.Result<IDecryptAesEntryWorkflowBuilder>() != null);
 
-            return default(DecryptAesEntryWorkflowBuilder);
+            return default(IDecryptAesEntryWorkflowBuilder);
         }
 
         public IList<EntriesDecrypterResult<AesKey>> Run(DecryptEntryWorkflowOptions options)

@@ -119,9 +119,9 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                 File.WriteAllText(deleteFile2Path, "somerandomtext2");
                 const string datFilePath = @"C:\my dat file";
                 new DecryptAesEntryWorkflowBuilder()
+                    .WithAesSegmentEncryptionAlgo(encryptionAlgoMock.Object)
                     .WithKeyLoader(keyLoaderMock.Object)
                     .WithDatLoader(datLoaderMock.Object)
-                    .WithAesSegmentEncryptionAlgo(encryptionAlgoMock.Object)
                     .WithAuditLogger(auditLogger)
                     .Build().Run(new DecryptEntryWorkflowOptions()
                     {
