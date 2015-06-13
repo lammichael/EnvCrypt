@@ -26,8 +26,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 
         public DecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
-            Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
-            //
+            
             _datLoader = datLoader;
             MarkAsNotBuilt();
             return this;
@@ -36,8 +35,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 
         public DecryptPlainTextEntryWorkflowBuilder WithAuditLogger(IAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions> auditLogger)
         {
-            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
-            //
             _auditLogger = auditLogger;
             MarkAsNotBuilt();
             return this;
@@ -59,15 +56,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 
         public IList<EntriesDecrypterResult<PlainTextKey>> Run(DecryptPlainTextEntryWorkflowOptions options)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
-
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Category)),
-                "none of the category names can be null or whitespace");
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Entry)),
-                "none of the entry names can be null or whitespace");
-            //
             if (!IsBuilt)
             {
                 throw new EnvCryptException("workflow cannot be run because it has not been built");

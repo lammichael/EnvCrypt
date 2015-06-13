@@ -45,8 +45,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
 
         public DecryptRsaEntryWorkflowBuilder WithAuditLogger(IAuditLogger<RsaKey, DecryptEntryWorkflowOptions> auditLogger)
         {
-            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
-            //
             _auditLogger = auditLogger;
             MarkAsNotBuilt();
             return this;
@@ -73,18 +71,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Rsa
 
         public IList<EntriesDecrypterResult<RsaKey>> Run(DecryptEntryWorkflowOptions options)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-
-            /*Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");*/
-
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Category)),
-                "none of the category names can be null or whitespace");
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Entry)),
-                "none of the entry names can be null or whitespace");
-
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.KeyFilePaths, s => !string.IsNullOrWhiteSpace(s)),
-                "key file path cannot be null or whitespace");
-            //
             if (!IsBuilt)
             {
                 throw new EnvCryptException("workflow cannot be run because it has not been built");

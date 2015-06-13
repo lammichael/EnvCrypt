@@ -14,6 +14,8 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
 {
     /// <summary>
     /// To decrypt many entries with one key.  PlainText will be retrieved (never requires a a key.
+    /// Immediately decorates the DAT loader with the 
+    /// <see cref="DatLoaderCacheDecorator{TOptions}"/> decorator to ensure that the DAT is loaded from file once.
     /// </summary>
     public class DecryptGenericWorkflow
     {
@@ -30,7 +32,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Generic
             Contract.Requires<ArgumentNullException>(rsaWorkFlowBuilder != null, "rsaWorkFlowBuilder");
             Contract.Requires<ArgumentNullException>(aesWorkFlowBuilder != null, "aesWorkFlowBuilder");
             //
-            _datLoader = datLoader;
+            _datLoader = new DatLoaderCacheDecorator<DatFromFileLoaderOptions>(datLoader);
             _plaintextWorkFlowBuilder = plaintextWorkFlowBuilder;
             _rsaWorkFlowBuilder = rsaWorkFlowBuilder;
             _aesWorkFlowBuilder = aesWorkFlowBuilder;

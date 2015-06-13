@@ -31,8 +31,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 
         public DecryptAesEntryWorkflowBuilder WithKeyLoader(IKeyLoader<AesKey, KeyFromFileDetails> keyLoader)
         {
-            Contract.Requires<ArgumentNullException>(keyLoader != null, "keyLoader");
-            //
             _keyLoader = keyLoader;
             MarkAsNotBuilt();
             return this;
@@ -41,8 +39,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 
         public DecryptAesEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
-            Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
-            //
             _datLoader = datLoader;
             MarkAsNotBuilt();
             return this;
@@ -51,8 +47,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 
         public DecryptAesEntryWorkflowBuilder WithAuditLogger(IAuditLogger<AesKey, DecryptEntryWorkflowOptions> auditLogger)
         {
-            Contract.Requires<ArgumentNullException>(auditLogger != null, "auditLogger");
-            //
             _auditLogger = auditLogger;
             MarkAsNotBuilt();
             return this;
@@ -89,18 +83,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Aes
 
         public IList<EntriesDecrypterResult<AesKey>> Run(DecryptEntryWorkflowOptions options)
         {
-            Contract.Requires<ArgumentNullException>(options != null, "options");
-
-            Contract.Requires<ArgumentException>(!string.IsNullOrWhiteSpace(options.DatFilePath), "DAT file path cannot be null or whitespace");
-
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Category)),
-                "none of the category names can be null or whitespace");
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.CategoryEntryPair, t => !string.IsNullOrWhiteSpace(t.Entry)),
-                "none of the entry names can be null or whitespace");
-
-            Contract.Requires<ArgumentException>(Contract.ForAll(options.KeyFilePaths, s => !string.IsNullOrWhiteSpace(s)),
-                "key file path cannot be null or whitespace");
-            //
             if (!IsBuilt)
             {
                 throw new EnvCryptException("workflow cannot be run because it has not been built");

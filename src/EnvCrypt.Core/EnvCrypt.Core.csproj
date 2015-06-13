@@ -262,6 +262,7 @@
     <Compile Include="Verb\GenerateKey\Persister\Symmetric\SymmetricKeyFilePersisterOptions.cs" />
     <Compile Include="Verb\DecryptEntry\EntriesDecrypterResult.cs" />
     <Compile Include="Verb\DecryptEntry\CategoryEntryPair.cs" />
+    <Compile Include="Verb\LoadDat\DatLoaderCacheDecorator.cs" />
     <Compile Include="Verb\LoadDat\IDatLoaderOptions.cs" />
     <Compile Include="Verb\LoadDat\DatFromFileLoaderOptions.cs" />
     <Compile Include="Verb\LoadDat\DatFromXmlFileFactory.cs" />
