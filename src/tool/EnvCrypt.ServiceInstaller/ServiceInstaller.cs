@@ -70,7 +70,7 @@ namespace EnvCrypt.ServiceInstaller
         private static extern int StartService(IntPtr hService, int dwNumServiceArgs, int lpServiceArgVectors);
         #endregion
 
-        public static void Uninstall(string serviceName)
+        public static void Uninstall(string serviceName, bool throwIfNotInstalled)
         {
             IntPtr scm = OpenSCManager(ScmAccessRights.AllAccess);
 
@@ -78,7 +78,13 @@ namespace EnvCrypt.ServiceInstaller
             {
                 IntPtr service = OpenService(scm, serviceName, ServiceAccessRights.AllAccess);
                 if (service == IntPtr.Zero)
-                    throw new ApplicationException("Service not installed.");
+                {
+                    if (throwIfNotInstalled)
+                    {
+                        throw new ApplicationException("Service not installed.");
+                    }
+                    return;
+                }
 
                 try
                 {
