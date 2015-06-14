@@ -159,6 +159,7 @@ ClientBin/
 *.dbmdl
 *.dbproj.schemaview
 *.pfx
+*.snk
 *.publishsettings
 node_modules/
 bower_components/
@@ -194,3 +195,6 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# Output directory
+out/

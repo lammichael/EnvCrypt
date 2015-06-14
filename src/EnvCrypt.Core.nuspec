@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>EnvCrypt.Core</id>
+	<version>1.0.0.0</version>
+	<title>EnvCrypt.Core</title>
+	<authors>lammichael</authors>
+	<owners>lammichael</owners>
+    <projectUrl>https://github.com/lammichael/EnvCrypt.Core</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>EnvCrypt Core library</description>
+    <copyright>Copyright © Michael Lam</copyright>
+	<tags>EnvCrypt Security Encryption RSA AES</tags>
+	<releaseNotes>EnvCrypt first release.</releaseNotes>
+  </metadata>
+  
+  <files>
+    <file src="EnvCrypt.Core\bin\Release\EnvCrypt.Core.dll" target="lib\net451" />
+    <file src="EnvCrypt.Core\bin\Release\EnvCrypt.Core.XML" target="lib\net451" />
+    <file src="console\EnvCrypt.Console\bin\Release\*.*" target="tools\Console" />
+    <file src="tool\EnvCrypt.ServiceInstaller\bin\Release\*.*" target="tools\ServiceInstaller" />
+	<file src="EnvCrypt.Core\**\*.cs" target="src" />
+  </files>
+</package>
