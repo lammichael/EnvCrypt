@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using EnvCrypt.Core.Key.Aes;
+using EnvCrypt.Core.Key.PlainText;
+using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Verb.DecryptEntry;
 using EnvCrypt.Core.Verb.DecryptEntry.Aes;
+using EnvCrypt.Core.Verb.DecryptEntry.Audit;
 using EnvCrypt.Core.Verb.DecryptEntry.Generic;
 using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 using EnvCrypt.Core.Verb.DecryptEntry.Rsa;
-using EnvCrypt.Core.Verb.LoadDat;
 using NLog.Fluent;
 
 namespace EnvCrypt.InteractiveDecrypt
@@ -61,10 +64,12 @@ namespace EnvCrypt.InteractiveDecrypt
             }
 
 
+            var auditLogDir = Path.Combine(Path.GetDirectoryName(datFilePath), "..", "AuditLogs");
+
             var builder = new DecryptGenericWorkflowBuilder(
-                new DecryptPlainTextEntryWorkflowBuilder(),
-                new DecryptRsaEntryWorkflowBuilder(),
-                new DecryptAesEntryWorkflowBuilder());
+                GetPlainTextEntryWorkflowBuilder(auditLogDir),
+                GetRsaEntryWorkflowBuilder(auditLogDir),
+                GetAesEntryWorkflowBuilder(auditLogDir));
             var result = builder.Build().Run(new DecryptGenericWorkflowOptions()
             {
                 CategoryEntryPair = GetPairsFromConfig(),
@@ -84,7 +89,7 @@ namespace EnvCrypt.InteractiveDecrypt
         }
 
 
-        static IList<CategoryEntryPair> GetPairsFromConfig()
+        private static IList<CategoryEntryPair> GetPairsFromConfig()
         {
             var config = EntriesToDecrypt.GetConfig();
 
@@ -98,6 +103,40 @@ namespace EnvCrypt.InteractiveDecrypt
                 }
             }
             return ret;
+        }
+
+
+        private static IDecryptPlainTextEntryWorkflowBuilder GetPlainTextEntryWorkflowBuilder(string auditDirectory)
+        {
+            return new DecryptPlainTextEntryWorkflowBuilder().WithAuditLogger(
+                ToFileAuditLoggerFactory.GetToFileAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions>(new ToFileAuditLoggerConfig
+                    ()
+                {
+                    LogDirectory = auditDirectory
+                }))
+                .Build();
+        }
+
+
+        private static IDecryptRsaEntryWorkflowBuilder GetRsaEntryWorkflowBuilder(string auditDirectory)
+        {
+            return new DecryptRsaEntryWorkflowBuilder().WithAuditLogger(
+                ToFileAuditLoggerFactory.GetToFileAuditLogger<RsaKey, DecryptEntryWorkflowOptions>(new ToFileAuditLoggerConfig
+                    ()
+                {
+                    LogDirectory = auditDirectory
+                }));
+        }
+
+
+        private static IDecryptAesEntryWorkflowBuilder GetAesEntryWorkflowBuilder(string auditDirectory)
+        {
+            return new DecryptAesEntryWorkflowBuilder().WithAuditLogger(
+                ToFileAuditLoggerFactory.GetToFileAuditLogger<AesKey, DecryptEntryWorkflowOptions>(new ToFileAuditLoggerConfig
+                    ()
+                {
+                    LogDirectory = auditDirectory
+                }));
         }
     }
 }

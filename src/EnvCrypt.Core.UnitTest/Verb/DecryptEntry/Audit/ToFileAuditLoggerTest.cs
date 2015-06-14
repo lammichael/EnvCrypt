@@ -29,7 +29,7 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
     public class ToFileAuditLoggerTest
     {
         [Test]
-        public void Given__When__Then_()
+        public void Given_AesEntries_When_DecryptWithAudit_Then_FilesWrittenWithCorrectContent()
         {
             // Arrange
             //      Generate random key
@@ -151,8 +151,8 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                 var lines = File.ReadAllLines(expectedFilePath);
                 lines.Should().HaveCount(5);
                 lines[1].Should().Be(datFilePath);
-                lines[3].Should().Be(categoryName + "\t" + entryName1 + "\t" + keyName);
-                lines[4].Should().Be(categoryName + "\t" + entryName2 + "\t" + keyName);
+                lines[3].Should().Be(categoryName + "\t" + entryName1 + "\t" + keyName + "\t" + EnvCryptAlgoEnum.Aes);
+                lines[4].Should().Be(categoryName + "\t" + entryName2 + "\t" + keyName + "\t" + EnvCryptAlgoEnum.Aes);
             }
         }
     }

@@ -117,23 +117,35 @@ namespace EnvCrypt.ServiceInstaller
             }
         }
 
-        public static void InstallAndStart(string serviceName, string displayName, string fileName)
+        public static void Install(string name, string displayName, ServiceBootFlag startType, string binaryPath, string runAsFid = null, string fidPassword = null)
         {
-            IntPtr scm = OpenSCManager(ScmAccessRights.AllAccess);
+            var scm = OpenSCManager(ScmAccessRights.AllAccess);
 
             try
             {
-                IntPtr service = OpenService(scm, serviceName, ServiceAccessRights.AllAccess);
-
-                if (service == IntPtr.Zero)
-                    service = CreateService(scm, serviceName, displayName, ServiceAccessRights.AllAccess, SERVICE_WIN32_OWN_PROCESS, ServiceBootFlag.AutoStart, ServiceError.Normal, fileName, null, IntPtr.Zero, null, null, null);
-
-                if (service == IntPtr.Zero)
-                    throw new ApplicationException("Failed to install service.");
-
+                var service = OpenService(scm, name, ServiceAccessRights.AllAccess);
                 try
                 {
-                    StartService(service);
+                    if (service == IntPtr.Zero)
+                    {
+                        service = CreateService(hSCManager: scm,
+                            lpServiceName: name,
+                            lpDisplayName: displayName,
+                            dwDesiredAccess: ServiceAccessRights.AllAccess,
+                            dwServiceType: SERVICE_WIN32_OWN_PROCESS,
+                            dwStartType: ServiceBootFlag.AutoStart,
+                            dwErrorControl: ServiceError.Normal,
+                            lpBinaryPathName: binaryPath,
+                            lpLoadOrderGroup: null,
+                            lpdwTagId: IntPtr.Zero,
+                            lpDependencies: null,
+                            lpServiceStartName: runAsFid,
+                            lpPassword: fidPassword);
+                    }
+
+                    if (service == IntPtr.Zero)
+                        throw new ApplicationException("Failed to install service.");
+
                 }
                 finally
                 {

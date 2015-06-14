@@ -26,7 +26,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.PlainText
 
         public IDecryptPlainTextEntryWorkflowBuilder WithDatLoader(IDatLoader<DatFromFileLoaderOptions> datLoader)
         {
-            
             _datLoader = datLoader;
             MarkAsNotBuilt();
             return this;
