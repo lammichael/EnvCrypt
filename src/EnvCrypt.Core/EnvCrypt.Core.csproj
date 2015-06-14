@@ -167,7 +167,9 @@
     <Compile Include="Utils\IMyDateTime.cs" />
     <Compile Include="Utils\IO\IMyFileInfoFactory.cs" />
     <Compile Include="Utils\IO\IMyFileInfo.cs" />
+    <Compile Include="Utils\IO\IOldLogCleaner.cs" />
     <Compile Include="Utils\IO\MyFileInfo.cs" />
+    <Compile Include="Utils\IO\OldLogCleaner.cs" />
     <Compile Include="Utils\IO\StringWriter\StringToFileWriterOptions.cs" />
     <Compile Include="Utils\IO\StringWriter\StringWriterOptions.cs" />
     <Compile Include="Utils\IKeyDetailsPersistConverter.cs" />

@@ -15,7 +15,11 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
         {
             Contract.Requires<ArgumentNullException>(config != null, "config");
             //
-            return new ToFileAuditLogger<TKey, TWorkflowOptions>(config, new MyDirectory(), new MyFile(), new MyDateTime(), new MyFileInfoFactory());
+            var myDir = new MyDirectory();
+            var myFile = new MyFile();
+
+            return new ToFileAuditLogger<TKey, TWorkflowOptions>(config, myDir, myFile, new MyDateTime(),
+                new OldLogCleaner(new ToFileAuditLoggerConfig(), myDir, myFile, new MyFileInfoFactory()));
         }
     }
 }

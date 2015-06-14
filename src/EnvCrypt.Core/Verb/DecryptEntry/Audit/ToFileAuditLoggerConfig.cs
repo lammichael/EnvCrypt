@@ -12,6 +12,8 @@
         /// <summary>
         /// If the log file to write to already exists then a number will be added to
         /// the end of the file. This defines the maximum number of tries for this.
+        /// If less than or equal to 0, if a unique file cannot be found, no log will
+        /// be written.
         /// </summary>
         public int MaxTriesToGetUniqueFileName = 50;
 

@@ -7,12 +7,14 @@ using EnvCrypt.Core.EncrypedData.Poco;
 using EnvCrypt.Core.EncrypedData.UserStringConverter;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.Key.Aes;
+using EnvCrypt.Core.Key.PlainText;
 using EnvCrypt.Core.Key.Rsa;
 using EnvCrypt.Core.Utils;
 using EnvCrypt.Core.Utils.IO;
 using EnvCrypt.Core.Verb.DecryptEntry;
 using EnvCrypt.Core.Verb.DecryptEntry.Aes;
 using EnvCrypt.Core.Verb.DecryptEntry.Audit;
+using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 using EnvCrypt.Core.Verb.GenerateKey;
 using EnvCrypt.Core.Verb.GenerateKey.Aes;
 using EnvCrypt.Core.Verb.GenerateKey.Persister.Symmetric;
@@ -109,13 +111,14 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                 };
                 var auditLogger = new ToFileAuditLogger<AesKey, DecryptEntryWorkflowOptions>(
                     loggerConfig, new MyDirectory(), new MyFile(),
-                    dateTimeMock.Object, fileInfoFactoryMock.Object);
+                    dateTimeMock.Object,
+                    new OldLogCleaner(loggerConfig, new MyDirectory(), new MyFile(), fileInfoFactoryMock.Object));
 
 
                 // Act
-                var deleteFile1Path = Path.Combine(tempDir.TempDirectory, ".deleteme");
+                var deleteFile1Path = Path.Combine(tempDir.TempDirectory, ".deleteme.log");
                 File.WriteAllText(deleteFile1Path, "somerandomtext");
-                var deleteFile2Path = Path.Combine(tempDir.TempDirectory, "asd.deleteme");
+                var deleteFile2Path = Path.Combine(tempDir.TempDirectory, "asd.deleteme.log");
                 File.WriteAllText(deleteFile2Path, "somerandomtext2");
                 const string datFilePath = @"C:\my dat file";
                 new DecryptAesEntryWorkflowBuilder()
@@ -154,6 +157,36 @@ namespace EnvCrypt.Core.UnitTest.Verb.DecryptEntry.Audit
                 lines[3].Should().Be(categoryName + "\t" + entryName1 + "\t" + keyName + "\t" + EnvCryptAlgoEnum.Aes);
                 lines[4].Should().Be(categoryName + "\t" + entryName2 + "\t" + keyName + "\t" + EnvCryptAlgoEnum.Aes);
             }
+        }
+
+
+        [Test]
+        public void Given_NoUniqueLogFileName_When_RequestToLogAuditEntry_Then_NoFileWritten()
+        {
+            // Arrange
+            var mydirMock = new Mock<IMyDirectory>();
+
+            var myFileMock = new Mock<IMyFile>(MockBehavior.Strict);
+            myFileMock.Setup(f => f.Exists(It.IsAny<string>())).Returns(true);
+
+            var myDateTimeMock = new Mock<IMyDateTime>(MockBehavior.Strict);
+            var currentDate = new DateTime(2015, 06, 14);
+            myDateTimeMock.Setup(dt => dt.UtcNow()).Returns(currentDate);
+
+            var cleanerMock = new Mock<IOldLogCleaner>();
+
+            var config = new ToFileAuditLoggerConfig()
+            {
+                LogDirectory = @"FAKE:\"
+            };
+
+            // Act
+            var logger = new ToFileAuditLogger<PlainTextKey, DecryptPlainTextEntryWorkflowOptions>(config,
+                mydirMock.Object, myFileMock.Object, myDateTimeMock.Object, cleanerMock.Object);
+            logger.LogDecryption(new DecryptPlainTextEntryWorkflowOptions(), new EnvCryptDat(), new List<PlainTextKey>(), new List<EntriesDecrypterResult<PlainTextKey>>());
+
+            // Assert
+            myFileMock.Verify(file => file.Exists(It.IsAny<string>()), Times.Exactly(config.MaxTriesToGetUniqueFileName + 1));
         }
     }
 }

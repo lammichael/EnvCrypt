@@ -14,7 +14,9 @@ using EnvCrypt.Core.Verb.DecryptEntry.PlainText;
 namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
 {
     /// <summary>
-    /// Writes a log file containing information about what process requested 
+    /// Writes a log file containing information about what process requested
+    /// for decryption. Not immune to race conditions causing overwriting
+    /// of existing log files, but it makes an attempt to create a unique file name to write to each time.
     /// </summary>
     public class ToFileAuditLogger<TKey, TWorkflowOptions> : IAuditLogger<TKey, TWorkflowOptions> 
         where TKey : KeyBase
@@ -26,15 +28,15 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
         private readonly IMyDirectory _myDirectory;
         private readonly IMyFile _myFile;
         private readonly IMyDateTime _myDateTime;
-        private readonly IMyFileInfoFactory _myFileInfoFactory;
+        private readonly IOldLogCleaner _oldLogCleaner;
 
-        public ToFileAuditLogger(ToFileAuditLoggerConfig config, IMyDirectory myDirectory, IMyFile myFile, IMyDateTime myDateTime, IMyFileInfoFactory myFileInfoFactory)
+        public ToFileAuditLogger(ToFileAuditLoggerConfig config, IMyDirectory myDirectory, IMyFile myFile, IMyDateTime myDateTime, IOldLogCleaner oldLogCleaner)
         {
             Contract.Requires<ArgumentNullException>(config != null, "options");
             Contract.Requires<ArgumentNullException>(myDirectory != null, "myDirectory");
             Contract.Requires<ArgumentNullException>(myFile != null, "myFile");
             Contract.Requires<ArgumentNullException>(myDateTime != null, "myDateTime");
-            Contract.Requires<ArgumentNullException>(myFileInfoFactory != null, "myFileInfoFactory");
+            Contract.Requires<ArgumentNullException>(oldLogCleaner != null, "oldLogCleaner");
             Contract.Requires<EnvCryptException>(config.NumberOfDaysSinceCreationToKeep >= 1, "number of days to keep audit log files must be >= 1");
             Contract.Requires<EnvCryptException>(!string.IsNullOrWhiteSpace(config.FileNameFormat), "filename format cannot be empty");
             Contract.Requires<EnvCryptException>(!string.IsNullOrWhiteSpace(config.LogDirectory), "log directory cannot be empty");
@@ -43,7 +45,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             _myDirectory = myDirectory;
             _myFile = myFile;
             _myDateTime = myDateTime;
-            _myFileInfoFactory = myFileInfoFactory;
+            _oldLogCleaner = oldLogCleaner;
         }
 
 
@@ -62,11 +64,6 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             var fileName = string.Format(_config.FileNameFormat,
                 _myDateTime.UtcNow().ToString(DateTimeFormatInFileName),
                 Path.GetFileName(Process.GetCurrentProcess().MainModule.FileName));
-
-            var content = string.Format("EC DDAT file:{0}{1}{0}Category\tEntry\tKey Name & Type{0}{2}",
-                Environment.NewLine, withWorkflowOptions.DatFilePath,
-                string.Join(Environment.NewLine,
-                    results.Select(r => string.Join("\t", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry, r.DecryptedUsingKey.Name, r.DecryptedUsingKey.Algorithm))));
 
             var logFilePathWithoutUidOrExt = Path.Combine(_config.LogDirectory, fileName);
             var logFilePathWithoutUid = logFilePathWithoutUidOrExt + _config.LogFileExtension;
@@ -104,6 +101,7 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
             }
 
             Contract.Assert(finalLogPath != null, "a potentially unique final log path must be found at this point");
+            var content = GetLogContent(withWorkflowOptions, results);
             try
             {
                 _myFile.WriteAllText(finalLogPath, content);
@@ -113,31 +111,21 @@ namespace EnvCrypt.Core.Verb.DecryptEntry.Audit
                 return;
             }
 
-            // Cleanup of old files
-            string[] files;
-            try
-            {
-                files = _myDirectory.GetFiles(_config.LogDirectory);
-            }
-            catch
-            {
-                return;
-            }
+            
+            _oldLogCleaner.Run();
+        }
 
-            for (int fI = 0; fI < files.Length; fI++)
-            {
-                var fileInfo = _myFileInfoFactory.GetNewInstance(files[fI]);
-                if (fileInfo.CreationTimeUtc < DateTime.Now.AddDays(-_config.NumberOfDaysSinceCreationToKeep))
-                {
-                    try
-                    {
-                        _myFile.Delete(files[fI]);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
+
+        private static string GetLogContent(TWorkflowOptions withWorkflowOptions, IList<EntriesDecrypterResult<TKey>> results)
+        {
+            var content = string.Format("EC DDAT file:{0}{1}{0}Category\tEntry\tKey Name & Type{0}{2}",
+                Environment.NewLine, withWorkflowOptions.DatFilePath,
+                string.Join(Environment.NewLine,
+                    results.Select(
+                        r =>
+                            string.Join("\t", r.CategoryEntryPair.Category, r.CategoryEntryPair.Entry, r.DecryptedUsingKey.Name,
+                                r.DecryptedUsingKey.Algorithm))));
+            return content;
         }
     }
 }
