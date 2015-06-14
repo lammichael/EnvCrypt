@@ -50,7 +50,7 @@ namespace EnvCrypt.Console.AddEntry
         }
 
 
-        protected override void RunWorflow(AddEntryVerbOptions options)
+        protected override void RunWorkflow(AddEntryVerbOptions options)
         {
             new AddEntryWorkflow().Run(options);
         }

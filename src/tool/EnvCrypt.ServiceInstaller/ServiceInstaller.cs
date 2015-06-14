@@ -316,7 +316,7 @@ namespace EnvCrypt.ServiceInstaller
         {
             IntPtr scm = OpenSCManager(null, null, rights);
             if (scm == IntPtr.Zero)
-                throw new ApplicationException("Could not connect to service control manager.");
+                throw new ApplicationException("Could not connect to service control manager. Are you running as administrator?");
 
             return scm;
         }

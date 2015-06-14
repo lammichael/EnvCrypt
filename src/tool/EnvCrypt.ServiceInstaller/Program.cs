@@ -3,7 +3,6 @@ using System.Linq;
 using CommandLine;
 using CommandLine.Text;
 using EnvCrypt.ServiceInstaller.CommandLine;
-using NLog.Fluent;
 
 namespace EnvCrypt.ServiceInstaller
 {

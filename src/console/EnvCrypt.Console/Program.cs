@@ -5,6 +5,7 @@ using CommandLine.Text;
 using EnvCrypt.Console.AddEntry;
 using EnvCrypt.Console.DecryptEntry;
 using EnvCrypt.Console.GenerateKey;
+using EnvCrypt.Console.RemoveEntry;
 
 namespace EnvCrypt.Console
 {
@@ -21,7 +22,8 @@ namespace EnvCrypt.Console
             parserResult = parser.ParseArguments(args,
                 typeof(GenerateKeyVerbOptions),
                 typeof(AddEntryVerbOptions),
-                typeof(DecryptEntryVerbOptions));
+                typeof(DecryptEntryVerbOptions),
+                typeof(RemoveEntryVerbOptions));
             /*catch (System.ArgumentException argEx)
             {
                 // Occurs when an exact enum value is not passed
@@ -60,6 +62,10 @@ namespace EnvCrypt.Console
                     return;
                 }
                 if (new DecryptEntryCommandLineProcessor().Run(parserResult))
+                {
+                    return;
+                }
+                if (new RemoveEntryCommandLineProcessor().Run(parserResult))
                 {
                     return;
                 }

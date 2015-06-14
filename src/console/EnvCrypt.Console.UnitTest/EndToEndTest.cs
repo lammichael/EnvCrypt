@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using EnvCrypt.Console.AddEntry;
 using EnvCrypt.Console.DecryptEntry;
 using EnvCrypt.Console.GenerateKey;
+using EnvCrypt.Console.RemoveEntry;
 using EnvCrypt.Console.UnitTest.Helper;
 using EnvCrypt.Core.EncryptionAlgo;
 using EnvCrypt.Core.UnitTest;
@@ -92,14 +93,17 @@ namespace EnvCrypt.Console.UnitTest
                 AddAesEntries();
                 AddPlainTextEntries();
 
-
-
                 /*
                  * Decrypt entry
                  */
                 DecryptRsaEntries();
                 DecryptAesEntries();
                 GetPlainTextEntries();
+
+                /*
+                 * Remove entry
+                 */
+                RemoveEntryFromDat();
             }
         }
 
@@ -336,6 +340,25 @@ namespace EnvCrypt.Console.UnitTest
                     Regex.Escape(entry.CategoryEntryPair.Entry),
                     Regex.Escape(entry.DecryptedValue)));
             }
+        }
+
+
+        private void RemoveEntryFromDat()
+        {
+            // Arrange
+            var removeEntryArgs = OptionsToStringArgsHelper.GetArgs(new RemoveEntryVerbOptions()
+            {
+                DatFile = _datFile,
+                Categories = _plainTextEntries[0].CategoryEntryPair.Category,
+                Entries = _plainTextEntries[0].CategoryEntryPair.Entry,
+            });
+
+            // Act
+            Program.Main(removeEntryArgs);
+
+            // Assert
+            var datFileXml = File.ReadAllText(_datFile);
+            datFileXml.Should().NotContain(_plainTextEntries[0].CategoryEntryPair.Entry);
         }
     }
 }

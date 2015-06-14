@@ -14,6 +14,7 @@ namespace EnvCrypt.ServiceInstaller
 
         public void Run(CommandLineOptions options)
         {
+            Logger.Info("Uninstalling service: {0}", options.ServiceName);
             ServiceInstaller.Uninstall(options.ServiceName, false);
 
             string fidPassword = null;
@@ -23,6 +24,9 @@ namespace EnvCrypt.ServiceInstaller
             }
             else
             {
+                Logger.Info("Decrypting password. Category: {0}  Entry: {1}",
+                    options.Category, options.Entry);
+
                 var builder = new DecryptGenericWorkflowBuilder(
                 new DecryptPlainTextEntryWorkflowBuilder(), 
                 new DecryptRsaEntryWorkflowBuilder(), 
@@ -45,14 +49,18 @@ namespace EnvCrypt.ServiceInstaller
                 fidPassword = result[0].DecryptedValue;
             }
 
-            ServiceInstaller.Install(name: options.ServiceName, displayName: null,
-                startType: GetBootFlag(options.GetServiceStartType().Value), 
-                binaryPath: options.BinaryPath, runAsFid: options.FunctionalId,
+            Logger.Info("Installing service: {0}", options.ServiceName);
+            ServiceInstaller.Install(
+                name: options.ServiceName,
+                displayName: options.DisplayName,
+                startType: GetBootFlag(options.GetServiceStartType()),
+                binaryPath: "\"" + options.BinaryPath + "\"",
+                runAsFid: options.FunctionalId,
                 fidPassword: fidPassword);
         }
 
 
-        private ServiceBootFlag GetBootFlag(ServiceStartTypeEnum startType)
+        private ServiceBootFlag GetBootFlag(ServiceStartTypeEnum? startType)
         {
             switch (startType)
             {

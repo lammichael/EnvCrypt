@@ -1,10 +1,10 @@
-﻿using EnvCrypt.Core.EncryptionAlgo;
+﻿using EnvCrypt.Console.DecryptEntry;
 
-namespace EnvCrypt.Console.DecryptEntry
+namespace EnvCrypt.Console.RemoveEntry
 {
-    class DecryptEntryCommandLineProcessor : VerbCommandLineProcessor<DecryptEntryVerbOptions>
+    class RemoveEntryCommandLineProcessor : VerbCommandLineProcessor<RemoveEntryVerbOptions>
     {
-        protected override bool ReportErrors(DecryptEntryVerbOptions options)
+        protected override bool ReportErrors(RemoveEntryVerbOptions options)
         {
             var hasErrors = false;
             
@@ -37,9 +37,9 @@ namespace EnvCrypt.Console.DecryptEntry
         }
 
 
-        protected override void RunWorkflow(DecryptEntryVerbOptions options)
+        protected override void RunWorkflow(RemoveEntryVerbOptions options)
         {
-            new DecryptEntryWorkflow().Run(options);
+            new RemoveEntryWorkflow().Run(options);
         }
     }
 }

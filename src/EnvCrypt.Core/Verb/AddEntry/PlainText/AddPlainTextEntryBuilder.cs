@@ -29,8 +29,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
             Contract.Requires<ArgumentNullException>(datLoader != null, "datLoader");
             //
             _datLoader = datLoader;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 
@@ -40,8 +39,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
             Contract.Requires<ArgumentNullException>(datSaver != null, "datSaver");
             //
             _datSaver = datSaver;
-            IsBuilt = false;
-            _workflow = null;
+            MarkAsNotBuilt();
             return this;
         }
 

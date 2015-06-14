@@ -66,6 +66,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Debug\EnvCrypt.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -118,6 +119,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>Build</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <DocumentationFile>bin\Release\EnvCrypt.Core.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -278,6 +280,8 @@
     <Compile Include="Verb\LoadKey\PlainText\PlainTextKeyLoader.cs" />
     <Compile Include="Verb\LoadKey\NullKeyLoaderDetails.cs" />
     <Compile Include="Verb\LoadKey\Rsa\RsaKeyFromXmlFileLoader.cs" />
+    <Compile Include="Verb\RemoveEntry\RemoveEntryWorkflowBuilder.cs" />
+    <Compile Include="Verb\RemoveEntry\RemoveEntryWorkflow.cs" />
     <Compile Include="Verb\SaveDat\DatToFileSaverOptions.cs" />
     <Compile Include="Verb\SaveDat\DatToXmlFileSaver.cs" />
     <Compile Include="Verb\SaveDat\DatXmlFileSaverFactory.cs" />

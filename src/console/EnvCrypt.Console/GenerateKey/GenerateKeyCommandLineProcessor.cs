@@ -25,7 +25,7 @@
         }
 
 
-        protected override void RunWorflow(GenerateKeyVerbOptions options)
+        protected override void RunWorkflow(GenerateKeyVerbOptions options)
         {
             new GenerateKeyWorkflow().Run(options);
         }

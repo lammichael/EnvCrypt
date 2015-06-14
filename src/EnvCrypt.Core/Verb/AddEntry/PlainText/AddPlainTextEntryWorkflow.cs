@@ -16,7 +16,7 @@ namespace EnvCrypt.Core.Verb.AddEntry.PlainText
 
         protected override NullKeyLoaderDetails GetKeyLoaderDetails(TWorkflowDetails workflowDetails)
         {
-            return null;
+            return new NullKeyLoaderDetails();
         }
     }
 }

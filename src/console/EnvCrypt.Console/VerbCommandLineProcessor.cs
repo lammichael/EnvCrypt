@@ -21,7 +21,7 @@ namespace EnvCrypt.Console
                 throw new EnvCryptConsoleException("Command line argument validation errors found");
             }
 
-            RunWorflow(options);
+            RunWorkflow(options);
             return true;
         }
 
@@ -33,6 +33,6 @@ namespace EnvCrypt.Console
         /// <returns>true if errors were found</returns>
         protected abstract bool ReportErrors(TOptions options);
 
-        protected abstract void RunWorflow(TOptions options);
+        protected abstract void RunWorkflow(TOptions options);
     }
 }
