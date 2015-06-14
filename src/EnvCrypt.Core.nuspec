@@ -17,8 +17,19 @@
   <files>
     <file src="EnvCrypt.Core\bin\Release\EnvCrypt.Core.dll" target="lib\net451" />
     <file src="EnvCrypt.Core\bin\Release\EnvCrypt.Core.XML" target="lib\net451" />
-    <file src="console\EnvCrypt.Console\bin\Release\*.*" target="tools\Console" />
-    <file src="tool\EnvCrypt.ServiceInstaller\bin\Release\*.*" target="tools\ServiceInstaller" />
+    <file src="console\EnvCrypt.Console\bin\Release\*.dll" target="tools\Console" />
+    <file src="console\EnvCrypt.Console\bin\Release\*.xml" target="tools\Console" />
+    <file src="console\EnvCrypt.Console\bin\Release\*.exe" target="tools\Console" />
+    <file src="console\EnvCrypt.Console\bin\Release\*.config" target="tools\Console" />
+    <file src="tool\EnvCrypt.ServiceInstaller\bin\Release\*.dll" target="tools\ServiceInstaller" />
+    <file src="tool\EnvCrypt.ServiceInstaller\bin\Release\*.xml" target="tools\ServiceInstaller" />
+    <file src="tool\EnvCrypt.ServiceInstaller\bin\Release\*.exe" target="tools\ServiceInstaller" />
+    <file src="tool\EnvCrypt.ServiceInstaller\bin\Release\*.config" target="tools\ServiceInstaller" />
+	<file src="demo\InteractiveDecrypt\bin\Release\*.dll" target="tools\demo\InteractiveDecrypt" />
+	<file src="demo\InteractiveDecrypt\bin\Release\*.xml" target="tools\demo\InteractiveDecrypt" />
+	<file src="demo\InteractiveDecrypt\bin\Release\*.exe" target="tools\demo\InteractiveDecrypt" />
+	<file src="demo\InteractiveDecrypt\bin\Release\*.config" target="tools\demo\InteractiveDecrypt" />
+	
 	<file src="EnvCrypt.Core\**\*.cs" target="src" />
   </files>
 </package>
