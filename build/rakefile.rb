@@ -30,7 +30,7 @@ end
 
 
 task :createoutputdir do
-  Dir.mkdir OutputDir
+  Dir.mkdir OutputDir unless File.directory?(OutputDir)
 end
 
 
@@ -90,7 +90,7 @@ end
 
 desc "Create the nuget package"
 task(:nugetpackage) do
-  sh(NuGetExe, 'pack', NuSpecFilePath, '-OutputDirectory', OutputDir)
+  sh(NuGetExe, 'pack', NuSpecFilePath, '-symbols', '-OutputDirectory', OutputDir)
 end
 
 
