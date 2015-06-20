@@ -4,25 +4,31 @@ require 'nokogiri'
 ################################
 #  Variables
 ################################
-
 #  Common directory locations
 CheckoutDir=File.expand_path('.', File.join(File.dirname(__FILE__), '..'))
 SourceDir=File.join(CheckoutDir, 'src')
 OutputDir=File.join(CheckoutDir, 'out')
+NuGetPackagesDir=File.join(SourceDir, 'packages')
 
 CommonAssemblyInfoFilePath=File.join SourceDir, 'CommonAssemblyInfo.cs'
 
 #  What we're building
+BuildConfiguration='Release'
 SLNFilePath=File.join SourceDir, 'EnvCrypt.Core.sln'
 
-#  Nuget binary
+#  Nuget
 NuGetExe = File.join CheckoutDir, 'tools', 'NuGet.2.8.5', 'NuGet.exe'
 NuSpecFilePath = File.join(SourceDir, 'EnvCrypt.Core.nuspec')
 
-################################
-#  Tasks
-################################
+# Test runner
+NUnitExe = File.join(NuGetPackagesDir, 'NUnit.Runners.2.6.4', 'tools', 'nunit-console.exe')
+OpenCoverExe = File.join(NuGetPackagesDir, 'OpenCover.4.5.3723', 'OpenCover.Console.exe')
+ReportGeneratorExe = File.join(NuGetPackagesDir, 'ReportGenerator.2.1.7.0', 'tools', 'ReportGenerator.exe')
 
+
+################################
+#  Setup
+################################
 desc 'restore all nugets as per the packages.config files'
 task(:packagerestore) do
   sh(NuGetExe, 'restore', SLNFilePath)
@@ -39,11 +45,14 @@ task :cleanoutput do
 end
 
 
+################################
+#  VS
+################################
 desc 'MSBuild clean'
 build :msbuildclean do |b|
   b.sln  = SLNFilePath
   b.target = 'Clean'
-  b.prop 'Configuration', 'Release'	# call with 'key, value', to specify a MsBuild property
+  b.prop 'Configuration', BuildConfiguration	# call with 'key, value', to specify a MsBuild property
   b.logging = 'normal'					# detailed logging mode. The available verbosity levels are: q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]
   # b.be_quiet						# opposite of the above
   b.nologo							# no Microsoft/XBuild header output
@@ -55,7 +64,7 @@ desc 'MSBuild compile'
 build :msbuildcompile do |b|
   b.sln  = SLNFilePath
   b.target = 'Build'				# call with an array of targets or just a single target
-  b.prop 'Configuration', 'Release'	# call with 'key, value', to specify a MsBuild property
+  b.prop 'Configuration', BuildConfiguration	# call with 'key, value', to specify a MsBuild property
   #b.clp 'ShowEventId'				# any parameters you want to pass to the console logger of MsBuild
   b.logging = 'm'					# detailed logging mode. The available verbosity levels are: q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]
   # b.be_quiet						# opposite of the above
@@ -63,8 +72,57 @@ build :msbuildcompile do |b|
 end
 
 
+
 ################################
-#  NuSpec
+#  Tests
+################################
+task :nunitunittest do
+  sh(NUnitExe, get_nunit_console_args)
+end
+
+
+task :opencovernunitunittest do
+  sh(OpenCoverExe,
+  '-target:' + NUnitExe,
+  '-targetargs:' + get_nunit_console_args().join(' '),
+  '-output:' + File.join(OutputDir, 'UnitTestCoverageResults.xml'), '-register:Path32'
+  )
+end
+
+
+def get_nunit_console_args()
+  testDllPaths = FileList[File.join(SourceDir, '**', 'bin', BuildConfiguration, '*.UnitTest.dll')]
+  testDllPathsUnique = []
+  # Remove DLL duplicates by name of fileContents
+  testDllPaths.each do |currentItem|
+    currentDllFileName = File.basename(currentItem)
+	
+	doesDllAlreadyExistInList = false
+	testDllPathsUnique.each do |currentItem2|
+	  currentDllFileName2 = File.basename(currentItem2)
+	  if currentDllFileName2 == currentDllFileName then
+	    doesDllAlreadyExistInList = true
+	  end
+	end
+	
+	if not doesDllAlreadyExistInList then
+      testDllPathsUnique.push(currentItem)
+	end
+  end
+  
+  concatedTestDlls = testDllPathsUnique.join(" ")  
+  return [concatedTestDlls,
+    '/labels',
+    '/xml=' + File.join(OutputDir, 'UnitTestResults.xml'),
+    '/framework=4.5.1',
+	'/nologo',
+	'/noshadow']
+end
+
+
+
+################################
+#  Package
 ################################
 task(:versionnuspec) do
   fileContents = File.read(NuSpecFilePath)
@@ -95,12 +153,13 @@ end
 
 
 ################################
-#  Targets
+#  Dependencies
 ################################
-task :compile => :msbuildcompile
 task :clean => [:msbuildclean, :cleanoutput]
+task :setup => [:createoutputdir, :packagerestore]
+task :compile => :msbuildcompile
+task :unittest => :nunitunittest
 task :package => [:createoutputdir, :compile, :nugetpackage]
 task :nugetpackage => :versionnuspec
 
-task :ci => [:clean, :packagerestore, :compile]
-task :default => :ci
+task :default => [:clean, :setup, :packagerestore, :compile, :unittest, :package]
