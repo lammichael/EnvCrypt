@@ -1,5 +1,6 @@
 EnvCrypt Core Library
 ===
+[![Nuget](https://img.shields.io/nuget/v/envcrypt.core.svg)](http://nuget.org/packages/EnvCrypt.Core)
 
 EnvCrypt is a C# credentials manager providing encryption of credentials, and a simple API for your applications to decrypt and use them at runtime.  The [RSA](http://en.wikipedia.org/wiki/RSA_%28cryptosystem%29) asymmetric and [AES](http://en.wikipedia.org/wiki/Advanced_Encryption_Standard) symmetric encryption algorithms are currently supported.  PlainText is also supported.
 
