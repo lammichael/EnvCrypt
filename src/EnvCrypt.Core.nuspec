@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>EnvCrypt.Core</id>
-	<version>1.0.0.0</version>
+	<version>1.0.0</version>
 	<title>EnvCrypt.Core</title>
 	<authors>lammichael</authors>
 	<owners>lammichael</owners>
