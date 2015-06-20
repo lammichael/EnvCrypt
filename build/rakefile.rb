@@ -86,7 +86,9 @@ task :opencovernunitunittest do
   sh(OpenCoverExe,
     '-target:' + NUnitExe,
     '"-targetargs:' + get_nunit_console_args().join(' ') + '"',
-    '-output:' + OpenCoverReportFilePath, '-register:Path32'
+    '-output:' + OpenCoverReportFilePath,
+	'-register:Path32',
+	'"-filter:+[*]* -[FluentAssertions.Core]FluentAssertions.* -[FluentAssertions]FluentAssertions.*"'
   )
 end
 
