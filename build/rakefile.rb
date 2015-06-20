@@ -24,6 +24,7 @@ NuSpecFilePath = File.join(SourceDir, 'EnvCrypt.Core.nuspec')
 NUnitExe = File.join(NuGetPackagesDir, 'NUnit.Runners.2.6.4', 'tools', 'nunit-console.exe')
 OpenCoverExe = File.join(NuGetPackagesDir, 'OpenCover.4.5.3723', 'OpenCover.Console.exe')
 ReportGeneratorExe = File.join(NuGetPackagesDir, 'ReportGenerator.2.1.7.0', 'tools', 'ReportGenerator.exe')
+OpenCoverReportFilePath = File.join(OutputDir, 'UnitTestCoverageResults.xml')
 
 
 ################################
@@ -83,9 +84,18 @@ end
 
 task :opencovernunitunittest do
   sh(OpenCoverExe,
-  '-target:' + NUnitExe,
-  '-targetargs:' + get_nunit_console_args().join(' '),
-  '-output:' + File.join(OutputDir, 'UnitTestCoverageResults.xml'), '-register:Path32'
+    '-target:' + NUnitExe,
+    '"-targetargs:' + get_nunit_console_args().join(' ') + '"',
+    '-output:' + OpenCoverReportFilePath, '-register:Path32'
+  )
+end
+
+
+task :opencoverreportgenerate do
+  sh(ReportGeneratorExe,
+    '-reports:' + OpenCoverReportFilePath,
+    '-targetdir:' + File.join(OutputDir, 'OpenCoverReport'),
+    '-reporttypes:Html'
   )
 end
 
@@ -159,7 +169,8 @@ task :clean => [:msbuildclean, :cleanoutput]
 task :setup => [:createoutputdir, :packagerestore]
 task :compile => :msbuildcompile
 task :unittest => :nunitunittest
+task :unittestcoverage => [:opencovernunitunittest, :opencoverreportgenerate]
 task :package => [:createoutputdir, :compile, :nugetpackage]
 task :nugetpackage => :versionnuspec
 
-task :default => [:clean, :setup, :packagerestore, :compile, :unittest, :package]
+task :default => [:clean, :setup, :compile, :unittestcoverage, :package]
