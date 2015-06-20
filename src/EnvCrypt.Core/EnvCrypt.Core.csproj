@@ -127,9 +127,18 @@
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>C:\EnvCrypt.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+  <Choose>
+    <When Condition=" Exists('C:\EnvCrypt.pfx') ">
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>C:\EnvCrypt.pfx</AssemblyOriginatorKeyFile>
+      </PropertyGroup>
+	</When>
+    <Otherwise>
+      <PropertyGroup>
+        <AssemblyOriginatorKeyFile>..\EnvCrypt.Public.snk</AssemblyOriginatorKeyFile>
+      </PropertyGroup>
+	</Otherwise>
+  </Choose>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
