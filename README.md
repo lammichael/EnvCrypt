@@ -1,5 +1,7 @@
 EnvCrypt Core Library
 ===
+![License    ](https://img.shields.io/hexpm/l/plug.svg)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/reoijm8glr6enbqj?svg=true)](https://ci.appveyor.com/project/lammichael/envcrypt-core)
 [![Nuget       ](https://img.shields.io/nuget/v/envcrypt.core.svg)](http://nuget.org/packages/EnvCrypt.Core)
 
